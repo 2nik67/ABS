@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // test git thingy
         Client client=new Client("Natan", 5000);
         Client client1=new Client("Rotem", 200);
         Client client2=new Client("Tal", 100);
