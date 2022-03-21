@@ -1,4 +1,4 @@
-package loan;
+package loan.payment;
 
 public class Payment {
     private int paidYaz;

@@ -11,7 +11,7 @@ public abstract class Clients {
     }
     public static void PrintList(){
         for (int i = 0; i < clientsList.size(); i++) {
-            System.out.println( (i + ") " + clientsList.get(i).getName()));
+            System.out.println( (i+1) + ") " + clientsList.get(i).getName());
         }
     }
     public static void addMoneyToAccount(int index, double money){
@@ -23,6 +23,15 @@ public abstract class Clients {
             System.out.println(clientsList.get(i).getName() + ":");
             clientsList.get(i).printPaymentsList();
         }
+    }
+
+    public static Client findClient(String client){
+        for (int i = 0; i < clientsList.size(); i++) {
+            if(clientsList.get(i).getName().equals(client)){
+                return clientsList.get(i);
+            }
+        }
+        return null;
     }
 
 

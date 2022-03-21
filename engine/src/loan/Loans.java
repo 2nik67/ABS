@@ -18,7 +18,7 @@ public abstract class Loans {
         for(Loan l: loans){
             List <Pair<Client, Double>> listOfLoaners=l.getLoaners();
             if(l.getStatus().equals(Status.NEW)){
-                System.out.println("Status: PENDING\n"+"Loaners:");
+                System.out.println("Status: NEW\n"+"Loaners:");
                 l.printLoaners();
                 System.out.println("Total paid:" + l.leftForActive().toString() + " | How much left to pay: " + (l.getLoan()-l.leftForActive()));
 

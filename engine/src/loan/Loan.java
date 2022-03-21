@@ -1,8 +1,8 @@
 package loan;
 
 import client.Client;
-import client.Clients;
 import javafx.util.Pair;
+import loan.payment.Payment;
 import time.Yaz;
 
 import java.util.ArrayList;
