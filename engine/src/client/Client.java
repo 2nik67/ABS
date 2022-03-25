@@ -1,6 +1,5 @@
 package client;
 
-import javafx.util.Pair;
 import time.Yaz;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 public class Client {
 
     //The name of the client.
-    private String name;
+    private final String name;
 
     //current amount of money.
     private Double money;
@@ -22,7 +21,7 @@ public class Client {
         this.money = money;
         this.transactions = new ArrayList<>();
         this.transactions.add(new Transactions(money, Yaz.getYaz()));
-        Clients.addClient(this);
+        //Clients.addClient(this);
     }
 
     public String getName() {
@@ -38,9 +37,15 @@ public class Client {
     }
 
     public void printPaymentsList(){
-        for (int i = 0; i < transactions.size(); i++) {
-            transactions.get(i).printTransaction();
+        for (Transactions transaction : transactions) {
+            transaction.printTransaction();
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Client client=(Client) obj;
+        return this.getName().equalsIgnoreCase(client.getName());
     }
 }
 

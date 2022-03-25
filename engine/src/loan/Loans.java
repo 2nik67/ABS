@@ -1,22 +1,22 @@
 package loan;
 
-import client.Client;
-import javafx.util.Pair;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class Loans {
     private static List<Loan> loans= new ArrayList<>();
 
-    public static void addLoan(Loan loan){
-        loans.add(loan);
+    public static void setLoans(List<Loan> loansList) {
+        loans=new ArrayList<>(loansList);
     }
+
+    /*public static void addLoan(Loan loan){
+        loans.add(loan);
+    }*/
     public static void printLoans(){
 
         for(Loan l: loans){
-            List <Pair<Client, Double>> listOfLoaners=l.getLoaners();
+            //List <Pair<Client, Double>> listOfLoaners=l.getLoaners();
             if(l.getStatus().equals(Status.NEW)){
                 System.out.println("Status: NEW\n"+"Loaners:");
                 l.printLoaners();
@@ -33,6 +33,11 @@ public abstract class Loans {
         }
     }
 
+
+
+    /*public static void resetLoans(){
+        loans.clear();
+    }*/
 
 
 }

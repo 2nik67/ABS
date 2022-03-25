@@ -2,6 +2,7 @@ package loan;
 
 import client.Client;
 import javafx.util.Pair;
+import loan.category.Category;
 import loan.payment.Payment;
 import time.Yaz;
 
@@ -13,9 +14,10 @@ public class Loan {
     private final double loan; //Amount of the loan.
     private double loanPaid;//Amount of the loan paid.
     private final double interest;//The interest of the loan.
-    private final Client borrower;//The borrower of the loan.
+    private final double interestEveryYaz;
+    private final Client owner;//The borrower of the loan.
     private List<Pair<Client,Double>> loaners;//List of the loaners //TODO: When i'll have the function for paying loans, update this list too.
-    private final String loanCategory;//Category of the loan.
+    private final Category loanCategory;//Category of the loan.
     private Status status;//Status of the loan. Using ENUM.
     private final int totalYaz; //Total Yaz of Payment.
     private final int periodOfYazToPay; //how many yaz between payments.
@@ -24,11 +26,11 @@ public class Loan {
     private int activeYaz;//Yaz when the loan started to be active
     private int finishYaz;//Yaz when the loan finished.
 
-    public Loan(String id, double loan, double interest, Client borrower, String loanCategory, int totalYaz, int periodOfYazToPay) {
-        this.id = id;
-        this.loan = loan;
-        this.interest = interest;
-        this.borrower = borrower;
+    public Loan(String id, double loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, double interestEveryYaz) {
+        this.id = id;//Yes
+        this.loan = loan;//yes
+        this.interestEveryYaz=interestEveryYaz;
+        this.owner = borrower;
         this.loanCategory = loanCategory;
         this.totalYaz = totalYaz;
         this.periodOfYazToPay = periodOfYazToPay;
@@ -37,7 +39,8 @@ public class Loan {
         this.status=Status.NEW;
         this.paymentInfo=new ArrayList<>();
         this.startedYaz=Yaz.getYaz();
-        Loans.addLoan(this);
+        this.interest = interestEveryYaz*(totalYaz/periodOfYazToPay);
+        //Loans.addLoan(this);
     }
 
     public Status getStatus() {
@@ -54,7 +57,7 @@ public class Loan {
     }
 
     public boolean isActive(){
-        return status.equals(status.ACTIVE);
+        return status.equals(Status.ACTIVE);
     }
 
     public double interestPaid(){
@@ -103,5 +106,12 @@ public class Loan {
 
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        Loan loan=(Loan) obj;
+        return this.id.equals(loan.id);
+    }
+    public String getId(){
+        return this.id;
+    }
 }
