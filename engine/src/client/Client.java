@@ -1,5 +1,6 @@
 package client;
 
+import client.investment.Investment;
 import time.Yaz;
 
 import java.util.ArrayList;
@@ -11,24 +12,28 @@ public class Client {
     private final String name;
 
     //current amount of money.
-    private Double money;
+    private int money;
 
     //List of transactions of money, including Yaz.
-    private List<Transactions> transactions;
+    private ArrayList<Transactions> transactions;
 
-    public Client(String name, double money) {
+    //List of investments the client is in.
+    private ArrayList<Investment> investmentList;
+
+
+
+
+    public Client(String name, int money) {
         this.name = name;
         this.money = money;
-        this.transactions = new ArrayList<>();
         this.transactions.add(new Transactions(money, Yaz.getYaz()));
-
     }
 
     public String getName() {
         return name;
     }
 
-    public Double getMoney() {
+    public int getMoney() {
         return money;
     }
     public void loadMoney(Double moneyToAdd ){

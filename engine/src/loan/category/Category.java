@@ -5,7 +5,6 @@ public class Category {
 
     public Category(String category) {
         this.category = category;
-        //Categories.addCategory(this);
     }
 
     public String getCategory() {

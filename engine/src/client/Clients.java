@@ -29,7 +29,7 @@ public abstract class Clients {
         }
     }
 
-    public static Double getBalanceOfClient(int index)
+    public static int getBalanceOfClient(int index)
     {
         return clientsList.get(index).getMoney();
     }
@@ -42,4 +42,7 @@ public abstract class Clients {
         clientsList.clear();
     }
 
+    public static List<Client> getClientsList() {
+        return clientsList;
+    }
 }

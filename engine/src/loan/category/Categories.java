@@ -20,11 +20,10 @@ public abstract class Categories {
         }
     }
 
-
-
-
-
-    /*public static void resetCategories(){
+    public static List<Category> getCategoryList() {
+        return categoryList;
+    }
+/*public static void resetCategories(){
         categoryList.clear();
     }*/
 }

@@ -10,10 +10,14 @@ public abstract class Loans {
         loans=new ArrayList<>(loansList);
     }
 
+    public static List<Loan> getLoans() {
+        return loans;
+    }
+
     /*public static void addLoan(Loan loan){
-        loans.add(loan);
-    }*/
-    public static void printLoans(){
+            loans.add(loan);
+        }*/
+    public static void printLoans(){//TODO:print
 
         for(Loan l: loans){
             //List <Pair<Client, Double>> listOfLoaners=l.getLoaners();
