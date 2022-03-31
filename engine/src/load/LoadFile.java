@@ -29,7 +29,7 @@ public abstract class LoadFile{
     private static ArrayList<Client> clients = new ArrayList<>();
     private static ArrayList<Category> categories = new ArrayList<>();
     private static ArrayList<Loan> loans =new ArrayList<>();
-    private static String path="engine/src/resources/ex1-big.xml";
+    private static String path;//="engine/src/resources/ex1-big.xml";
     private static AbsDescriptor absDescriptor;
 
     public static boolean isFileLoaded() {
@@ -37,6 +37,7 @@ public abstract class LoadFile{
     }
 
     public static void setPath(String path) {
+
         LoadFile.path = path;
     }
 

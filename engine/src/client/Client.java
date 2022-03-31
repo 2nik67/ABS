@@ -21,7 +21,7 @@ public class Client {
         this.money = money;
         this.transactions = new ArrayList<>();
         this.transactions.add(new Transactions(money, Yaz.getYaz()));
-        //Clients.addClient(this);
+
     }
 
     public String getName() {

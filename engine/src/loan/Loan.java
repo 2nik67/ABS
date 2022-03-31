@@ -40,7 +40,7 @@ public class Loan {
         this.paymentInfo=new ArrayList<>();
         this.startedYaz=Yaz.getYaz();
         this.interest = interestEveryYaz*(totalYaz/periodOfYazToPay);
-        //Loans.addLoan(this);
+
     }
 
     public Status getStatus() {

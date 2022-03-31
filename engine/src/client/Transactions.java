@@ -1,7 +1,7 @@
 package client;
 
 public class Transactions {
-    private double moneyChange;//TODO: change the name- can be negative of positive number
+    private double moneyChange;
     private int yazOfTransaction;
 
     public Transactions(double moneyChange, int yazOfTransaction) {
