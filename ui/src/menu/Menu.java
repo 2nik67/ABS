@@ -80,7 +80,7 @@ public abstract class Menu {
         Double dblInput = 0.0;
         Boolean inputFlag = false;
         Scanner scanner = new Scanner(System.in);
-        String path=new String();
+        String path;
 
         switch (userChoice){
             case 1:

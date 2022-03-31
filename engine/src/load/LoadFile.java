@@ -37,8 +37,7 @@ public abstract class LoadFile{
     }
 
     public static void setPath(String path) {
-
-        LoadFile.path = path;
+       LoadFile.path = path;
     }
 
     public static void main(String[] args) {
@@ -58,7 +57,8 @@ public abstract class LoadFile{
     public static void readFile(){
 
         try {
-            InputStream inputStream = new FileInputStream(new File(path));
+            File file=new File(path);
+            InputStream inputStream = new FileInputStream(file);
             JAXBContext jaxbContext = JAXBContext.newInstance(AbsDescriptor.class);
             JAXBContext jc = JAXBContext.newInstance("load.jaxb.schema.generated");
             Unmarshaller u = jc.createUnmarshaller();
@@ -70,7 +70,10 @@ public abstract class LoadFile{
 
         }catch (FileNotFoundException e){
             System.out.println("File does not exist in this path!");
+        }catch (NullPointerException e){
+            System.out.println("File is null");
         }
+
     }
 
     private static void importData(){

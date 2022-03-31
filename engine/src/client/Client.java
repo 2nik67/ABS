@@ -1,10 +1,9 @@
 package client;
 
-import client.investment.Investment;
+
 import time.Yaz;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Client {
 
@@ -18,7 +17,7 @@ public class Client {
     private ArrayList<Transactions> transactions;
 
     //List of investments the client is in.
-    private ArrayList<Investment> investmentList;
+
 
 
 

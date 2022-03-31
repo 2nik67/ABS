@@ -20,6 +20,7 @@ public class Loan {
     private final Category loanCategory;//Category of the loan.
     private Status status;//Status of the loan. Using ENUM.
     private final int totalYaz; //Total Yaz of Payment.
+    private int missingToActive;
     private final int periodOfYazToPay; //how many yaz between payments.
     private final int startedYaz; //Yaz of the loan when started.
     private List<Payment> paymentInfo;//Every payment made and it's yaz.//TODO: When i'll have the function for paying loans, update this list too.
@@ -35,6 +36,7 @@ public class Loan {
         this.totalYaz = totalYaz;
         this.periodOfYazToPay = periodOfYazToPay;
         this.loanPaid=0;
+        this.missingToActive=loan;
         this.loaners=new ArrayList<>();
         this.status=Status.NEW;
         this.paymentInfo=new ArrayList<>();
@@ -42,7 +44,15 @@ public class Loan {
         this.interest = interestEveryYaz*(totalYaz/periodOfYazToPay);
 
     }
-
+    public void payForLoan(int toPay){
+        this.missingToActive-=toPay;
+        if(loanPaid == loan){
+            status=Status.ACTIVE;
+        }
+        else{
+            status=Status.PENDING;
+        }
+    }
     public Category getLoanCategory() {
         return loanCategory;
     }
@@ -76,7 +86,7 @@ public class Loan {
         loaners.add(new Pair<>(client, invest));
     }
 
-    public double getLoan() {
+    public int getLoan() {
         return loan;
     }
 
