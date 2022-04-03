@@ -15,11 +15,14 @@ public abstract class Categories {
     }*/
 
     public static void printCategories(){
-        for (Category category : categoryList) {
-            System.out.println(category.getCategory());
+        for (int i = 0; i < categoryList.size(); i++) {
+            System.out.println(i+1 + ") " + categoryList.get(i).getCategory());
         }
     }
 
+    public static Category getCategoryByIndex(int index){
+        return categoryList.get(index);
+    }
     public static List<Category> getCategoryList() {
         return categoryList;
     }

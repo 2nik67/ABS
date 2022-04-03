@@ -14,34 +14,50 @@ public abstract class Loans {
         return loans;
     }
 
-    /*public static void addLoan(Loan loan){
-            loans.add(loan);
-        }*/
-    public static void printLoans(){//TODO:print
+    public static void printLoans(){
 
         for(Loan l: loans){
-            //List <Pair<Client, Double>> listOfLoaners=l.getLoaners();
             if(l.getStatus().equals(Status.NEW)){
-                System.out.println("Status: NEW\n"+"Loaners:");
-                l.printLoaners();
-                System.out.println("Total paid:" + l.leftForActive().toString() + " | How much left to pay: " + (l.getLoan()-l.leftForActive()));
-
-            }
-            else if (l.getStatus().equals(Status.ACTIVE)){
-                System.out.println("Status: ACTIVE\n"+"Loaners\n");
-                l.printLoaners();
-                System.out.println("Loan is active since " + l.getActiveYaz() + " yaz");
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: NEW" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan());
                 l.printPayments();
 
+
+
+            }
+            else if (l.getStatus().equals(Status.PENDING)){
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: PENDING" + " | "+ "Owner: " + l.getOwner().getName() + " | "+ "Loan amount: " + l.getLoan());
+                l.printLoaners();
+                l.printPayments();
+            }
+            else if(l.getStatus().equals(Status.ACTIVE)){
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: ACTIVE" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan());
+                l.printLoaners();
+                l.printPayments();
+            }
+            else if(l.getStatus().equals(Status.FINISHED)){
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: FINISHED" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan() + " | " + "Finished in: "  + l.getFinishYaz());
+
+                l.printLoaners();
+                l.printPayments();
+            }
+            else if (l.getStatus().equals(Status.RISK)){
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: FINISHED" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan() + " | " + "Finished in: "  + l.getFinishYaz());
+
+                l.printLoaners();
+                l.printPayments();
+                l.printLatePayments();
             }
         }
     }
 
 
-
-    /*public static void resetLoans(){
-        loans.clear();
-    }*/
+    public static void payLoans(){
+        for (Loan loan : loans) {
+            if (loan.getStatus().equals(Status.ACTIVE) || loan.getStatus().equals(Status.RISK) ) {
+                loan.payLoan();
+            }
+        }
+    }
 
 
 }

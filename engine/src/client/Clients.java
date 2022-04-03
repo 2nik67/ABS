@@ -18,7 +18,7 @@ public abstract class Clients {
         }
     }
 
-    public static void addMoneyToAccount(int index, double money){
+    public static void addMoneyToAccount(int index, int money){
         clientsList.get(index).loadMoney(money);
     }
 

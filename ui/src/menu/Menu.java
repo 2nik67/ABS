@@ -1,8 +1,12 @@
 package menu;
+import Investment.Investment;
+import Investment.Investments;
 import client.Client;
 import client.Clients;
 import load.LoadFile;
 import loan.Loans;
+import loan.category.Categories;
+import loan.category.Category;
 import time.Yaz;
 
 import java.util.Scanner;
@@ -140,7 +144,7 @@ public abstract class Menu {
 
                 //TODO: move to a dedicated input handling class.
 
-                Clients.addMoneyToAccount(intInput - 1, dblInput);//TODO:fix add money method
+                //Clients.addMoneyToAccount(intInput - 1, dblInput);//TODO:fix add money method
                 break;
             case 5:
                 Clients.PrintList();
@@ -188,16 +192,24 @@ public abstract class Menu {
                 //TODO: move to a dedicated input handling class.
 
                 if(dblInput > 0)
-                    Clients.addMoneyToAccount(intInput - 1, dblInput*-1);
+                    Clients.addMoneyToAccount(intInput - 1, (int)(dblInput*-1));
                 else
-                    Clients.addMoneyToAccount(intInput - 1, dblInput);
+                    Clients.addMoneyToAccount(intInput - 1, (int) (dblInput*1));
                 break;
             case 6:
+                Clients.PrintList();
+                intInput = scanner.nextInt();
+                Client client= Clients.getClientsList().get(intInput-1);
+                Categories.printCategories();
+                new Investment(10000, -1, 0, 0 , client);
+
+
+
                 break;//TODO
             case 7:
-                System.out.println("Choose a whole and positive number: ");
-                //TODO:scanner
+
                 Yaz.advanceYaz(1);//TODO: change 0.
+                Loans.payLoans();
                 break;
             case 8:
                 System.exit(0);

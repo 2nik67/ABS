@@ -1,13 +1,19 @@
 package loan.payment;
 
 public class Payment {
-    private int paidYaz;
-    private double partOfLoanPaid;
-    private double partOfInterestPaid;
+    private final int paidYaz;
+    private final int partOfLoanPaid;
+    private final int partOfInterestPaid;
+
+    public Payment(int paidYaz, int partOfLoanPaid, int partOfInterestPaid) {
+        this.paidYaz = paidYaz;
+        this.partOfLoanPaid = partOfLoanPaid;
+        this.partOfInterestPaid = partOfInterestPaid;
+    }
 
     public void printPaymentInfo(){
         System.out.println("Payment yaz: " + paidYaz + " | Part of loan paid (without interest): " + partOfLoanPaid +
-                " | Part of the interest paid: " + partOfInterestPaid +" | Total:" + (partOfInterestPaid+partOfLoanPaid) + "\n");
+                " | Part of the interest paid: " + partOfInterestPaid +" | Total:" + (partOfInterestPaid+partOfLoanPaid));
     }
 
     public int getPaidYaz() {
@@ -21,4 +27,6 @@ public class Payment {
     public double getPartOfInterestPaid() {
         return partOfInterestPaid;
     }
+
+
 }

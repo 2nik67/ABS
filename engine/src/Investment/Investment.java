@@ -3,6 +3,7 @@ package Investment;
 import client.Client;
 import loan.Loan;
 import loan.Loans;
+import loan.Status;
 import loan.category.Categories;
 import loan.category.Category;
 
@@ -10,18 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Investment {
-    private int investment;
-    private Category category;
-    private double minimumInterestPerYaz;
-    private int minimumLoanYaz;
-    private Client investor;
+    private final int investment;
+    private int investmentLeft;
+    private final Category category;
+    private final double minimumInterestPerYaz;
+    private final int minimumLoanYaz;
+    private final Client investor;
 
 
 
     public Investment(int investment, int categoryIndex, double minimumInterestPerYaz, int minimumLoanYaz, Client client) {
         this.investment = investment;
-        if (categoryIndex > 0){
-            this.category= Categories.getCategoryList().get(categoryIndex);
+        this.investmentLeft=investment;
+        if (categoryIndex >= 0){
+            this.category = Categories.getCategoryList().get(categoryIndex);
         }
         else{
             category = null;
@@ -29,33 +32,49 @@ public class Investment {
         this.minimumInterestPerYaz = minimumInterestPerYaz;
         this.minimumLoanYaz = minimumLoanYaz;
         this.investor = client;
+        Investments.addInvestment(this);
+        investmentAssigning();
     }
 
     public void investmentAssigning(){
+        investor.loadMoney((-1*investment));//TODO: change cast
         List<Loan> possible = fillList();
         int payEachLoan;
         int minLoan = getMinLoan(possible);
-        if (minLoan > investment){
-            payEachLoan = investment/Loans.getLoans().size();
-        }
-        else{
-            payEachLoan=minLoan;
-        }
-        for (int i = 0; i < possible.size(); i++) {
-            possible.get(i).payForLoan(payEachLoan);
-            investment-=payEachLoan;
-            if(investment==0){
+        int temp=investment;
+
+        while(temp>0){
+
+            if (minLoan > temp){
+                payEachLoan = temp/Loans.getLoans().size();
+            }
+            else{
+                payEachLoan=minLoan;
+            }
+            if (possible.isEmpty()){
                 return;
             }
+            for (Loan loan : possible) {
+                loan.investmentPay(payEachLoan, investor);
+                temp -= payEachLoan;
+                if (temp == 0) {
+                    return;
+                }
+            }
+            possible=fillList();
+            minLoan = getMinLoan(possible);
+
         }
+
+
 
     }
 
     private int getMinLoan(List<Loan> possibleLoans) {
         int min=10000;
-        for (int i = 0; i < possibleLoans.size(); i++) {
-            if(possibleLoans.get(i).getLoan() < min)
-                min=possibleLoans.get(i).getLoan();
+        for (Loan possibleLoan : possibleLoans) {
+            if (possibleLoan.getMissingToActive() < min)
+                min = possibleLoan.getMissingToActive();
         }
         return min;
     }
@@ -64,7 +83,7 @@ public class Investment {
         List <Loan> allLoans=Loans.getLoans();
         List <Loan> possibleLoan = new ArrayList<>();
         for (Loan allLoan : allLoans) {
-            if (validLoan(allLoan)) {
+            if (validLoan(allLoan) && (allLoan.getStatus().equals(Status.PENDING) || allLoan.getStatus().equals(Status.NEW))) {
                 possibleLoan.add(allLoan);
             }
         }
@@ -72,7 +91,10 @@ public class Investment {
     }
 
     private boolean validLoan(Loan loan) {
-        if (!category.equals(null)){
+        if(loan.getOwner().equals(investor)){
+            return false;
+        }
+        if (category != null){
             if (!loan.getLoanCategory().equals(category)){
                 return false;
             }
@@ -85,6 +107,6 @@ public class Investment {
         if (minimumInterestPerYaz != 0){
             //TODO: wtf is this
         }
-        return false;
+        return true;
     }
 }
