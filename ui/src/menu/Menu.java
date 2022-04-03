@@ -4,11 +4,14 @@ import Investment.Investments;
 import client.Client;
 import client.Clients;
 import load.LoadFile;
+import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
 import loan.category.Category;
 import time.Yaz;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -80,11 +83,17 @@ public abstract class Menu {
     }
 
     public static void methodToCall(){
-        Integer intInput = 0;
+        Boolean fileLoaded = LoadFile.isFileLoaded();
+        Integer intInput = 0, sumToInvest, minYaz;
         Double dblInput = 0.0;
         Boolean inputFlag = false;
         Scanner scanner = new Scanner(System.in);
         String path;
+
+        if(!fileLoaded && (userChoice > 1 && userChoice != 8)){ // file input check
+            System.out.println("File not loaded, you can't choose option " + userChoice + ".\n");
+            return;
+        }
 
         switch (userChoice){
             case 1:
@@ -197,18 +206,81 @@ public abstract class Menu {
                     Clients.addMoneyToAccount(intInput - 1, (int) (dblInput*1));
                 break;
             case 6:
+                intInput = -1;
+                List<Category> catChosen = new ArrayList<>();
                 Clients.PrintList();
-                intInput = scanner.nextInt();
-                Client client= Clients.getClientsList().get(intInput-1);
-                Categories.printCategories();
-                new Investment(10000, -1, 0, 0 , client);
+                System.out.println("\nPlease choose client by number.");
+                intInput = chooseFromRange(Clients.getClientsSize(), 1);
+                Client client = Clients.getClientsList().get(intInput - 1);
 
+                System.out.println("Enter amount to invest.");
+                sumToInvest = chooseFromRange(client.getMoney(), 1);
 
+                System.out.println("Choose categories: \nEnter one at a time and enter 0 to continue, or just enter 0 to choose all");
+                while(!inputFlag && intInput != 0) {
+                    Categories.printCategories();
 
-                break;//TODO
+                    intInput = chooseFromRange(Categories.getNumOfCategories(), 0);
+                    if(intInput != 0)
+                        catChosen.add(Categories.getCategoryByIndex(intInput - 1)); //TODO: check if already added
+                }
+                inputFlag = false;
+
+                if(catChosen.isEmpty())
+                    catChosen = Categories.getCategoryList();
+
+                System.out.println("Enter percentage of minimum interest: (0 for no limit)");
+                while(!inputFlag) {
+                    if(scanner.hasNext())
+                        if(scanner.hasNextDouble()) {
+                            dblInput = scanner.nextDouble();
+
+                            if(dblInput <= 1 && dblInput >= 0)
+                                inputFlag = true;
+                            else {
+                                System.out.println("Interest must be a percentage higher than 0 and lower than 1.");
+                                System.out.println("Example: for 23% enter '0.23', for 5% enter '0.05'.");
+                                scanner.nextLine();
+                            }
+                        }
+                        else {
+                            System.out.println("Wrong input! Please enter a number different from 0.");
+                            scanner.nextLine();
+                        }
+                }
+
+                System.out.println("Enter minimum Yaz for the entire investment, enter 0 to not have such requirement.");
+                minYaz = chooseFromRange(999999999, 0);
+
+                List<Loan> possibleLoans = Investment.fillList(catChosen, minYaz, dblInput, client);
+                if(possibleLoans.isEmpty()){
+                    System.out.println("No possible loans for given requirements. \n");
+                    return;
+                }
+
+                List<Loan> chosenLoans = new ArrayList<>();
+                intInput = -1;
+                inputFlag = false;
+
+                System.out.println("Choose loans: \nEnter one at a time and enter 0 to continue, or just enter 0 to choose all");
+                while (intInput != 0){
+                    for (int i = 0; i < possibleLoans.size(); i++) {
+                        System.out.println((i + 1) + ") " + "LoanID: "+ possibleLoans.get(i).getId() +" | "+ "Status: " + possibleLoans.get(i).getStatus() + " | "+ "Owner: " + possibleLoans.get(i).getOwner().getName()+ " | "+ "Loan amount: " + possibleLoans.get(i).getLoan());
+                    }
+
+                    intInput = chooseFromRange(possibleLoans.size(), 0);
+                    if(intInput != 0)
+                        chosenLoans.add(possibleLoans.get(intInput - 1)); //TODO: check if already added
+                }
+
+                if(chosenLoans.isEmpty())
+                    chosenLoans = possibleLoans;
+
+                Investment.investmentAssigning(chosenLoans, sumToInvest);
+                break;
             case 7:
 
-                Yaz.advanceYaz(1);//TODO: change 0.
+                Yaz.advanceYaz(1);
                 Loans.payLoans();
                 break;
             case 8:
@@ -216,5 +288,32 @@ public abstract class Menu {
 
 
         }
+    }
+
+    private static Integer chooseFromRange(Integer endOfRange, Integer startOfRange){
+        Integer intInput = 0;
+        Boolean inputFlag = false;
+        Scanner scanner = new Scanner(System.in);
+
+        while(!inputFlag) {
+            if(scanner.hasNext())
+                if(scanner.hasNextInt()) {
+                    intInput = scanner.nextInt();
+
+                    if(validityCheck(startOfRange, endOfRange, intInput))
+                        inputFlag = true;
+                    else {
+                        System.out.println("Option out of range: please enter a number between " + startOfRange + " to " + endOfRange);
+                        scanner.nextLine();
+                    }
+                }
+                else {
+                    System.out.println("Wrong input! Please enter a number between " + startOfRange + " to " + endOfRange);
+                    scanner.nextLine();
+                }
+        }
+        scanner.nextLine();
+
+        return intInput;
     }
 }

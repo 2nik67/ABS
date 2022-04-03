@@ -26,6 +26,7 @@ public abstract class Categories {
     public static List<Category> getCategoryList() {
         return categoryList;
     }
+    public static Integer getNumOfCategories() { return categoryList.size(); }
 /*public static void resetCategories(){
         categoryList.clear();
     }*/

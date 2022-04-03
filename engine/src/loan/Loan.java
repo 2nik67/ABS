@@ -14,7 +14,7 @@ public class Loan {
     private final int loan; //Amount of the loan.
     private int loanPaid;//Amount of the loan paid.
     private int interestPaid;
-    private final int interest;//The interest of the loan.
+    private final double interest;//The interest of the loan.
     private final int interestEveryYaz;//how much to pay from the interest
     private final int loanEveryYaz;//How much to pay from the loan
     private final Client owner;//The borrower of the loan.
@@ -26,6 +26,7 @@ public class Loan {
     private final int periodOfYazToPay; //how many yaz between payments.
     private final int startedYaz; //Yaz of the loan when started.
     private List<Payment> paymentInfo;//Every payment made and it's yaz.
+    private final int interestPercentage;
     private int activeYaz;//Yaz when the loan started to be active
     private int finishYaz;//Yaz when the loan finished.
     private List<Pair<Integer, Integer>> latePayments;
@@ -33,7 +34,7 @@ public class Loan {
     public Loan(String id, int loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {
         this.id = id;
         this.loan = loan;
-        this.interestEveryYaz=interestEveryYaz;
+
         this.owner = borrower;
         this.loanCategory = loanCategory;
         this.totalYaz = totalYaz;
@@ -45,8 +46,10 @@ public class Loan {
         this.status=Status.NEW;
         this.paymentInfo=new ArrayList<>();
         this.startedYaz=Yaz.getYaz();
-        this.interest = interestEveryYaz*(totalYaz/periodOfYazToPay);
+        this.interestPercentage=interestEveryYaz;
+        this.interest = loan*((double)interestPercentage/100);
         this.loanEveryYaz=loan/(totalYaz/periodOfYazToPay);
+        this.interestEveryYaz= (int) (interest/(totalYaz/periodOfYazToPay));
         this.latePayments=new ArrayList<>();
 
     }
@@ -62,6 +65,10 @@ public class Loan {
         }
         loaners.add(new Pair<>(investor, toPay));
 
+    }
+
+    public int getInterestPercentage() {
+        return interestPercentage;
     }
 
     public int getMissingToActive() {

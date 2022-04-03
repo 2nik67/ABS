@@ -41,7 +41,7 @@ public abstract class Loans {
                 l.printPayments();
             }
             else if (l.getStatus().equals(Status.RISK)){
-                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: FINISHED" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan() + " | " + "Finished in: "  + l.getFinishYaz());
+                System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: RISK" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan() + " | " + "Finished in: "  + l.getFinishYaz());
 
                 l.printLoaners();
                 l.printPayments();
