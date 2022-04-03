@@ -11,27 +11,27 @@ import java.util.List;
 
 public class Loan {
     private final String id; //ID of the loan.
-    private final int loan; //Amount of the loan.
-    private int loanPaid;//Amount of the loan paid.
-    private int interestPaid;
+    private final double loan; //Amount of the loan.
+    private double loanPaid;//Amount of the loan paid.
+    private double interestPaid;
     private final double interest;//The interest of the loan.
-    private final int interestEveryYaz;//how much to pay from the interest
-    private final int loanEveryYaz;//How much to pay from the loan
+    private final double interestEveryYaz;//how much to pay from the interest
+    private final double loanEveryYaz;//How much to pay from the loan
     private final Client owner;//The borrower of the loan.
-    private List<Pair<Client,Integer>> loaners;//List of the loaners
+    private final List<Pair<Client,Double>> loaners;//List of the loaners
     private final Category loanCategory;//Category of the loan.
     private Status status;//Status of the loan. Using ENUM.
     private final int totalYaz; //Total Yaz of Payment.
-    private int missingToActive;//How much is missing to be active
+    private double missingToActive;//How much is missing to be active
     private final int periodOfYazToPay; //how many yaz between payments.
     private final int startedYaz; //Yaz of the loan when started.
-    private List<Payment> paymentInfo;//Every payment made and it's yaz.
+    private final List<Payment> paymentInfo;//Every payment made and it's yaz.
     private final int interestPercentage;
     private int activeYaz;//Yaz when the loan started to be active
     private int finishYaz;//Yaz when the loan finished.
-    private List<Pair<Integer, Integer>> latePayments;
+    private final List<Pair<Integer, Double>> latePayments;
 
-    public Loan(String id, int loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {
+    public Loan(String id, double loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {
         this.id = id;
         this.loan = loan;
 
@@ -48,17 +48,17 @@ public class Loan {
         this.startedYaz=Yaz.getYaz();
         this.interestPercentage=interestEveryYaz;
         this.interest = loan*((double)interestPercentage/100);
-        this.loanEveryYaz=loan/(totalYaz/periodOfYazToPay);
+        this.loanEveryYaz=loan/(double)(totalYaz/periodOfYazToPay);
         this.interestEveryYaz= (int) (interest/(totalYaz/periodOfYazToPay));
         this.latePayments=new ArrayList<>();
 
     }
-    public void investmentPay(int toPay, Client investor){
+    public void investmentPay(double toPay, Client investor){
         this.missingToActive-=toPay;
         if(missingToActive==0){
             status=Status.ACTIVE;
             activeYaz=Yaz.getYaz();
-            owner.loadMoney(loan);
+            owner.loadMoney(loan, owner.getMoney());
         }
         else{
             status=Status.PENDING;
@@ -71,7 +71,7 @@ public class Loan {
         return interestPercentage;
     }
 
-    public int getMissingToActive() {
+    public double getMissingToActive() {
         return missingToActive;
     }
 
@@ -87,7 +87,7 @@ public class Loan {
         return status;
     }
 
-    public List<Pair<Client,Integer>> getLoaners() {
+    public List<Pair<Client,Double>> getLoaners() {
         return loaners;
     }
 
@@ -103,11 +103,11 @@ public class Loan {
         return status.equals(Status.ACTIVE);
     }
 
-    public void addLoaner(Client client, Integer invest){
+    public void addLoaner(Client client, Double invest){
         loaners.add(new Pair<>(client, invest));
     }
 
-    public int getLoan() {
+    public double getLoan() {
         return loan;
     }
 
@@ -117,13 +117,13 @@ public class Loan {
 
 
     public void printLoaners(){
-        for (Pair<Client, Integer> l: loaners){
+        for (Pair<Client, Double> l: loaners){
             System.out.println(l.getKey().getName() + " paid " + l.getValue().toString());
         }
     }
     public Double leftForActive(){
-        Double res=new Double(0);
-        for (Pair<Client, Integer> l: loaners){
+        double res=  0;
+        for (Pair<Client, Double> l: loaners){
             res+=l.getValue();
         }
         return res;
@@ -171,15 +171,15 @@ public class Loan {
                 return;
 
             }
-            for (Pair<Client, Integer> loaner : loaners) {
-                double payBack = loaner.getValue() / loan;
-                loaner.getKey().loadMoney((int)(payBack * (double)loanEveryYaz + (double)interestEveryYaz * payBack));
-                loanPaid += loanEveryYaz;
-                interestPaid +=interestEveryYaz;
+            for (Pair<Client, Double> loaner : loaners) {
+                double payBack = loaner.getValue() /loan;
+                loaner.getKey().loadMoney(payBack * loanEveryYaz + interestEveryYaz * payBack, loaner.getKey().getMoney());
+
 
             }
-
-            owner.loadMoney(-1*(loanEveryYaz+interestEveryYaz));
+            loanPaid += loanEveryYaz;
+            interestPaid +=interestEveryYaz;
+            owner.loadMoney(-1*(loanEveryYaz+interestEveryYaz), owner.getMoney());
 
         }
         if(loanPaid==loan){

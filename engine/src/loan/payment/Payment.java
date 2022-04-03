@@ -2,10 +2,10 @@ package loan.payment;
 
 public class Payment {
     private final int paidYaz;
-    private final int partOfLoanPaid;
-    private final int partOfInterestPaid;
+    private final double partOfLoanPaid;
+    private final double partOfInterestPaid;
 
-    public Payment(int paidYaz, int partOfLoanPaid, int partOfInterestPaid) {
+    public Payment(int paidYaz, double partOfLoanPaid, double partOfInterestPaid) {
         this.paidYaz = paidYaz;
         this.partOfLoanPaid = partOfLoanPaid;
         this.partOfInterestPaid = partOfInterestPaid;

@@ -11,10 +11,10 @@ public class Client {
     private final String name;
 
     //current amount of money.
-    private int money;
+    private double money;
 
     //List of transactions of money, including Yaz.
-    private ArrayList<Transactions> transactions = new ArrayList<>();
+    private final ArrayList<Transactions> transactions = new ArrayList<>();
 
     //List of investments the client is in.
 
@@ -25,24 +25,24 @@ public class Client {
     public Client(String name, int money) {
         this.name = name;
         this.money = money;
-        this.transactions.add(new Transactions(money, Yaz.getYaz()));
+        this.transactions.add(new Transactions(money, Yaz.getYaz(), money));
     }
 
     public String getName() {
         return name;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
-    public void loadMoney(int moneyToAdd ){
+    public void loadMoney(double moneyToAdd , double original){
         this.money+=moneyToAdd;
-        transactions.add(new Transactions(moneyToAdd, Yaz.getYaz()));
+        transactions.add(new Transactions(moneyToAdd, Yaz.getYaz(), original));
     }
 
-    public void printPaymentsList(){
+    public void printPaymentsList(double money){
         for (Transactions transaction : transactions) {
-            transaction.printTransaction();
+            transaction.printTransaction(money);
         }
     }
 

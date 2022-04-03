@@ -23,11 +23,11 @@ public class Investment {
 
     public static void investmentAssigning(List<Loan> loans,int investment){
         Investment.investment=investment;
-        investor.loadMoney((-1*investment));
+        investor.loadMoney((-1*investment), investor.getMoney());
         List<Loan> tempLoans= new ArrayList<>(loans);
-        int payEachLoan;
-        int minLoan = getMinLoan(loans);
-        int temp=investment;
+        double payEachLoan;
+        double minLoan = getMinLoan(loans);
+        double temp=investment;
 
         while(temp>0){
 
@@ -56,8 +56,8 @@ public class Investment {
 
     }
 
-    private static int getMinLoan(List<Loan> possibleLoans) {
-        int min=10000;
+    private static double getMinLoan(List<Loan> possibleLoans) {
+        double min=100000;
         for (Loan possibleLoan : possibleLoans) {
             if (possibleLoan.getMissingToActive() < min)
                 min = possibleLoan.getMissingToActive();
@@ -86,9 +86,10 @@ public class Investment {
         }
         if (!categories.isEmpty()){
             boolean exist=false;
-            for (int i = 0; i < categories.size(); i++) {
-                if (categories.get(i).equals(loan.getLoanCategory())){
-                    exist=true;
+            for (Category category : categories) {
+                if (category.equals(loan.getLoanCategory())) {
+                    exist = true;
+                    break;
                 }
             }
             if (!exist){
@@ -102,7 +103,7 @@ public class Investment {
             }
         }
         if (minimumInterest != 0){
-            if (minimumInterest > (int)(loan.getInterestPercentage()*100)){
+            if (minimumInterest > (loan.getInterestPercentage()*100)){
                 return false;
             }
         }

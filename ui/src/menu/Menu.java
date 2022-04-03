@@ -214,7 +214,7 @@ public abstract class Menu {
                 Client client = Clients.getClientsList().get(intInput - 1);
 
                 System.out.println("Enter amount to invest.");
-                sumToInvest = chooseFromRange(client.getMoney(), 1);
+                sumToInvest = chooseFromRange((int)client.getMoney(), 1);
 
                 System.out.println("Choose categories: \nEnter one at a time and enter 0 to continue, or just enter 0 to choose all");
                 while(!inputFlag && intInput != 0) {
