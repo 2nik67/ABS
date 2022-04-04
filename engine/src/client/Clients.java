@@ -18,14 +18,14 @@ public abstract class Clients {
         }
     }
 
-    public static void addMoneyToAccount(int index, int money){
+    public static void addMoneyToAccount(int index, double money){
         clientsList.get(index).loadMoney(money, clientsList.get(index).getMoney());
     }
 
     public static void printPayments(){
         for (Client client : clientsList) {
             System.out.println(client.getName() + " | " + "Current amount of money: " + client.getMoney());
-            client.printPaymentsList(client.getMoney());
+            client.printPaymentsList();
         }
     }
 

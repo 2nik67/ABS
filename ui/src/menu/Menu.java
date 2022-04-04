@@ -53,11 +53,11 @@ public abstract class Menu {
                 "Please choose one option:\n" +
                 "1) Load File.\n" +
                 "2) Show information about current loans.\n" +
-                "3) Show client's status.\n" +
+                "3) Show client's information.\n" +
                 "4) Deposit money to an account.\n" +
                 "5) Withdraw money from an account.\n" +
                 "6) Assign loans to client.\n" +
-                "7) Advance time and making payments.\n" +
+                "7) Advance time and make payments.\n" +
                 "8) Exit.\n");
     }
 
@@ -79,7 +79,7 @@ public abstract class Menu {
     }
 
     public void setUserChoice(Integer userChoice) {
-        this.userChoice = userChoice;
+        Menu.userChoice = userChoice;
     }
 
     public static void methodToCall(){
@@ -153,7 +153,7 @@ public abstract class Menu {
 
                 //TODO: move to a dedicated input handling class.
 
-                //Clients.addMoneyToAccount(intInput - 1, dblInput);//TODO:fix add money method
+                Clients.addMoneyToAccount(intInput - 1, dblInput);//TODO:fix add money method
                 break;
             case 5:
                 Clients.PrintList();
@@ -201,9 +201,9 @@ public abstract class Menu {
                 //TODO: move to a dedicated input handling class.
 
                 if(dblInput > 0)
-                    Clients.addMoneyToAccount(intInput - 1, (int)(dblInput*-1));
+                    Clients.addMoneyToAccount(intInput - 1, (dblInput*-1));
                 else
-                    Clients.addMoneyToAccount(intInput - 1, (int) (dblInput*1));
+                    Clients.addMoneyToAccount(intInput - 1, (dblInput*1));
                 break;
             case 6:
                 intInput = -1;
