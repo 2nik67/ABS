@@ -40,19 +40,6 @@ public abstract class LoadFile{
        LoadFile.path = path;
     }
 
-    public static void main(String[] args) {
-        readFile();
-        Categories.printCategories();
-        Clients.PrintList();
-        Loans.printLoans();
-        path="engine/src/resources/ex1-error-2.2.xml";
-        readFile();
-        Categories.printCategories();
-        Clients.PrintList();
-        Loans.printLoans();
-
-
-    }
 
     public static void readFile(){
 

@@ -11,7 +11,7 @@ public class Transactions {
         this.original = original;
     }
     public void printTransaction(double money){
-        System.out.println("Money added: " + this.moneyChange + " | Yaz of transaction: " + this.yazOfTransaction + " | " +
-                "Amount of money after transaction: " + (original+moneyChange));
+        System.out.println("Money added: " +String.format("%.3f", this.moneyChange) + " | Yaz of transaction: " + this.yazOfTransaction
+                + " | " + "Amount of money after transaction: " +String.format("%.3f", (original+moneyChange)));
     }
 }
