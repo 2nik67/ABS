@@ -19,15 +19,14 @@ public abstract class Loans {
         for(Loan l: loans){
             if(l.getStatus().equals(Status.NEW)){
                 System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: NEW" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan());
-                l.printPayments();
+
 
 
 
             }
             else if (l.getStatus().equals(Status.PENDING)){
                 System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: PENDING" + " | "+ "Owner: " + l.getOwner().getName() + " | "+ "Loan amount: " + l.getLoan());
-                l.printLoaners();
-                l.printPayments();
+                
             }
             else if(l.getStatus().equals(Status.ACTIVE)){
                 System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: ACTIVE" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan());

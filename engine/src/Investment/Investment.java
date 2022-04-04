@@ -17,13 +17,13 @@ public class Investment {
     private static int minimumYaz;
     private static double minimumInterest;
     private static Client investor;
-    private static int investment;
+    private static double investment;
 
 
 
-    public static void investmentAssigning(List<Loan> loans,int investment){
+    public static void investmentAssigning(List<Loan> loans,double investment){
         Investment.investment=investment;
-        investor.loadMoney((-1*investment), investor.getMoney());
+
         List<Loan> tempLoans= new ArrayList<>(loans);
         double payEachLoan;
         double minLoan = getMinLoan(loans);
@@ -32,27 +32,32 @@ public class Investment {
         while(temp>0){
 
             if (minLoan > temp){
-                payEachLoan = temp/loans.size();
+                payEachLoan = temp/tempLoans.size();
             }
             else{
                 payEachLoan=minLoan;
             }
-            if (loans.isEmpty()){
+            if (tempLoans.isEmpty()){
+                System.out.println("Could only invest " + (investment-temp));
+                Investment.investment=investment-temp;
+                investor.loadMoney((-1*Investment.investment), investor.getMoney());
+
                 return;
             }
-            for (Loan loan : loans) {
+            for (Loan loan : tempLoans) {
                 loan.investmentPay(payEachLoan, investor);
                 temp -= payEachLoan;
                 if (temp == 0) {
+                    investor.loadMoney((-1*investment), investor.getMoney());
                     return;
                 }
             }
-            tempLoans=fillList(categories, minimumYaz, minimumInterest, investor);
+            tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor);
             minLoan = getMinLoan(tempLoans);
 
         }
 
-
+        investor.loadMoney((-1*investment), investor.getMoney());
 
     }
 
@@ -65,11 +70,10 @@ public class Investment {
         return min;
     }
 
-    public static List <Loan> fillList(List<Category> categories, int yaz, double minimumInterest, Client client) {
-        List <Loan> allLoans=Loans.getLoans();
+    public static List <Loan> fillList(List<Loan> loans, List<Category> categories, int yaz, double minimumInterest, Client client) {
         List <Loan> possibleLoan = new ArrayList<>();
-        for (Loan allLoan : allLoans) {
-            if (validLoan(allLoan, categories,yaz, minimumInterest, client) && (allLoan.getStatus().equals(Status.PENDING) || allLoan.getStatus().equals(Status.NEW))) {
+        for (Loan allLoan : loans) {
+            if (validLoan(allLoan, categories,yaz, minimumInterest, client)) {
                 possibleLoan.add(allLoan);
             }
         }
@@ -81,6 +85,9 @@ public class Investment {
         Investment.investor=client;
         Investment.minimumInterest=minimumInterest;
         Investment.minimumYaz=yaz;
+        if (loan.getStatus().equals(Status.RISK) || loan.getStatus().equals(Status.ACTIVE) || loan.getStatus().equals(Status.FINISHED)){
+            return false;
+        }
         if(loan.getOwner().equals(client)){
             return false;
         }

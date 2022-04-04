@@ -252,7 +252,7 @@ public abstract class Menu {
                 System.out.println("Enter minimum Yaz for the entire investment, enter 0 to not have such requirement.");
                 minYaz = chooseFromRange(999999999, 0);
 
-                List<Loan> possibleLoans = Investment.fillList(catChosen, minYaz, dblInput, client);
+                List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), catChosen, minYaz, dblInput, client);
                 if(possibleLoans.isEmpty()){
                     System.out.println("No possible loans for given requirements. \n");
                     return;
