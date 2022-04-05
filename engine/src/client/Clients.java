@@ -14,7 +14,7 @@ public abstract class Clients {
     public static void addClient(Client client){clientsList.add(client);}
     public static void PrintList(){
         for (int i = 0; i < clientsList.size(); i++) {
-            System.out.println( (i+1) + ") " + clientsList.get(i).getName());
+            System.out.println( (i+1) + ") " + clientsList.get(i).getName() + " | " + "Money in the bank: " + clientsList.get(i).getMoney());
         }
     }
 

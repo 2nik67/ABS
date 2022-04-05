@@ -11,7 +11,13 @@ public class Transaction {
         this.original = original;
     }
     public void printTransaction(){
-        System.out.println("Money added: " +String.format("%.3f", this.moneyChange) + " | Yaz of transaction: " + this.yazOfTransaction
-                + " | " + "Amount of money after transaction: " +String.format("%.3f", (original+moneyChange)));
+        if(moneyChange > 0){
+            System.out.println("Amount of money withdrawn: " +String.format("%.3f", this.moneyChange) + " | Yaz of transaction: " + this.yazOfTransaction
+                    + " | " + "Amount of money after transaction: " +String.format("%.3f", (original+moneyChange)));
+        }
+        else{
+            System.out.println("Amount of money deposited: " +String.format("%.3f", this.moneyChange) + " | Yaz of transaction: " + this.yazOfTransaction
+                    + " | " + "Amount of money after transaction: " +String.format("%.3f", (original+moneyChange)));
+        }
     }
 }

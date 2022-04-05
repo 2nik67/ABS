@@ -193,8 +193,8 @@ public class Loan {
         System.out.println("Number of payments missed: " + latePayments.size());
         int sum=0;
         for (int i = 0; i < latePayments.size(); i++) {
-            System.out.println("Payment " + (i+1) + ":");
-            System.out.println("Yaz: " + latePayments.get(i).getKey() + " | "+"Amount: " + latePayments.get(i).getValue());
+            //System.out.println("Payment " + (i+1) + ":");
+            //System.out.println("Yaz: " + latePayments.get(i).getKey() + " | "+"Amount: " + latePayments.get(i).getValue());
             sum+=latePayments.get(i).getValue();
         }
         System.out.println("Total amount missed: " + sum);

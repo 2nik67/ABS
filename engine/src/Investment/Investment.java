@@ -40,7 +40,7 @@ public class Investment {
             if (tempLoans.isEmpty()){
                 System.out.println("Could only invest " + (investment-temp));
                 Investment.investment=investment-temp;
-                investor.loadMoney((-1*Investment.investment), investor.getMoney());
+                //investor.loadMoney((-1*Investment.investment), investor.getMoney());
 
                 return;
             }
@@ -110,7 +110,7 @@ public class Investment {
             }
         }
         if (minimumInterest != 0){
-            if (minimumInterest > (loan.getInterestPercentage()*100)){
+            if (minimumInterest*100 > (loan.getInterestPercentage())){
                 return false;
             }
         }
