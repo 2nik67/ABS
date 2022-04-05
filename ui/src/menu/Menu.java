@@ -219,6 +219,7 @@ public abstract class Menu {
                 System.out.println("Choose categories: \nEnter one at a time and enter 0 to continue, or just enter 0 to choose all");
                 while(!inputFlag && intInput != 0) {
                     Categories.printCategories();
+                    System.out.println("0) Continue / All");
 
                     intInput = chooseFromRange(Categories.getNumOfCategories(), 0);
                     if(intInput != 0)
@@ -267,6 +268,7 @@ public abstract class Menu {
                     for (int i = 0; i < possibleLoans.size(); i++) {
                         System.out.println((i + 1) + ") " + "LoanID: "+ possibleLoans.get(i).getId() +" | "+ "Status: " + possibleLoans.get(i).getStatus() + " | "+ "Owner: " + possibleLoans.get(i).getOwner().getName()+ " | "+ "Loan amount: " + possibleLoans.get(i).getLoan());
                     }
+                    System.out.println("0) Continue / All");
 
                     intInput = chooseFromRange(possibleLoans.size(), 0);
                     if(intInput != 0)
