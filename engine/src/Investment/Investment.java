@@ -42,14 +42,14 @@ public class Investment {
                 Investment.investment=investment-temp;
                 //investor.loadMoney((-1*Investment.investment), investor.getMoney());
 
-                return;
+                break;
             }
             for (Loan loan : tempLoans) {
                 loan.investmentPay(payEachLoan, investor);
                 temp -= payEachLoan;
                 if (temp == 0) {
-                    investor.loadMoney((-1*investment), investor.getMoney());
-                    return;
+                    //investor.loadMoney((-1*investment), investor.getMoney());
+                    break;
                 }
             }
             tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor);
@@ -57,7 +57,7 @@ public class Investment {
 
         }
 
-        investor.loadMoney((-1*investment), investor.getMoney());
+        investor.loadMoney((-1*Investment.investment), investor.getMoney());
 
     }
 
@@ -110,9 +110,7 @@ public class Investment {
             }
         }
         if (minimumInterest != 0){
-            if (minimumInterest*100 > (loan.getInterestPercentage())){
-                return false;
-            }
+            return !(minimumInterest * 100 > (loan.getInterestPercentage()));
         }
         return true;
     }
