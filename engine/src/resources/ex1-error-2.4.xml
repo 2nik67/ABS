@@ -45,8 +45,5 @@
 		<abs-customer name="Shosh">
 			<abs-balance>20000</abs-balance>
 		</abs-customer>
-		<abs-customer name="Shosh">
-			<abs-balance>20000</abs-balance>
-		</abs-customer>
 	</abs-customers>
 </abs-descriptor>
