@@ -23,25 +23,16 @@ public class Investment {
 
     public static void investmentAssigning(List<Loan> loans,double investment){
         Investment.investment=investment;
-
         List<Loan> tempLoans= new ArrayList<>(loans);
         double payEachLoan;
         double minLoan = getMinLoan(loans);
         double temp=investment;
-
         while(temp>0){
 
-            if (minLoan > temp){
-                payEachLoan = temp/tempLoans.size();
-            }
-            else{
-                payEachLoan=minLoan;
-            }
+            payEachLoan = Math.min(minLoan, temp / tempLoans.size());
             if (tempLoans.isEmpty()){
-                System.out.println("Could only invest " + (investment-temp));
+                System.out.println("Could only invest " + String.format("%.2f",(investment-temp)));
                 Investment.investment=investment-temp;
-                //investor.loadMoney((-1*Investment.investment), investor.getMoney());
-
                 break;
             }
             for (Loan loan : tempLoans) {

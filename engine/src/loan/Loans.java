@@ -27,6 +27,7 @@ public abstract class Loans {
             else if (l.getStatus().equals(Status.PENDING)){
                 System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: PENDING" + " | "+ "Owner: " + l.getOwner().getName() + " | "+ "Loan amount: " + l.getLoan());
                 l.printLoaners();
+                System.out.println("Missing till active: " + String.format("%.2f", l.getMissingToActive()) );
                 
             }
             else if(l.getStatus().equals(Status.ACTIVE)){
