@@ -105,6 +105,7 @@ public abstract class LoadFile{
             }
             LoadFile.fileLoaded = true;
             LoadFile.loansRead=true;
+            System.out.println("File was loaded!");
         }
 
 
