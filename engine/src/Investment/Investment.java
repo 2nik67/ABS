@@ -47,9 +47,9 @@ public class Investment {
             for (Loan loan : tempLoans) {
                 loan.investmentPay(payEachLoan, investor);
                 temp -= payEachLoan;
-                if (temp == 0) {
-                    //investor.loadMoney((-1*investment), investor.getMoney());
-                    break;
+                if (temp<0.002) {
+                    investor.loadMoney((-1*investment), investor.getMoney());
+                    return;
                 }
             }
             tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor);

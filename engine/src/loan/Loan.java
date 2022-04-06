@@ -118,7 +118,7 @@ public class Loan {
 
     public void printLoaners(){
         for (Pair<Client, Double> l: loaners){
-            System.out.println(l.getKey().getName() + " paid " + l.getValue().toString());
+            System.out.println(l.getKey().getName() + " paid " +String.format("%.2f",l.getValue()));
         }
     }
     public Double leftForActive(){
