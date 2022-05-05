@@ -46,6 +46,10 @@ public class Client {
         }
     }
 
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
     @Override
     public boolean equals(Object obj) {
         Client client=(Client) obj;

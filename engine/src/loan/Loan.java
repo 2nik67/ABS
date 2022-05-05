@@ -199,4 +199,12 @@ public class Loan {
         }
         System.out.println("Total amount missed: " + sum);
     }
+
+    public double getLoanPaid() {
+        return loanPaid;
+    }
+
+    public double getInterestPaid() {
+        return interestPaid;
+    }
 }

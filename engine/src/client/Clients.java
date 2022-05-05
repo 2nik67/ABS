@@ -7,6 +7,7 @@ import java.util.Locale;
 public abstract class Clients {
     private static List <Client> clientsList=new ArrayList<>();
 
+
     public static void setClientsList(List<Client> clients) {
         Clients.clientsList = new ArrayList<>(clients);
     }

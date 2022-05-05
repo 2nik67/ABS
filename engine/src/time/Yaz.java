@@ -1,7 +1,9 @@
 package time;
 
+import javafx.beans.property.IntegerProperty;
+
 public abstract class Yaz {
-    private static int yaz=1;
+    private static int yaz;
 
     public static int getYaz() {
         return yaz;
@@ -10,4 +12,6 @@ public abstract class Yaz {
     public static void advanceYaz(int yaz) {
         Yaz.yaz += yaz;
     }
+
+
 }

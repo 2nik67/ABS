@@ -2,6 +2,8 @@ package load;
 
 import client.Client;
 import client.Clients;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import load.jaxb.schema.generated.AbsCustomer;
 import load.jaxb.schema.generated.AbsDescriptor;
 import load.jaxb.schema.generated.AbsLoan;
@@ -29,7 +31,7 @@ public abstract class LoadFile{
     private static ArrayList<Client> clients = new ArrayList<>();
     private static ArrayList<Category> categories = new ArrayList<>();
     private static ArrayList<Loan> loans =new ArrayList<>();
-    private static String path;//="engine/src/resources/ex1-big.xml";
+    private static String path;
     private static AbsDescriptor absDescriptor;
 
     public static boolean isFileLoaded() {
@@ -40,6 +42,9 @@ public abstract class LoadFile{
        LoadFile.path = path;
     }
 
+    public static String getPath() {
+        return path;
+    }
 
     public static void readFile(){
 
@@ -86,12 +91,30 @@ public abstract class LoadFile{
                     LoadFile.loansRead=false;
                     return;
                 } else if (!ValidityCheck.checkIfCategoryExistsByString(categories, absLoan.getAbsCategory())) {
-                    System.out.println("Category " + absLoan.getAbsCategory() + " does not exist");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Invalid File");
+                    alert.setHeaderText("Invalid File");
+                    alert.setContentText("Category " + absLoan.getAbsCategory() + " does not exist");
+                    alert.showAndWait().ifPresent(rs -> {
+                        if (rs == ButtonType.OK) {
+                            System.out.println("Pressed OK.");
+                        }
+                    });
+                    //System.out.println("Category " + absLoan.getAbsCategory() + " does not exist");
                     LoadFile.loansRead=false;
                     resetData();
                     return;
                 } else if (!ValidityCheck.isTotalYazDivisible(absLoan.getAbsTotalYazTime(), absLoan.getAbsPaysEveryYaz())) {
-                    System.out.println("Loan " + absLoan.getId() + " is not divisible");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Invalid File");
+                    alert.setHeaderText("Invalid File");
+                    alert.setContentText("Loan " + "\"" + absLoan.getId() + "\"" + " is not divisible");
+                    alert.showAndWait().ifPresent(rs -> {
+                        if (rs == ButtonType.OK) {
+                            System.out.println("Pressed OK.");
+                        }
+                    });
+                    //System.out.println("Loan " + absLoan.getId() + " is not divisible");
                     LoadFile.loansRead=false;
                     resetData();
                     return;
@@ -160,5 +183,13 @@ public abstract class LoadFile{
             }
         }
         return null;
+    }
+
+    public static boolean isClientRead() {
+        return clientRead;
+    }
+
+    public static boolean isLoansRead() {
+        return loansRead;
     }
 }

@@ -1,29 +1,61 @@
 package main;
 
-import javafx.util.Pair;
-import loan.Loan;
-import loan.category.Category;
-import menu.*;
-import client.*;
-import time.Yaz;
+import Admin.AdminController;
+import AppController.AppController;
+import Header.HeaderController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-import java.util.List;
-import java.util.Scanner;
+import java.net.URL;
 
-public class Main {
+public class Main extends Application {
     public static void main(String[] args) {
-        /*Client client=new Client("Natan", 5000);
-        Client client1=new Client("Rotem", 200);
-        Client client2=new Client("Tal", 100);
-        Loan loan=new Loan("1", 5000, client1, new Category("happy"),100, 50, 10);
-        Loan loan1=new Loan("2", 4000,  client1, new Category("happy"), 100,50, 10);
-        Loan loan2=new Loan("3", 1000,  client1, new Category("happy"), 100,50, 10);
-        Loan loan3=new Loan("4", 2000,  client1, new Category("happy"), 100,50, 10);*/
+        launch(args);
 
-        while(!Menu.isExit()){
+       /* while(!Menu.isExit()){
             Menu.printMenu();
             Menu.getUsersInput();
             Menu.methodToCall();
-        }
+        }*/
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        //Header
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        URL url  = getClass().getResource("/Header/Head.fxml");
+        fxmlLoader.setLocation(url);
+        Parent header =fxmlLoader.load(url.openStream());
+        HeaderController headerController = fxmlLoader.getController();
+
+        //admin body
+        fxmlLoader = new FXMLLoader();
+        url = getClass().getResource("/Admin/Admin.fxml");
+        fxmlLoader.setLocation(url);
+        ScrollPane adminBody = fxmlLoader.load(url.openStream());
+        AdminController adminController = fxmlLoader.getController();
+
+        fxmlLoader = new FXMLLoader();
+        url = getClass().getResource("/AppController/App.fxml");
+        fxmlLoader.setLocation(url);
+        BorderPane root = fxmlLoader.load(url.openStream());
+        AppController appController = fxmlLoader.getController();
+
+        root.setCenter(adminBody);
+        root.setTop(header);
+
+        appController.setBodyAdminController(adminController);
+        appController.setHeaderController(headerController);
+
+
+        Scene scene =new Scene(root, 600, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

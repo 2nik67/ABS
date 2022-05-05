@@ -20,4 +20,16 @@ public class Transaction {
                     + " | " + "Amount of money after transaction: " +String.format("%.3f", (original+moneyChange)));
         }
     }
+
+    public double getMoneyChange() {
+        return moneyChange;
+    }
+
+    public int getYazOfTransaction() {
+        return yazOfTransaction;
+    }
+
+    public double getOriginal() {
+        return original;
+    }
 }
