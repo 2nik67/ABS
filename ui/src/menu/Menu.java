@@ -222,8 +222,12 @@ public abstract class Menu {
                     System.out.println("0) Continue / All");
 
                     intInput = chooseFromRange(Categories.getNumOfCategories(), 0);
-                    if(intInput != 0)
-                        catChosen.add(Categories.getCategoryByIndex(intInput - 1)); //TODO: check if already added
+                    if(intInput != 0){
+                        if(!catChosen.contains(Categories.getCategoryByIndex(intInput - 1)))
+                            catChosen.add(Categories.getCategoryByIndex(intInput - 1));
+                        else
+                            System.out.println("This category was already selected!! Choose a different one or press 0 to continue:");
+                    }
                 }
                 inputFlag = false;
 
@@ -271,8 +275,13 @@ public abstract class Menu {
                     System.out.println("0) Continue / All");
 
                     intInput = chooseFromRange(possibleLoans.size(), 0);
-                    if(intInput != 0)
-                        chosenLoans.add(possibleLoans.get(intInput - 1)); //TODO: check if already added
+                    if(intInput != 0){
+                        if(!chosenLoans.contains(possibleLoans.get(intInput - 1)))
+                            chosenLoans.add(possibleLoans.get(intInput - 1));
+                        else
+                            System.out.println("This loan was already selected!! Choose a different one or press 0 to continue:");
+                    }
+
                 }
 
                 if(chosenLoans.isEmpty())
