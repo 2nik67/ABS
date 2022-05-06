@@ -1,11 +1,15 @@
-package Admin;
+package adminbody;
 
-import AppController.AppController;
+import appcontroller.AppController;
 import client.Client;
 import client.Clients;
-import client.Transaction;
+import header.HeaderController;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
@@ -17,11 +21,15 @@ import loan.Status;
 import time.Yaz;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminController {
 
+    private DoubleProperty doubleProperty;
     private AppController mainController;
 
     @FXML
@@ -37,14 +45,21 @@ public class AdminController {
     private TreeView<String> clientsTreeView;
 
     @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
+
+    @FXML
     void IncreaseYaz(ActionEvent event) {
         Yaz.advanceYaz(1);
         mainController.updateYazLabel();
 
     }
 
+
     @FXML
-    void ReadFile(ActionEvent event) {
+    void ReadFile(ActionEvent event) throws Exception{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
@@ -52,13 +67,40 @@ public class AdminController {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            LoadFile.setPath(selectedFile.getPath());
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+
+                public Void call() throws Exception {
+                    for (int i = 0; i < 60; i++) {
+                        System.out.println(i);
+                        Thread.sleep(500);
+                    }
+                    return null;
+                }
+            };
+
+            Thread thread = new Thread(task);
+            thread.run();
+            progressBar.progressProperty()
+                    .bind(task.progressProperty());
+
+
+
+
+
+
+            /*LoadFile.setPath(selectedFile.getPath());
+
+
             LoadFile.readFile();
+
             if(LoadFile.isFileLoaded()){
                 mainController.updatePathLabel();
                 createClientTree();
                 createLoansTree();
-            }
+            }*/
+
 
         }
 
@@ -113,31 +155,76 @@ public class AdminController {
     private void createClientTree(){
 
         List<Client> clientList = new ArrayList<>(Clients.getClientsList());
-        TreeItem <String> clients = new TreeItem<>("clients");
+        TreeItem <String> clients = new TreeItem<>("Clients");
         for (Client client : clientList) {
-            List<Transaction> transactions = new ArrayList<>(client.getTransactions());
             TreeItem<String> name = new TreeItem<>(client.getName());
             TreeItem<String> money = new TreeItem<>("Money in the bank:" + (client.getMoney()));
-            TreeItem<String> transactionsText = new TreeItem<>("Transaction: ");
-            for (Transaction transaction:transactions){
-                TreeItem<String> moneychange;
-                if(transaction.getMoneyChange() > 0){
-                    moneychange = new TreeItem<>("Money deposited: " + transaction.getMoneyChange() +
-                            " | " + "Yaz of transaction: " + transaction.getYazOfTransaction());
+            Map<Status, List<String>> loansAsInvestor = getInvestorMap(client);
+            Map<Status, List<String>> loansAsLoaner = getLoansMap(client);
+            TreeItem<String> investments = new TreeItem<>("Investments");
+            for (Map.Entry<Status, List<String>> set : loansAsInvestor.entrySet()){
+                TreeItem <String> status = new TreeItem<>(set.getKey().toString());
+                for (int j = 0; j < set.getValue().size(); j++) {
+                    TreeItem<String> investment = new TreeItem<>(set.getValue().get(j));
+                    status.getChildren().add(investment);
                 }
-                else{
-                    moneychange = new TreeItem<>("Money withdrawn: "+ -1*transaction.getMoneyChange() + " | " +
-                            "Yaz of transaction: " + transaction.getYazOfTransaction());
-                }
-                transactionsText.getChildren().addAll(moneychange);
-
+                investments.getChildren().add(status);
             }
-            name.getChildren().addAll(money, transactionsText);
-            clients.getChildren().addAll(name);
+
+            TreeItem<String> loans = new TreeItem<>("Loans");
+            for (Map.Entry<Status, List<String>> set : loansAsLoaner.entrySet()){
+                TreeItem <String> status = new TreeItem<>(set.getKey().toString());
+                for (int j = 0; j < set.getValue().size(); j++) {
+                    TreeItem<String> investment = new TreeItem<>(set.getValue().get(j));
+                    status.getChildren().add(investment);
+                }
+                loans.getChildren().add(status);
+            }
+
+            name.getChildren().add(money);
+            name.getChildren().add(investments);
+            name.getChildren().add(loans);
+            clients.getChildren().add(name);
+
         }
         clientsTreeView.setRoot(clients);
         mainController.updateComboBox();
     }
+
+    private Map<Status, List<String>> getLoansMap(Client client) {
+        Map<Status, List<String>> clientsLoans = new HashMap<>();
+        List<Loan> loans = Loans.getLoans();
+        for (Loan loan : loans) {
+            if (loan.getOwner().getName().equals(client.getName())) {
+                if (!clientsLoans.containsKey(loan.getStatus())) {
+                    clientsLoans.put(loan.getStatus(), new ArrayList<String>());
+                }
+                clientsLoans.get(loan.getStatus()).add(loan.getId());
+            }
+        }
+
+
+        return clientsLoans;
+    }
+
+    private Map<Status, List<String>> getInvestorMap(Client client) {
+        Map<Status, List<String>> loansAsInvestor = new HashMap<>();
+        List<Loan> loans = new ArrayList<>(Loans.getLoans());
+        for (Loan loan : loans) {
+            List<Pair<Client, Double>> investors = new ArrayList<>(loan.getLoaners());
+            for (Pair<Client, Double> investor : investors) {
+                if (investor.getKey().getName().equals(client.getName())) {
+                    if (!loansAsInvestor.containsKey(loan.getStatus())) {
+                        loansAsInvestor.put(loan.getStatus(), new ArrayList<String>());
+
+                    }
+                    loansAsInvestor.get(loan.getStatus()).add(loan.getId());
+                }
+            }
+        }
+        return loansAsInvestor;
+    }
+
     @FXML
     void initialize() {
 
