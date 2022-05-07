@@ -67,39 +67,23 @@ public class AdminController {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-
-            Task<Void> task = new Task<Void>() {
-                @Override
-
-                public Void call() throws Exception {
-                    for (int i = 0; i < 60; i++) {
-                        System.out.println(i);
-                        Thread.sleep(500);
-                    }
-                    return null;
-                }
-            };
-
-            Thread thread = new Thread(task);
-            thread.run();
-            progressBar.progressProperty()
-                    .bind(task.progressProperty());
-
-
-
-
-
-
-            /*LoadFile.setPath(selectedFile.getPath());
-
-
+            LoadFile.setPath(selectedFile.getPath());
             LoadFile.readFile();
-
             if(LoadFile.isFileLoaded()){
                 mainController.updatePathLabel();
                 createClientTree();
                 createLoansTree();
-            }*/
+            }
+
+
+
+
+
+
+
+
+
+
 
 
         }
@@ -127,15 +111,20 @@ public class AdminController {
                 }
                 TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
                         "Missing: " + loan.getMissingToActive());
-                loanID.getChildren().add(4, total);//TODO: check the index part.
+                loanID.getChildren().add(total);//TODO: check the index part.
 
             }
             else if(loan.getStatus().equals(Status.ACTIVE)){
                 TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
                         + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                loanID.getChildren().add(4, payments);
+                loanID.getChildren().add(payments);
             }
-            loanID.getChildren().addAll(owner, category, status, loanAmountAndTotalYaz);
+            loanID.getChildren().add(owner);
+            loanID.getChildren().add(category);
+            loanID.getChildren().add(status);
+            loanID.getChildren().add(loanAmountAndTotalYaz);
+
+            //loanID.getChildren().addAll(owner, category, status, loanAmountAndTotalYaz);
             loans.getChildren().add(loanID);
 
 
@@ -175,7 +164,7 @@ public class AdminController {
             for (Map.Entry<Status, List<String>> set : loansAsLoaner.entrySet()){
                 TreeItem <String> status = new TreeItem<>(set.getKey().toString());
                 for (int j = 0; j < set.getValue().size(); j++) {
-                    TreeItem<String> investment = new TreeItem<>(set.getValue().get(j));
+                    TreeItem<String> investment = new TreeItem<>("Loan ID: " + set.getValue().get(j));
                     status.getChildren().add(investment);
                 }
                 loans.getChildren().add(status);

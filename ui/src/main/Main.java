@@ -27,42 +27,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        //Header
+        AppController appController= new AppController();
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url  = getClass().getResource("/header/Head.fxml");
-        fxmlLoader.setLocation(url);
-        Parent header =fxmlLoader.load(url.openStream());
-        HeaderController headerController = fxmlLoader.getController();
-
-        //admin body
-        fxmlLoader = new FXMLLoader();
-        url = getClass().getResource("/adminbody/Admin.fxml");
-        fxmlLoader.setLocation(url);
-        ScrollPane adminBody = fxmlLoader.load(url.openStream());
-        AdminController adminController = fxmlLoader.getController();
-
-
-
-
-
-        fxmlLoader = new FXMLLoader();
-        url = getClass().getResource("/appcontroller/App.fxml");
+        URL url = getClass().getResource("/appcontroller/App.fxml");
         fxmlLoader.setLocation(url);
         BorderPane root = fxmlLoader.load(url.openStream());
-        AppController appController = fxmlLoader.getController();
-
-        root.setCenter(adminBody);
-        root.setTop(header);
-
-
-
-        appController.setBodyAdminController(adminController);
-        appController.setHeaderController(headerController);
-        appController.setRoot(root);
-        appController.setHeaderBody(header);
-        appController.setAdminBody(adminBody);
-
         Scene scene =new Scene(root, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.show();

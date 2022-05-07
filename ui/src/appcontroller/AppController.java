@@ -1,6 +1,7 @@
 package appcontroller;
 
 import adminbody.AdminController;
+import clientbody.ClientController;
 import header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -18,31 +21,33 @@ import java.net.URL;
 public class AppController {
 
 
-    private ScrollPane adminBody;
-    private Parent headerBody;
+    @FXML
     private BorderPane root;
 
-    private Parent clientBody;
+    @FXML private TabPane clientBodyComponent;
+
+    @FXML private ClientController clientBodyComponentController;
 
     @FXML
     private ScrollPane headerComponent;
 
     @FXML
-    private HeaderController headerController;
+    private HeaderController headerComponentController;
 
     @FXML
     private ScrollPane adminBodyComponent;
 
     @FXML
-    private AdminController bodyAdminController;
+    private AdminController adminBodyComponentController;
 
 
     @FXML
     public void initialize(){
-        if (headerController != null && adminBodyComponent != null){
-            headerController.setMainController(this);
-            bodyAdminController.setMainController(this);
+        if (headerComponentController != null && adminBodyComponent != null){
+            headerComponentController.setMainController(this);
+            adminBodyComponentController.setMainController(this);
         }
+        root.setLeft(null);
     }
 
 
@@ -52,35 +57,19 @@ public class AppController {
         this.root = root;
     }
 
-    public void setHeaderController(HeaderController headerController) {
-        this.headerController = headerController;
-        headerController.setMainController(this);
-    }
-
-    public void setBodyAdminController(AdminController bodyAdminController) {
-        this.bodyAdminController = bodyAdminController;
-        bodyAdminController.setMainController(this);
-    }
 
 
-    public void setAdminBody(ScrollPane adminBody) {
-        this.adminBody = adminBody;
-    }
-
-    public void setHeaderBody(Parent headerBody) {
-        this.headerBody = headerBody;
-    }
 
     public void updateYazLabel(){
-        headerController.updateYazLabel();
+        headerComponentController.updateYazLabel();
     }
 
     public void updatePathLabel(){
-        headerController.updatePathLabel();
+        headerComponentController.updatePathLabel();
     }
 
     public void updateComboBox(){
-        headerController.updateComboBox();
+        headerComponentController.updateComboBox();
     }
 
 
@@ -88,10 +77,10 @@ public class AppController {
 
     public void changeScreen(String value) {
         if(value.equals("Admin")){
-            root.setCenter(adminBody);
+            root.setCenter(adminBodyComponent);
         }
         else {
-            root.setCenter(clientBody);
+            root.setCenter(clientBodyComponent);
         }
     }
 }
