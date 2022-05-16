@@ -84,7 +84,7 @@ public abstract class Menu {
 
     public static void methodToCall(){
         Boolean fileLoaded = LoadFile.isFileLoaded();
-        Integer intInput = 0, sumToInvest, minYaz;
+        Integer intInput = 0, sumToInvest, minYaz, minInterest = 0;
         Double dblInput = 0.0;
         Boolean inputFlag = false;
         Scanner scanner = new Scanner(System.in);
@@ -237,19 +237,19 @@ public abstract class Menu {
                 System.out.println("Enter percentage of minimum interest: (0 for no limit)");
                 while(!inputFlag) {
                     if(scanner.hasNext())
-                        if(scanner.hasNextDouble()) {
-                            dblInput = scanner.nextDouble();
+                        if(scanner.hasNextInt()) {
+                            minInterest = scanner.nextInt();
 
-                            if(dblInput <= 1 && dblInput >= 0)
+                            if(minInterest <= 100 && minInterest >= 0)
                                 inputFlag = true;
                             else {
-                                System.out.println("Interest must be a percentage higher than 0 and lower than 1.");
-                                System.out.println("Example: for 23% enter '0.23', for 5% enter '0.05'.");
+                                System.out.println("Interest must be a percentage higher than 0 and lower than 100.");
+                                System.out.println("Example: for 23% enter '23', for 5% enter '5'.");
                                 scanner.nextLine();
                             }
                         }
                         else {
-                            System.out.println("Wrong input! Please enter a number different from 0.");
+                            System.out.println("Wrong input! Please enter a number higher than 0 and lower than 100.");
                             scanner.nextLine();
                         }
                 }
@@ -257,7 +257,7 @@ public abstract class Menu {
                 System.out.println("Enter minimum Yaz for the entire investment, enter 0 to not have such requirement.");
                 minYaz = chooseFromRange(999999999, 0);
 
-                List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), catChosen, minYaz, dblInput, client);
+                List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), catChosen, minYaz, minInterest, client);
                 if(possibleLoans.isEmpty()){
                     System.out.println("No possible loans for given requirements. \n");
                     return;

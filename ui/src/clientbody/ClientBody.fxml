@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -59,7 +60,21 @@
             </ScrollPane>
          </content>
       </Tab>
-    <Tab id="scrambleTab" fx:id="scrambleTab" text="Scramble" />
-    <Tab id="paymentTab" fx:id="paymentTab" text="Payment" />
+    <Tab id="scrambleTab" fx:id="scrambleTab" text="Scramble">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+             <center>
+               <fx:include fx:id="scrambleTabComponent" source="../scrambletab/ScrambleTab.fxml" BorderPane.alignment="CENTER" />
+             </center>
+            </BorderPane>
+         </content></Tab>
+    <Tab id="paymentTab" fx:id="paymentTab" text="Payment">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <fx:include fx:id="paymentTabComponent" source="../paymenttab/PaymentTab.fxml" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </content></Tab>
   </tabs>
 </TabPane>

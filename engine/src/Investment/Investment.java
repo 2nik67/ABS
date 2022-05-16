@@ -101,7 +101,7 @@ public class Investment {
             }
         }
         if (minimumInterest != 0){
-            return !(minimumInterest * 100 > (loan.getInterestPercentage()));
+            return !(minimumInterest > (loan.getInterestPercentage()));
         }
         return true;
     }

@@ -50,16 +50,6 @@ public class AppController {
         root.setLeft(null);
     }
 
-
-
-
-    public void setRoot(BorderPane root) {
-        this.root = root;
-    }
-
-
-
-
     public void updateYazLabel(){
         headerComponentController.updateYazLabel();
     }
@@ -71,9 +61,6 @@ public class AppController {
     public void updateComboBox(){
         headerComponentController.updateComboBox();
     }
-
-
-
 
     public void changeScreen(String value) {
         if(value.equals("Admin")){
