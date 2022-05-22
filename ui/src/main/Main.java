@@ -32,7 +32,7 @@ public class Main extends Application {
         URL url = getClass().getResource("/appcontroller/App.fxml");
         fxmlLoader.setLocation(url);
         BorderPane root = fxmlLoader.load(url.openStream());
-        Scene scene =new Scene(root, 600, 600);
+        Scene scene =new Scene(root, 700, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -73,17 +73,8 @@ public class AdminController {
                 mainController.updatePathLabel();
                 createClientTree();
                 createLoansTree();
+                mainController.refreshCategoriesInScramble();
             }
-
-
-
-
-
-
-
-
-
-
 
 
         }
@@ -133,13 +124,9 @@ public class AdminController {
         loansTreeView.setRoot(loans);
     }
 
-
-
-
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
-
 
     private void createClientTree(){
 
@@ -216,10 +203,5 @@ public class AdminController {
 
     @FXML
     void initialize() {
-
-
-
-
-
     }
 }

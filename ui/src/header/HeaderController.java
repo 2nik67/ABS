@@ -15,10 +15,7 @@ import time.Yaz;
 
 public class HeaderController{
 
-
-
     private  AppController mainController;
-
 
     @FXML
     private ComboBox<String> comboBoxUser;
@@ -54,16 +51,13 @@ public class HeaderController{
             comboBoxUser.getItems().add(client.getName());
         }
     }
+
     @FXML
     public void chosenValue(ActionEvent event) {
-        mainController.changeScreen(comboBoxUser.getValue());
+        String value = comboBoxUser.getValue();
+        mainController.changeScreen(value);
+        mainController.setCurrentClient(value);
     }
-
-
-
-
-
-
 
 }
 

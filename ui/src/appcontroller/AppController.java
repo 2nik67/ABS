@@ -43,9 +43,10 @@ public class AppController {
 
     @FXML
     public void initialize(){
-        if (headerComponentController != null && adminBodyComponent != null){
+        if (headerComponentController != null && adminBodyComponentController != null && clientBodyComponentController != null){
             headerComponentController.setMainController(this);
             adminBodyComponentController.setMainController(this);
+            clientBodyComponentController.setMainController(this);
         }
         root.setLeft(null);
     }
@@ -69,5 +70,13 @@ public class AppController {
         else {
             root.setCenter(clientBodyComponent);
         }
+    }
+
+    public void refreshCategoriesInScramble(){
+        clientBodyComponentController.refreshCategoriesInScramble();
+    }
+
+    public void setCurrentClient(String currentClient) {
+        clientBodyComponentController.setCurrentClient(currentClient);
     }
 }

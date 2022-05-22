@@ -47,4 +47,13 @@ public abstract class Clients {
     public static List<Client> getClientsList() {
         return clientsList;
     }
+
+    public static Client getClientByName(String name){
+        for (int i = 0; i < clientsList.size(); i++) {
+            if (clientsList.get(i).getName().equals(name))
+                return clientsList.get(i);
+        }
+
+        return null;
+    }
 }
