@@ -9,14 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.net.URL;
+import java.util.function.UnaryOperator;
 
 public class DepositWithdrawController {
 
@@ -63,6 +62,8 @@ public class DepositWithdrawController {
         withdrawDepositChoiceBox.getItems().add("Deposit");
         currentClient= Clients.getClientByName(HeaderController.getChosenClient());
 
+        withdrawDepositChoiceBox.getSelectionModel().selectFirst();
+        initializeMoneyTextField();
     }
 
     public void popUp(String name) throws Exception{
@@ -83,5 +84,19 @@ public class DepositWithdrawController {
 
     public static void setClientController(ClientController clientController) {
         DepositWithdrawController.clientController = clientController;
+    }
+
+
+    UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+        String newText = change.getControlNewText();
+        if (newText.matches("-?([0-9][0-9]*)?")) {
+            return change;
+        }
+        return null;
+    };
+
+    private void initializeMoneyTextField(){
+        moneyTextField.setTextFormatter(
+                new TextFormatter<Integer>(new IntegerStringConverter(), null, integerFilter));
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckListView?>
@@ -98,18 +98,25 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </VBox>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <CheckListView fx:id="categoryCheckList" layoutX="8.0" layoutY="73.0">
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <CheckListView fx:id="categoryCheckList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets right="10.0" />
-                     </padding></CheckListView>
-                  <Label layoutX="88.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Categories" textAlignment="CENTER" underline="true" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" right="10.0" />
-               </padding>
-            </AnchorPane>
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </CheckListView>
+               </center>
+               <top>
+                  <Label style="-fx-font-weight: bold;" text="Categories" textAlignment="CENTER" underline="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
+            </BorderPane>
          </items>
       </SplitPane>
    </content>

@@ -55,7 +55,9 @@ public class AdminController {
     void IncreaseYaz(ActionEvent event) {
         Yaz.advanceYaz(1);
         mainController.updateYazLabel();
-
+        Loans.payLoans();
+        createClientTree();
+        createLoansTree();
     }
 
 
@@ -75,6 +77,8 @@ public class AdminController {
                 createClientTree();
                 createLoansTree();
                 mainController.refreshCategoriesInScramble();
+                mainController.updateComboBox();
+                mainController.initializePathToolTip();
             }
 
 
@@ -165,7 +169,7 @@ public class AdminController {
 
         }
         clientsTreeView.setRoot(clients);
-        mainController.updateComboBox();
+        //mainController.updateComboBox();
     }
 
     private Map<Status, List<String>> getLoansMap(Client client) {

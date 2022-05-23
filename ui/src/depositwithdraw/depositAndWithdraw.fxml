@@ -10,7 +10,7 @@
    <children>
       <Button fx:id="cancelBtn" layoutX="14.0" layoutY="159.0" mnemonicParsing="false" onAction="#cancelBtnOnAction" text="Cancel" />
       <Button fx:id="okBtn" layoutX="350.0" layoutY="159.0" mnemonicParsing="false" onAction="#okBtnOnAction" text="OK" />
-      <TextField fx:id="moneyTextField" layoutX="112.0" layoutY="39.0" prefHeight="20.0" prefWidth="176.0" promptText="Enter a none negetive number" />
+      <TextField fx:id="moneyTextField" layoutX="112.0" layoutY="39.0" prefHeight="20.0" prefWidth="176.0" promptText="Enter amount" />
       <ChoiceBox fx:id="withdrawDepositChoiceBox" layoutX="125.0" layoutY="100.0" prefWidth="150.0" />
       <Label layoutX="106.0" layoutY="79.0" text="Please choose the desirable option" />
    </children>

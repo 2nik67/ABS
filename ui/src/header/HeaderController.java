@@ -1,15 +1,19 @@
 package header;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import appcontroller.AppController;
 import client.Client;
 import client.Clients;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.Duration;
 import load.LoadFile;
 import time.Yaz;
 
@@ -25,6 +29,9 @@ public class HeaderController{
     private Label pathLabel;
 
     @FXML
+    private Tooltip pathToolTip;
+
+    @FXML
     private Label currentYazLabel;
 
 
@@ -33,6 +40,8 @@ public class HeaderController{
         comboBoxUser.getItems().add("Admin");
         comboBoxUser.getSelectionModel().selectFirst();
 
+        hackTooltipStartTiming(pathToolTip);
+        pathToolTip.setText("After you load a file, its path will appear here!");
     }
     public void updateYazLabel(){
         currentYazLabel.setText("Current YAZ: " + Yaz.getYaz());
@@ -47,6 +56,7 @@ public class HeaderController{
     }
 
     public void updateComboBox(){
+
         List<Client> clients = new ArrayList<>(Clients.getClientsList());
         for (Client client : clients) {
             comboBoxUser.getItems().add(client.getName());
@@ -64,6 +74,7 @@ public class HeaderController{
             mainController.createInvestmentTreeForClient(value);
 
         }
+        mainController.changeScreen(value);
 
     }
 
@@ -71,6 +82,25 @@ public class HeaderController{
         return chosenClient;
     }
 
+    public void initializePathToolTip(){
+        pathToolTip.setText(LoadFile.getPath());
+    }
 
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(250)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

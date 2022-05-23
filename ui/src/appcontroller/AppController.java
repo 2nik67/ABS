@@ -94,4 +94,8 @@ public class AppController {
     public void createInvestmentTreeForClient(String value) {
         clientBodyComponentController.createInvestmentTreeForClient(value);
     }
+
+    public void initializePathToolTip(){
+        headerComponentController.initializePathToolTip();
+    }
 }

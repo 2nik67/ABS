@@ -101,7 +101,7 @@ public class Investment {
         if (minimumInterest != 0){
             return !(minimumInterest > (loan.getInterestPercentage()));
         }
-        if (loan.getOwner().numOfOpenLoans() > maxOpenLoans){
+        if (loan.getOwner().numOfOpenLoans() > maxOpenLoans && maxOpenLoans != 0){
             return false;
         }
         return true;

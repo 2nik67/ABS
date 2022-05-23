@@ -27,6 +27,7 @@ import static client.Clients.*;
 
 
 public class ScrambleTabController {
+
     private PossibleLoansController possibleLoansController;
 
     private ClientController clientController;
@@ -104,7 +105,6 @@ public class ScrambleTabController {
     public void scrambleOperation() throws  Exception{
         Client currClient = getClientByName(currentClient);
 
-
         if(amountTextField.getText().equals(""))
             amountTextField.setText("0");
         if(interestTextField.getText().equals(""))
@@ -142,6 +142,9 @@ public class ScrambleTabController {
         List <Loan> possibleLoans = Investment.fillList(Loans.getLoans(), categoryList, Integer.parseInt(minYazTextField.getText()), Integer.parseInt(minYazTextField.getText()),
                 Clients.getClientByName(clientController.getChosenClient()), Integer.parseInt(maxOpenLoansTextField.getText()));
         possibleLoansController = new PossibleLoansController();
+        PossibleLoansController.setScrambleTabController(this);
+        PossibleLoansController.setSumToInvest(Double.parseDouble(amountTextField.getText()));
+        PossibleLoansController.setPossibleLoanList(possibleLoans);
         possibleLoansController.popUp();
     }
 
