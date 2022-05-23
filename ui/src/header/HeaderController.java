@@ -15,6 +15,7 @@ import time.Yaz;
 
 public class HeaderController{
 
+    private static String chosenClient;
     private  AppController mainController;
 
     @FXML
@@ -55,9 +56,21 @@ public class HeaderController{
     @FXML
     public void chosenValue(ActionEvent event) {
         String value = comboBoxUser.getValue();
-        mainController.changeScreen(value);
-        mainController.setCurrentClient(value);
+        chosenClient = value;
+        if(!value.equals("Admin")){
+            mainController.changeScreen(value);
+            mainController.setCurrentClient(value);
+            mainController.createLoanTreeForClient(value);
+            mainController.createInvestmentTreeForClient(value);
+
+        }
+
     }
+
+    public static String getChosenClient() {
+        return chosenClient;
+    }
+
 
 }
 

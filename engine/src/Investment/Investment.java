@@ -2,9 +2,7 @@ package Investment;
 
 import client.Client;
 import loan.Loan;
-import loan.Loans;
 import loan.Status;
-import loan.category.Categories;
 import loan.category.Category;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class Investment {
                     return;
                 }
             }
-            tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor);
+            tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor,0);
             minLoan = getMinLoan(tempLoans);
 
         }
@@ -61,17 +59,17 @@ public class Investment {
         return min;
     }
 
-    public static List <Loan> fillList(List<Loan> loans, List<Category> categories, int yaz, double minimumInterest, Client client) {
+    public static List <Loan> fillList(List<Loan> loans, List<Category> categories, int yaz, double minimumInterest, Client client, int maxOpenLoans) {
         List <Loan> possibleLoan = new ArrayList<>();
         for (Loan allLoan : loans) {
-            if (validLoan(allLoan, categories,yaz, minimumInterest, client)) {
+            if (validLoan(allLoan, categories,yaz, minimumInterest, client, maxOpenLoans)) {
                 possibleLoan.add(allLoan);
             }
         }
         return possibleLoan;
     }
 
-    private static boolean validLoan(Loan loan, List<Category> categories, int yaz, double minimumInterest, Client client) {
+    private static boolean validLoan(Loan loan, List<Category> categories, int yaz, double minimumInterest, Client client, int maxOpenLoans) {
         Investment.categories=new ArrayList<>(categories);
         Investment.investor=client;
         Investment.minimumInterest=minimumInterest;
@@ -102,6 +100,9 @@ public class Investment {
         }
         if (minimumInterest != 0){
             return !(minimumInterest > (loan.getInterestPercentage()));
+        }
+        if (loan.getOwner().numOfOpenLoans() > maxOpenLoans){
+            return false;
         }
         return true;
     }

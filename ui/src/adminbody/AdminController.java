@@ -32,6 +32,7 @@ public class AdminController {
     private DoubleProperty doubleProperty;
     private AppController mainController;
 
+
     @FXML
     private Button increaseYazBtn;
 
@@ -102,7 +103,7 @@ public class AdminController {
                 }
                 TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
                         "Missing: " + loan.getMissingToActive());
-                loanID.getChildren().add(total);//TODO: check the index part.
+                loanID.getChildren().add(total);
 
             }
             else if(loan.getStatus().equals(Status.ACTIVE)){
@@ -204,4 +205,6 @@ public class AdminController {
     @FXML
     void initialize() {
     }
+
+
 }

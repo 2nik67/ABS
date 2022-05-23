@@ -66,9 +66,11 @@ public class AppController {
     public void changeScreen(String value) {
         if(value.equals("Admin")){
             root.setCenter(adminBodyComponent);
+
         }
         else {
             root.setCenter(clientBodyComponent);
+            clientBodyComponentController.infoTabSelected();
         }
     }
 
@@ -78,5 +80,18 @@ public class AppController {
 
     public void setCurrentClient(String currentClient) {
         clientBodyComponentController.setCurrentClient(currentClient);
+
+    }
+
+    public String getChosenClient(){
+        return headerComponentController.getChosenClient();
+    }
+
+    public void createLoanTreeForClient(String name) {
+        clientBodyComponentController.createLoanTreeForClient(name);
+    }
+
+    public void createInvestmentTreeForClient(String value) {
+        clientBodyComponentController.createInvestmentTreeForClient(value);
     }
 }

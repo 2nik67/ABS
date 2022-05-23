@@ -27,6 +27,13 @@ public abstract class Categories {
         return categoryList;
     }
     public static Integer getNumOfCategories() { return categoryList.size(); }
+    public static Category getCategoryByName(String category){
+        for (Category value : categoryList) {
+            if (value.getCategory().equals(category))
+                return value;
+        }
+        return null;
+    }
 /*public static void resetCategories(){
         categoryList.clear();
     }*/

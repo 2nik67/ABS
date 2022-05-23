@@ -1,26 +1,33 @@
 package scrambletab;
 
+import Investment.Investment;
 import client.Client;
+import client.Clients;
 import clientbody.ClientController;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import loan.Loan;
+import loan.Loans;
 import loan.category.Category;
 import org.controlsfx.control.CheckListView;
 import javafx.scene.control.TextFormatter.Change;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
-import javafx.util.StringConverter;
+
 import javafx.util.converter.IntegerStringConverter;
 import loan.category.Categories;
+import possibleloans.PossibleLoansController;
+
 import static client.Clients.*;
 
 
 public class ScrambleTabController {
+    private PossibleLoansController possibleLoansController;
 
     private ClientController clientController;
 
@@ -94,7 +101,7 @@ public class ScrambleTabController {
     }
 
     @FXML
-    public void scrambleOperation(){
+    public void scrambleOperation() throws  Exception{
         Client currClient = getClientByName(currentClient);
 
 
@@ -117,6 +124,7 @@ public class ScrambleTabController {
 
             amountContext.show(scrambleTabComponent, amountTextField.localToScreen(amountTextField.getBoundsInLocal()).getMinX(),
                     amountTextField.localToScreen(amountTextField.getBoundsInLocal()).getMaxY());
+            return;
         }
 
         if(Double.parseDouble(maxLoanOwnTextField.getText()) > 100){
@@ -126,19 +134,33 @@ public class ScrambleTabController {
 
             ownershipContext.show(scrambleTabComponent,maxLoanOwnTextField.localToScreen(maxLoanOwnTextField.getBoundsInLocal()).getMinX(),
                     maxLoanOwnTextField.localToScreen(maxLoanOwnTextField.getBoundsInLocal()).getMaxY());
-
+            return;
         }
 
         //TODO: other text field ifs
+        List<Category> categoryList = createCategoryList();
+        List <Loan> possibleLoans = Investment.fillList(Loans.getLoans(), categoryList, Integer.parseInt(minYazTextField.getText()), Integer.parseInt(minYazTextField.getText()),
+                Clients.getClientByName(clientController.getChosenClient()), Integer.parseInt(maxOpenLoansTextField.getText()));
+        possibleLoansController = new PossibleLoansController();
+        possibleLoansController.popUp();
+    }
 
+    private List<Category> createCategoryList(){
+        List<Category> categoryList = new ArrayList<>();
+        for (int i = 0; i < Categories.getNumOfCategories(); i++) {
+            if(categoryCheckList.getCheckModel().isChecked(i)){
+                categoryList.add(Categories.getCategoryByName(categoryCheckList.getCheckModel().getItem(i)));
+            }
+        }
+        return categoryList;
     }
 
     public void initializeCategoryCheckList(){
         List<Category> catList = Categories.getCategoryList();
 
         ObservableList<String> strings = FXCollections.observableArrayList();
-        for (int i = 0; i < catList.size(); i++) {
-            strings.add(catList.get(i).getCategory());
+        for (Category category : catList) {
+            strings.add(category.getCategory());
         }
 
         categoryCheckList.setItems(strings);

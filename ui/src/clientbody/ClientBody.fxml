@@ -6,6 +6,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -37,21 +39,27 @@
                            <children>
                               <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                  <children>
-                                    <Button id="depositBtn" fx:id="depositBtn" mnemonicParsing="false" text="Deposit">
+                                    <Button id="depositBtn" fx:id="depositBtn" mnemonicParsing="false" onAction="#depositBtnOnAction" text="Deposit" HBox.hgrow="NEVER">
                                        <HBox.margin>
-                                          <Insets right="15.0" top="10.0" />
+                                          <Insets bottom="10.0" right="15.0" top="10.0" />
                                        </HBox.margin></Button>
-                                    <Button id="withdrawBtn" fx:id="withdrawBtn" mnemonicParsing="false" text="Withdraw">
+                                    <Button id="withdrawBtn" fx:id="withdrawBtn" mnemonicParsing="false" onAction="#withdrawBtnOnAction" text="Withdraw" HBox.hgrow="NEVER">
                                        <HBox.margin>
-                                          <Insets left="15.0" top="10.0" />
+                                          <Insets bottom="10.0" left="15.0" top="10.0" />
                                        </HBox.margin></Button>
                                  </children>
                               </HBox>
-                              <TreeView prefHeight="365.0" prefWidth="248.0" VBox.vgrow="SOMETIMES">
+                              <TableView fx:id="transactionTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                                <columns>
+                                  <TableColumn fx:id="yazTableColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="36.0" prefWidth="53.0" text="Yaz" />
+                                    <TableColumn fx:id="beforeChangeTableColumn" prefWidth="88.0" text="Before Change" />
+                                  <TableColumn fx:id="moneyTableColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="78.0" prefWidth="94.0" sortable="false" text="Money" />
+                                    <TableColumn fx:id="afterChangeTableColumn" editable="false" maxWidth="133.0" minWidth="85.0" prefWidth="85.0" resizable="false" sortable="false" text="After Change" />
+                                </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
-                              </TreeView>
+                              </TableView>
                            </children>
                         </VBox>
                      </items>

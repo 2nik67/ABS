@@ -1,9 +1,13 @@
 package client;
 
 
+import javafx.util.Pair;
+import loan.Loan;
+import loan.Loans;
 import time.Yaz;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
 
@@ -54,6 +58,25 @@ public class Client {
     public boolean equals(Object obj) {
         Client client=(Client) obj;
         return this.getName().equalsIgnoreCase(client.getName());
+    }
+    public boolean isInvestor(Loan loan){
+        List<Pair<Client,Double>> clients = loan.getLoaners();
+        for (Pair<Client, Double> client : clients) {
+            if (client.getKey().getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public int numOfOpenLoans(){
+        int res = 0;
+        List<Loan> loans = Loans.getLoans();
+        for (Loan loan : loans) {
+            if (loan.getOwner().getName().equals(name)) {
+                res++;
+            }
+        }
+        return res;
     }
 }
 
