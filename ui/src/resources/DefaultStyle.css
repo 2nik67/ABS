@@ -1,0 +1,15 @@
+.button {
+    -fx-background-color: linear-gradient(white, lightgray);
+}
+
+.combo-box {
+    -fx-background-color: linear-gradient(lightpink, lightgray);
+}
+.choice-box {
+    -fx-background-color: linear-gradient(lightpink, lightgray);
+}
+
+.root {
+    -fx-focus-color: transparent;
+
+}

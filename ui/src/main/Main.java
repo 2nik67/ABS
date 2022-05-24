@@ -35,5 +35,6 @@ public class Main extends Application {
         Scene scene =new Scene(root, 700, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
+        scene.getStylesheets().add("resources/DefaultStyle.css");
     }
 }

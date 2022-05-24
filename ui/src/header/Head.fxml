@@ -11,7 +11,7 @@
    <content>
       <BorderPane>
          <center>
-            <Label id="pathLabel" fx:id="pathLabel" styleClass="HeadLabel" text="Path:" BorderPane.alignment="CENTER">
+            <Label id="header-path+label" fx:id="pathLabel" styleClass="header-label" text="Path:" BorderPane.alignment="CENTER">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -21,14 +21,14 @@
             </Label>
          </center>
          <right>
-            <Label id="currentYazLabel" fx:id="currentYazLabel" styleClass="HeadLabel" text="Current Yaz: 0" BorderPane.alignment="CENTER">
+            <Label id="header-yaz-label" fx:id="currentYazLabel" styleClass="header-label" text="Current Yaz:" BorderPane.alignment="CENTER">
                <padding>
                   <Insets left="10.0" />
                </padding>
             </Label>
          </right>
          <left>
-            <ComboBox id="comboBoxUser" fx:id="comboBoxUser" onAction="#chosenValue" prefWidth="150.0" BorderPane.alignment="CENTER" />
+            <ComboBox id="header-combo-box" fx:id="comboBoxUser" onAction="#chosenValue" prefWidth="150.0" BorderPane.alignment="CENTER" />
          </left>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

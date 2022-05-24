@@ -7,44 +7,23 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane id="scrollPaneAdmin" fx:id="scrollPaneAdmin" fitToHeight="true" fitToWidth="true" hmax="0.0" pickOnBounds="false" vmax="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminbody.AdminController">
+<ScrollPane id="admin-scroll-pane" fx:id="scrollPaneAdmin" fitToHeight="true" fitToWidth="true" hmax="0.0" pickOnBounds="false" vmax="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminbody.AdminController">
    <content>
-      <BorderPane>
-         <top>
-            <GridPane BorderPane.alignment="CENTER">
-              <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="187.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="341.0" minWidth="10.0" prefWidth="211.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="341.0" minWidth="10.0" prefWidth="79.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="176.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Button id="increaseYazBtn" fx:id="increaseYazBtn" mnemonicParsing="false" onAction="#IncreaseYaz" text="Increase YAZ" />
-                  <Button id="loadFileBtn" fx:id="loadFileBtn" mnemonicParsing="false" onAction="#ReadFile" text="Load File" GridPane.columnIndex="3" />
-                  <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" />
-                  <Label id="progressLabel" fx:id="progressLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="57.0" text="0%" GridPane.columnIndex="2" />
-               </children>
-            </GridPane>
-         </top>
+      <BorderPane id="admin-main-border-pane">
          <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hvalue="1.0" vvalue="1.0" BorderPane.alignment="CENTER">
+            <ScrollPane id="admin-center-scroll-pane" fitToHeight="true" fitToWidth="true" hvalue="1.0" vvalue="1.0" BorderPane.alignment="CENTER">
                <content>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox id="admin-vbox" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <TreeView id="loansTreeView" fx:id="loansTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="597.0" showRoot="false" VBox.vgrow="ALWAYS">
+                        <TreeView id="admin-loans-treeview" fx:id="loansTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="597.0" showRoot="false" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="5.0" right="5.0" top="40.0" />
                            </VBox.margin>
                         </TreeView>
-                        <TreeView id="clientsTreeView" fx:id="clientsTreeView" prefHeight="113.0" prefWidth="597.0" VBox.vgrow="ALWAYS">
+                        <TreeView id="admin-clients-treeview" fx:id="clientsTreeView" prefHeight="113.0" prefWidth="597.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="40.0" left="5.0" right="5.0" top="40.0" />
                            </VBox.margin>
@@ -54,9 +33,24 @@
                </content>
             </ScrollPane>
          </center>
+         <top>
+            <BorderPane id="admin-upper-border-pane" BorderPane.alignment="CENTER">
+               <center>
+                  <HBox id="admin-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ProgressBar id="admin-progressbar" fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+                        <Label id="admin-progress-label" fx:id="progressLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="57.0" text="0%" />
+                     </children>
+                  </HBox>
+               </center>
+               <left>
+                  <Button id="admin-yaz-button" fx:id="increaseYazBtn" mnemonicParsing="false" onAction="#IncreaseYaz" styleClass="admin-controls" text="Increase YAZ" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button id="admin-load-button" fx:id="loadFileBtn" mnemonicParsing="false" onAction="#ReadFile" styleClass="admin-controls" text="Load File" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </top>
       </BorderPane>
    </content>
-   <padding>
-      <Insets top="30.0" />
-   </padding>
 </ScrollPane>
