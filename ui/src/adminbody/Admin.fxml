@@ -36,7 +36,7 @@
          <top>
             <BorderPane id="admin-upper-border-pane" BorderPane.alignment="CENTER">
                <center>
-                  <HBox id="admin-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
+                  <HBox id="admin-hbox" alignment="CENTER" prefHeight="100.0" spacing="30.0" BorderPane.alignment="CENTER">
                      <children>
                         <ProgressBar id="admin-progressbar" fx:id="progressBar" prefWidth="200.0" progress="0.0" />
                         <Label id="admin-progress-label" fx:id="progressLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="57.0" text="0%" />
@@ -44,10 +44,18 @@
                   </HBox>
                </center>
                <left>
-                  <Button id="admin-yaz-button" fx:id="increaseYazBtn" mnemonicParsing="false" onAction="#IncreaseYaz" styleClass="admin-controls" text="Increase YAZ" BorderPane.alignment="CENTER" />
+                  <Button id="admin-yaz-button" fx:id="increaseYazBtn" mnemonicParsing="false" onAction="#IncreaseYaz" styleClass="admin-controls" text="Increase YAZ" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="10.0" />
+                     </BorderPane.margin>
+                  </Button>
                </left>
                <right>
-                  <Button id="admin-load-button" fx:id="loadFileBtn" mnemonicParsing="false" onAction="#ReadFile" styleClass="admin-controls" text="Load File" BorderPane.alignment="CENTER" />
+                  <Button id="admin-load-button" fx:id="loadFileBtn" mnemonicParsing="false" onAction="#ReadFile" styleClass="admin-controls" text="Load File" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets right="10.0" />
+                     </BorderPane.margin>
+                  </Button>
                </right>
             </BorderPane>
          </top>

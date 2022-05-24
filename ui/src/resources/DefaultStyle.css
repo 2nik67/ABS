@@ -1,3 +1,8 @@
+.root {
+    -fx-focus-color: transparent;
+    -fx-cursor: url('/Sakura_AltSelect.png'), auto;
+}
+
 .button {
     -fx-background-color: linear-gradient(white, lightgray);
 }
@@ -9,7 +14,13 @@
     -fx-background-color: linear-gradient(lightpink, lightgray);
 }
 
-.root {
-    -fx-focus-color: transparent;
+#header-yaz-label {
+    -fx-cursor: url('/Sakura_AltSelect.png'), auto;
+    -fx-border-radius: 20px;
+    -fx-border-color: linear-gradient(lightpink, lightgray);
+    -fx-border-width: 5px;
+}
 
+#admin-vbox {
+    -fx-background-color: linear-gradient(pink, hotpink, lightgray);
 }
