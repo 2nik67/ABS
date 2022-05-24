@@ -98,4 +98,13 @@ public class AppController {
     public void initializePathToolTip(){
         headerComponentController.initializePathToolTip();
     }
+
+    public void resetUI() {
+        clientBodyComponentController.resetUI();
+        headerComponentController.resetUI();
+    }
+
+    public void createLoanTreeForClientForPaymentTab() {
+        clientBodyComponentController.createLoanTreeForClientForPaymentTab();
+    }
 }

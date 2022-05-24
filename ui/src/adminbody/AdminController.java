@@ -73,12 +73,14 @@ public class AdminController {
             LoadFile.setPath(selectedFile.getPath());
             LoadFile.readFile();
             if(LoadFile.isFileLoaded()){
+                mainController.resetUI();
                 mainController.updatePathLabel();
                 createClientTree();
                 createLoansTree();
                 mainController.refreshCategoriesInScramble();
                 mainController.updateComboBox();
                 mainController.initializePathToolTip();
+
             }
 
 

@@ -173,4 +173,8 @@ public class ScrambleTabController {
     public void setCurrentClient(String currentClient) {
         this.currentClient = currentClient;
     }
+
+    public void resetUI() {
+        categoryCheckList.getItems().clear();
+    }
 }

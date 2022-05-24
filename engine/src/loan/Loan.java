@@ -225,4 +225,8 @@ public class Loan {
         owner.loadMoney(-1*((loan-loanPaid) + (double)interestPercentage/100 *(loan-loanPaid)), owner.getMoney());
         return true;
     }
+
+    public void checkIfLoanIsInRisk(){
+        //TODO
+    }
 }

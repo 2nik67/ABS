@@ -66,15 +66,19 @@ public class HeaderController{
     @FXML
     public void chosenValue(ActionEvent event) {
         String value = comboBoxUser.getValue();
-        chosenClient = value;
-        if(!value.equals("Admin")){
-            mainController.changeScreen(value);
-            mainController.setCurrentClient(value);
-            mainController.createLoanTreeForClient(value);
-            mainController.createInvestmentTreeForClient(value);
 
+        if(value != null){
+            chosenClient = value;
+            if(!value.equals("Admin")){
+                mainController.changeScreen(value);
+                mainController.setCurrentClient(value);
+                mainController.createLoanTreeForClient(value);
+                mainController.createInvestmentTreeForClient(value);
+                mainController.createLoanTreeForClientForPaymentTab();
+            }
+            mainController.changeScreen(value);
         }
-        mainController.changeScreen(value);
+
 
     }
 
@@ -101,6 +105,13 @@ public class HeaderController{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void resetUI() {
+        comboBoxUser.getItems().clear();
+        comboBoxUser.getItems().add("Admin");
+        comboBoxUser.getSelectionModel().selectFirst();
+
     }
 }
 

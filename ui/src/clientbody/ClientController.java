@@ -21,6 +21,7 @@ import loan.Status;
 import paymenttab.PaymentTabController;
 import possibleloans.PossibleLoansController;
 import scrambletab.ScrambleTabController;
+import time.Yaz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,8 +120,8 @@ public class ClientController {
         afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
         paymentTabComponentController.clearListView();
         paymentTabComponentController.createLoansListView();
-
         transactionTableView.getItems().addAll(client.getTransactions());
+
     }
 
 
@@ -239,5 +240,13 @@ public class ClientController {
     }
 
 
+    public void resetUI() {
+        investmentsTreeView.setRoot(null);
+        loansTreeView.setRoot(null);
+        scrambleTabComponentController.resetUI();
+    }
 
+    public void createLoanTreeForClientForPaymentTab() {
+        paymentTabComponentController.createLoanTreeForClientForPaymentTab();
+    }
 }

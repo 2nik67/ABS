@@ -21,7 +21,7 @@
             </Label>
          </center>
          <right>
-            <Label id="currentYazLabel" fx:id="currentYazLabel" styleClass="HeadLabel" text="Current Yaz:" BorderPane.alignment="CENTER">
+            <Label id="currentYazLabel" fx:id="currentYazLabel" styleClass="HeadLabel" text="Current Yaz: 0" BorderPane.alignment="CENTER">
                <padding>
                   <Insets left="10.0" />
                </padding>
