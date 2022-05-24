@@ -60,6 +60,14 @@ public abstract class Loans {
         }
     }
 
+    public static Loan getLoanByID(String ID){
+        for (Loan loan : loans) {
+            if (loan.getId().equals(ID))
+                return loan;
+        }
+        return null;
+    }
+
 
 }
 

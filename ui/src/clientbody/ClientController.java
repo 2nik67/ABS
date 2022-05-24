@@ -18,6 +18,7 @@ import javafx.util.Pair;
 import loan.Loan;
 import loan.Loans;
 import loan.Status;
+import paymenttab.PaymentTabController;
 import possibleloans.PossibleLoansController;
 import scrambletab.ScrambleTabController;
 
@@ -30,6 +31,12 @@ public class ClientController {
     private PossibleLoansController possibleLoansController;
     private DepositWithdrawController depositWithdrawController;
     private Client chosenClient;
+
+    @FXML
+    private ScrollPane paymentTabComponent;
+
+    @FXML
+    private PaymentTabController paymentTabComponentController;
 
     @FXML
     private TableColumn<Transaction, Double> beforeChangeTableColumn;
@@ -81,7 +88,7 @@ public class ClientController {
         if (scrambleTabComponentController != null) {
             System.out.println("Banana");
             scrambleTabComponentController.setClientController(this);
-
+            paymentTabComponentController.setClientController(this);
         }
     }
 
@@ -97,9 +104,10 @@ public class ClientController {
     }
 
     @FXML
-    public void withdrawBtnOnAction (ActionEvent event) throws Exception{
+    public void paymentTabSelected(ActionEvent event) throws Exception{
 
     }
+
 
     public void infoTabSelected(){
         transactionTableView.getItems().clear();
@@ -109,6 +117,9 @@ public class ClientController {
         beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
         moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
         afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
+        paymentTabComponentController.clearListView();
+        paymentTabComponentController.createLoansListView();
+
         transactionTableView.getItems().addAll(client.getTransactions());
     }
 

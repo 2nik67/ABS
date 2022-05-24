@@ -207,4 +207,22 @@ public class Loan {
     public double getInterestPaid() {
         return interestPaid;
     }
+
+    public boolean timeToPay(){
+        return (Yaz.getYaz() - activeYaz) % periodOfYazToPay == 0;
+    }
+
+    public boolean payFullLoan(){
+        if (owner.getMoney() < loan - loanPaid){
+            return false;
+        }
+        status = Status.FINISHED;
+        finishYaz = Yaz.getYaz();
+        for (Pair<Client, Double> loaner : loaners) {
+            double payBack = loaner.getValue() / loan;
+            loaner.getKey().loadMoney(payBack * (loan-loanPaid) + interestEveryYaz * payBack, loaner.getKey().getMoney());
+        }
+        owner.loadMoney(-1*((loan-loanPaid) + (double)interestPercentage/100 *(loan-loanPaid)), owner.getMoney());
+        return true;
+    }
 }
