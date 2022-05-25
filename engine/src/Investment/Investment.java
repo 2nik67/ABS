@@ -1,6 +1,8 @@
 package Investment;
 
 import client.Client;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import loan.Loan;
 import loan.Status;
 import loan.category.Category;
@@ -29,6 +31,15 @@ public class Investment {
 
             payEachLoan = Math.min(minLoan, temp / tempLoans.size());
             if (tempLoans.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Please notice: ");
+                alert.setContentText("Could only invest " + String.format("%.2f",(investment-temp)));
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK) {
+                        System.out.println("Pressed OK.");
+                    }
+                });
                 System.out.println("Could only invest " + String.format("%.2f",(investment-temp)));
                 Investment.investment=investment-temp;
                 break;

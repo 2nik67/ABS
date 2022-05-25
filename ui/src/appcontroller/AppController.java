@@ -71,6 +71,7 @@ public class AppController {
         else {
             root.setCenter(clientBodyComponent);
             clientBodyComponentController.infoTabSelected();
+            clientBodyComponentController.resetUI();
         }
     }
 

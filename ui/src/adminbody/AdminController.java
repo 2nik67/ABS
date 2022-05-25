@@ -4,6 +4,7 @@ import appcontroller.AppController;
 import client.Client;
 import client.Clients;
 import header.HeaderController;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
@@ -55,7 +56,6 @@ public class AdminController {
     void IncreaseYaz(ActionEvent event) {
         Yaz.advanceYaz(1);
         mainController.updateYazLabel();
-        Loans.payLoans();
         createClientTree();
         createLoansTree();
     }
@@ -63,6 +63,7 @@ public class AdminController {
 
     @FXML
     void ReadFile(ActionEvent event) throws Exception{
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
@@ -70,18 +71,44 @@ public class AdminController {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            LoadFile.setPath(selectedFile.getPath());
-            LoadFile.readFile();
-            if(LoadFile.isFileLoaded()){
-                mainController.resetUI();
-                mainController.updatePathLabel();
-                createClientTree();
-                createLoansTree();
-                mainController.refreshCategoriesInScramble();
-                mainController.updateComboBox();
-                mainController.initializePathToolTip();
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    LoadFile.setPath(selectedFile.getPath());
+                    for (double i = 0; i < 6; i++) {
+                        progressBar.setProgress(i/10);
+                        Thread.sleep(200);
+                    }
+                    progressBar.setProgress(0.5);
+                    for (double i = 6; i < 10; i++) {
+                        progressBar.setProgress(i/10);
+                        Thread.sleep(200);
+                    }
+                    LoadFile.readFile();
+                    progressBar.setProgress(1);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(LoadFile.isFileLoaded()){
+                                mainController.resetUI();
+                                mainController.updatePathLabel();
+                                createClientTree();
+                                createLoansTree();
+                                mainController.refreshCategoriesInScramble();
+                                mainController.updateComboBox();
+                                mainController.initializePathToolTip();
 
-            }
+                            }
+                        }
+                    });
+                    return null;
+                }
+            };
+            Thread t= new Thread(task);
+            t.start();
+            //progressBar.progressProperty().bind(task.progressProperty());
+
+
 
 
         }
@@ -93,6 +120,7 @@ public class AdminController {
         TreeItem<String> loans = new TreeItem<>("Loans");
 
         for (Loan loan : loansList) {
+
             TreeItem<String> loanID = new TreeItem<>(loan.getId());
             TreeItem<String> owner = new TreeItem<>("Loaner: " + loan.getOwner().getName());
             TreeItem<String> status = new TreeItem<>("Status: " + loan.getStatus().toString());
@@ -116,6 +144,18 @@ public class AdminController {
                 TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
                         + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
                 loanID.getChildren().add(payments);
+            }
+            else if(loan.getStatus().equals(Status.RISK)){
+                TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
+                        + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
+                TreeItem<String> missedPayments = new TreeItem<>("Total payments missed: " + loan.getAmountOfMissedPayments() + " | Total amount missed: " + loan.getTotalAmountMissed());
+
+                loanID.getChildren().add(payments);
+                loanID.getChildren().add(missedPayments);
+            }
+            else if(loan.getStatus().equals(Status.FINISHED)){
+                TreeItem<String> finished = new TreeItem<>("Loan finished in Yaz: " + loan.getFinishYaz());
+                loanID.getChildren().add(finished);
             }
             loanID.getChildren().add(owner);
             loanID.getChildren().add(category);

@@ -218,6 +218,18 @@ public class ClientController {
                             + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
                     loanID.getChildren().add(payments);
                 }
+                else if(loan.getStatus().equals(Status.RISK)){
+                    TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
+                            + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
+                    TreeItem<String> missedPayments = new TreeItem<>("Total payments missed: " + loan.getAmountOfMissedPayments() + " | Total amount missed: " + loan.getTotalAmountMissed());
+
+                    loanID.getChildren().add(payments);
+                    loanID.getChildren().add(missedPayments);
+                }
+                else if(loan.getStatus().equals(Status.FINISHED)){
+                    TreeItem<String> finished = new TreeItem<>("Loan finished in Yaz: " + loan.getFinishYaz());
+                    loanID.getChildren().add(finished);
+                }
                 loanID.getChildren().add(owner);
                 loanID.getChildren().add(category);
                 loanID.getChildren().add(status);

@@ -11,6 +11,7 @@ import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
 import loan.category.Category;
+import time.Yaz;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -76,6 +77,7 @@ public abstract class LoadFile{
             Categories.setCategoryList(categories);
             Clients.setClientsList(clients);
             Loans.setLoans(loans);
+            Yaz.advanceYaz(Yaz.getYaz()*-1);
         }
         resetData();
 

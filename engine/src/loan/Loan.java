@@ -200,8 +200,19 @@ public class Loan {
         System.out.println("Total amount missed: " + sum);
     }
 
+    public int getAmountOfMissedPayments(){
+        return latePayments.size();
+    }
     public double getLoanPaid() {
         return loanPaid;
+    }
+
+    public double getTotalAmountMissed(){
+        double sum=0;
+        for (int i = 0; i < latePayments.size(); i++) {
+            sum+=latePayments.get(i).getValue();
+        }
+        return sum;
     }
 
     public double getInterestPaid() {
@@ -227,6 +238,16 @@ public class Loan {
     }
 
     public void checkIfLoanIsInRisk(){
-        //TODO
+        if(this.status.equals(Status.ACTIVE)){
+            if(checkHowMuchShouldBePaid()){
+                status = Status.RISK;
+            }
+        }
+    }
+
+    private boolean checkHowMuchShouldBePaid(){
+        int yazSinceActive= Yaz.getYaz() - activeYaz;
+        int amountOfPayments = yazSinceActive/periodOfYazToPay;
+        return !(loanPaid < amountOfPayments * (interestPaid + loanPaid));
     }
 }

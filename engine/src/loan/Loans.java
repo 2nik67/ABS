@@ -69,5 +69,10 @@ public abstract class Loans {
     }
 
 
+    public static void checkForRiskLoans() {
+        for (Loan loan : loans){
+            loan.checkIfLoanIsInRisk();
+        }
+    }
 }
 

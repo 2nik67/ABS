@@ -1,6 +1,7 @@
 package time;
 
 import javafx.beans.property.IntegerProperty;
+import loan.Loans;
 
 public abstract class Yaz {
     private static int yaz;
@@ -11,6 +12,7 @@ public abstract class Yaz {
 
     public static void advanceYaz(int yaz) {
         Yaz.yaz += yaz;
+        Loans.checkForRiskLoans();
     }
 
 
