@@ -20,7 +20,11 @@ secondary color: #9b7fd5
 }
 
 .choice-box {
-    -fx-background-color: linear-gradient(lightpink, lightgray);
+    -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
+}
+
+.text-field {
+    -fx-background-color: #9b7fd5;
 }
 
 /* ############################ */
@@ -111,8 +115,8 @@ secondary color: #9b7fd5
     -fx-background-color: #9b7fd5;
 }
 
-.text-field {
-    -fx-background-color: #9b7fd5;
-}
-
 /* ############################ */
+
+.deposit-containers {
+    -fx-background-color: #453f52;
+}
