@@ -89,6 +89,7 @@ public class HeaderController{
                 mainController.createLoanTreeForClient(value);
                 mainController.createInvestmentTreeForClient(value);
                 mainController.createLoanTreeForClientForPaymentTab();
+                mainController.createCategoryList();
             }
             mainController.changeScreen(value);
         }
@@ -124,7 +125,7 @@ public class HeaderController{
         comboBoxUser.getItems().clear();
         comboBoxUser.getItems().add("Admin");
         comboBoxUser.getSelectionModel().selectFirst();
-
+        currentYazLabel.setText("Current Yaz: 0");
     }
 
     /* public void initializeSkinContextMenu(){

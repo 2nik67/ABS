@@ -71,7 +71,7 @@ public class AppController {
         else {
             root.setCenter(clientBodyComponent);
             clientBodyComponentController.infoTabSelected();
-            clientBodyComponentController.resetUI();
+            clientBodyComponentController.resetUIforClient();
         }
     }
 
@@ -107,5 +107,9 @@ public class AppController {
 
     public void createLoanTreeForClientForPaymentTab() {
         clientBodyComponentController.createLoanTreeForClientForPaymentTab();
+    }
+
+    public void createCategoryList() {
+        clientBodyComponentController.createCategoryList();
     }
 }

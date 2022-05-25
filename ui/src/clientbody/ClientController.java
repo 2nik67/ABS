@@ -261,4 +261,13 @@ public class ClientController {
     public void createLoanTreeForClientForPaymentTab() {
         paymentTabComponentController.createLoanTreeForClientForPaymentTab();
     }
+
+    public void createCategoryList() {
+        scrambleTabComponentController.initializeCategoryCheckList();
+    }
+
+    public void resetUIforClient() {
+        investmentsTreeView.setRoot(null);
+        loansTreeView.setRoot(null);
+    }
 }
