@@ -34,6 +34,18 @@ public class HeaderController{
     @FXML
     private Label currentYazLabel;
 
+    @FXML
+    private Label headerSkinLabel;
+
+    @FXML
+    private ContextMenu skinContext;
+
+    @FXML
+    private MenuBar headerMenuBar;
+
+    @FXML
+    private Menu skinMenu;
+
 
     @FXML
     void initialize() {
@@ -42,6 +54,8 @@ public class HeaderController{
 
         hackTooltipStartTiming(pathToolTip);
         pathToolTip.setText("After you load a file, its path will appear here!");
+
+        // initializeSkinContextMenu();
     }
     public void updateYazLabel(){
         currentYazLabel.setText("Current YAZ: " + Yaz.getYaz());
@@ -79,7 +93,6 @@ public class HeaderController{
             mainController.changeScreen(value);
         }
 
-
     }
 
     public static String getChosenClient() {
@@ -113,5 +126,17 @@ public class HeaderController{
         comboBoxUser.getSelectionModel().selectFirst();
 
     }
+
+    /* public void initializeSkinContextMenu(){
+        MenuItem string = new MenuItem("Test skin");
+        skinContext.getItems().clear();
+        skinContext.getItems().add(string);
+
+    }
+
+    public void openSkinContextMenu(){
+        skinContext.show(headerSkinLabel, headerSkinLabel.localToScreen(headerSkinLabel.getBoundsInLocal()).getMinX(),
+                headerSkinLabel.localToScreen(headerSkinLabel.getBoundsInLocal()).getMaxY());
+    }*/
 }
 

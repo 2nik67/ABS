@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paymenttab.PaymentTabController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="515.0" styleClass="client-containers" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="paymenttab.PaymentTabController">
    <content>
-      <SplitPane dividerPositions="0.6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="513.0">
+      <SplitPane dividerPositions="0.6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="513.0" styleClass="client-containers">
          <items>
-            <SplitPane dividerPositions="0.85" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.85" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="client-containers">
               <items>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="client-containers">
                      <center>
                         <TreeView fx:id="loansTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
@@ -24,7 +24,7 @@
                         </TreeView>
                      </center>
                   </BorderPane>
-                  <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="303.0" spacing="10.0">
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="303.0" spacing="10.0" styleClass="client-containers">
                      <children>
                         <Button fx:id="closeLoanBtn" disable="true" mnemonicParsing="false" onAction="#closeLoanOnAction" text="Close Loan">
                            <HBox.margin>
@@ -40,9 +40,9 @@
                   </HBox>
               </items>
             </SplitPane>
-            <BorderPane>
+            <BorderPane styleClass="client-containers">
                <center>
-                  <ListView fx:id="loansListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <ListView id="payment-list-view" fx:id="loansListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </BorderPane.margin>

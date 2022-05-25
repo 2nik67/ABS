@@ -13,11 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckListView?>
 
-<ScrollPane fx:id="scrambleTabComponent" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="483.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scrambletab.ScrambleTabController">
+<ScrollPane id="scramble-scroll-pane" fx:id="scrambleTabComponent" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="483.0" styleClass="client-containers" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scrambletab.ScrambleTabController">
    <content>
-      <SplitPane fx:id="splitPaneScramble" dividerPositions="0.5">
+      <SplitPane id="scramble-split-pane" fx:id="splitPaneScramble" dividerPositions="0.5" styleClass="client-containers">
          <items>
-            <VBox fx:id="leftVBox" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0">
+            <VBox id="scramble-vbox" fx:id="leftVBox" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" styleClass="client-containers">
                <children>
                   <Label prefHeight="21.0" prefWidth="204.0" text="*Red is a must" textFill="RED">
                      <font>
@@ -98,9 +98,9 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </VBox>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <BorderPane id="scramble-border-pane" prefHeight="200.0" prefWidth="200.0" styleClass="client-containers">
                <center>
-                  <CheckListView fx:id="categoryCheckList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                  <CheckListView id="scramble-check-list-view" fx:id="categoryCheckList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets right="10.0" />
                      </padding>

@@ -1,26 +1,118 @@
+/*
+COLORS USED:
+main color: #3b3150
+secondary color: #9b7fd5
+
+*/
+
+/* ########## GENERAL ########## */
+
 .root {
     -fx-focus-color: transparent;
-    -fx-cursor: url('/Sakura_AltSelect.png'), auto;
 }
 
 .button {
-    -fx-background-color: linear-gradient(white, lightgray);
+    -fx-background-color: linear-gradient(#453f52, #9b7fd5);
 }
 
 .combo-box {
-    -fx-background-color: linear-gradient(lightpink, lightgray);
+    -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
 }
+
 .choice-box {
     -fx-background-color: linear-gradient(lightpink, lightgray);
 }
 
+/* ############################ */
+
+/* ########## HEADER ########## */
+
+.header-containers {
+    -fx-background-color: #3b3150;
+}
+
+.menu {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 55%, #9b7fd5, #3b3150);
+}
+
+.menu:hover {
+   -fx-background-color: radial-gradient(center 50% 50%, radius 65%, #9b7fd5, #3b3150);
+}
+
+.menu-item {
+    -fx-background-color: lightpink;
+}
+
+.menu-item:hover {
+    -fx-background-color: pink;
+}
+
+#header-border-pane {
+    -fx-background-color: #544775;
+}
+
 #header-yaz-label {
-    -fx-cursor: url('/Sakura_AltSelect.png'), auto;
     -fx-border-radius: 20px;
-    -fx-border-color: linear-gradient(lightpink, lightgray);
+    -fx-border-color: #3b3150;
     -fx-border-width: 5px;
 }
 
-#admin-vbox {
-    -fx-background-color: linear-gradient(pink, hotpink, lightgray);
+/* ############################ */
+
+/* ########## ADMIN BODY ########## */
+
+.admin-containers {
+    -fx-background-color: #3b3150;
 }
+
+.admin-trees .tree-cell{
+    -fx-background-color: #9b7fd5;
+}
+
+/* ############################ */
+
+/* ########## CLIENT BODY ########## */
+
+.client-containers {
+    -fx-background-color: #453f52;
+}
+
+.client-containers .tree-cell {
+    -fx-background-color: #9b7fd5;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #544775;
+}
+
+.tab {
+    -fx-background-color: linear-gradient(#453f52, #9b7fd5);
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: transparent;
+}
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: transparent;
+}
+
+#scramble-check-list-view {
+    -fx-background-color: #9b7fd5;
+}
+
+#payment-list-view {
+    -fx-background-color: #9b7fd5;
+}
+
+.check-box-list-view .check-box-list-cell {
+    -fx-background-color: #9b7fd5;
+}
+.list-view .list-cell .check-box {
+    -fx-background-color: #9b7fd5;
+}
+
+.text-field {
+    -fx-background-color: #9b7fd5;
+}
+
+/* ############################ */
