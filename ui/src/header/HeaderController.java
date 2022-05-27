@@ -11,7 +11,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 import load.LoadFile;
@@ -35,12 +37,6 @@ public class HeaderController{
     private Label currentYazLabel;
 
     @FXML
-    private Label headerSkinLabel;
-
-    @FXML
-    private ContextMenu skinContext;
-
-    @FXML
     private MenuBar headerMenuBar;
 
     @FXML
@@ -55,7 +51,8 @@ public class HeaderController{
         hackTooltipStartTiming(pathToolTip);
         pathToolTip.setText("After you load a file, its path will appear here!");
 
-        // initializeSkinContextMenu();
+        skinMenu.getItems().clear();
+        //skinMenu.setOnAction();
     }
     public void updateYazLabel(){
         currentYazLabel.setText("Current YAZ: " + Yaz.getYaz());
@@ -128,16 +125,20 @@ public class HeaderController{
         currentYazLabel.setText("Current Yaz: 0");
     }
 
-    /* public void initializeSkinContextMenu(){
-        MenuItem string = new MenuItem("Test skin");
-        skinContext.getItems().clear();
-        skinContext.getItems().add(string);
+    public void initializeSkinContextMenu(){
+        if(skinMenu.getItems().isEmpty() == false)
+            return;
 
+        Scene thisScene = headerMenuBar.getScene();
+        skinMenu.getItems().clear();
+
+        MenuItem defSkin = new MenuItem("Default");
+        defSkin.setOnAction(e -> { thisScene.getStylesheets().clear(); thisScene.getStylesheets().add("resources/DefaultStyle.css");});
+        skinMenu.getItems().add(defSkin);
+
+        MenuItem sakuraSkin = new MenuItem("Sakura");
+        sakuraSkin.setOnAction(e -> {thisScene.getStylesheets().clear(); thisScene.getStylesheets().add("resources/SakuraStyle.css");});
+        skinMenu.getItems().add(sakuraSkin);
     }
-
-    public void openSkinContextMenu(){
-        skinContext.show(headerSkinLabel, headerSkinLabel.localToScreen(headerSkinLabel.getBoundsInLocal()).getMinX(),
-                headerSkinLabel.localToScreen(headerSkinLabel.getBoundsInLocal()).getMaxY());
-    }*/
 }
 

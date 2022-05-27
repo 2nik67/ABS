@@ -12,19 +12,19 @@ secondary color: #9b7fd5
 }
 
 .button {
-    -fx-background-color: linear-gradient(#453f52, #9b7fd5);
+    -fx-background-color: linear-gradient(#ffa6f7, #ffc8fa);
 }
 
 .combo-box {
-    -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
+    -fx-background-color: linear-gradient(#ffa6f7, #ffc8fa);
 }
 
 .choice-box {
-    -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
+    -fx-background-color: linear-gradient(#ffa6f7, #ffc8fa);
 }
 
 .text-field {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 /* ############################ */
@@ -32,32 +32,32 @@ secondary color: #9b7fd5
 /* ########## HEADER ########## */
 
 .header-containers {
-    -fx-background-color: #3b3150;
+    -fx-background-color: #ffa6f7;
 }
 
 .menu {
-    -fx-background-color: radial-gradient(center 50% 50%, radius 55%, #9b7fd5, #3b3150);
+    -fx-background-color: radial-gradient(center 50% 50%, radius 55%, #ffc8fa, #ffa6f7);
 }
 
 .menu:hover {
-   -fx-background-color: radial-gradient(center 50% 50%, radius 65%, #9b7fd5, #3b3150);
+   -fx-background-color: radial-gradient(center 50% 50%, radius 65%, #ffc8fa, #ffa6f7);
 }
 
 .menu-item {
-    -fx-background-color: #453f52;
+    -fx-background-color: #ffa6f7;
 }
 
 .menu-item:hover {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 #header-border-pane {
-    -fx-background-color: #544775;
+    -fx-background-color: #ffc8fa;
 }
 
 #header-yaz-label {
     -fx-border-radius: 20px;
-    -fx-border-color: #3b3150;
+    -fx-border-color: #ffffff;
     -fx-border-width: 5px;
 }
 
@@ -66,11 +66,16 @@ secondary color: #9b7fd5
 /* ########## ADMIN BODY ########## */
 
 .admin-containers {
-    -fx-background-color: #3b3150;
+    -fx-background-color: #ffa6f7;
+}
+
+#admin-vbox {
+    -fx-background-image: url("SakuraBackground.jpg");
+    -fx-background-position: center center;
 }
 
 .admin-trees .tree-cell{
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 /* ############################ */
@@ -78,19 +83,19 @@ secondary color: #9b7fd5
 /* ########## CLIENT BODY ########## */
 
 .client-containers {
-    -fx-background-color: #453f52;
+    -fx-background-color: #ffa6f7;
 }
 
 .client-containers .tree-cell {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 .tab-pane .tab-header-area .tab-header-background {
-    -fx-background-color: #544775;
+    -fx-background-color: #ffc8fa;
 }
 
 .tab {
-    -fx-background-color: linear-gradient(#453f52, #9b7fd5);
+    -fx-background-color: linear-gradient(#ffc8fa, #ffa6f7);
 }
 
 .split-pane:horizontal > .split-pane-divider {
@@ -101,22 +106,22 @@ secondary color: #9b7fd5
 }
 
 #scramble-check-list-view {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 #payment-list-view {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffc8fa;
 }
 
 .check-box-list-view .check-box-list-cell {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffa6f7;
 }
 .list-view .list-cell .check-box {
-    -fx-background-color: #9b7fd5;
+    -fx-background-color: #ffa6f7;
 }
 
 /* ############################ */
 
 .deposit-containers {
-    -fx-background-color: #453f52;
+    -fx-background-color: #ffc8fa;
 }
