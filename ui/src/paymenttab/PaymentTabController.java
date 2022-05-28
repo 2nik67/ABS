@@ -59,6 +59,8 @@ public class PaymentTabController{
             ObservableList<String> observableList = loansListView.getItems();
             observableList.remove(loansListView.getSelectionModel().getSelectedItem());
             closeLoanBtn.setDisable(true);
+            clientController.createInvestmentTreeForClient(clientController.getChosenClient());
+            clientController.createLoanTreeForClient(clientController.getChosenClient());
         }
 
     }

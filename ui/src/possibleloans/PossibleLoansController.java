@@ -2,6 +2,7 @@ package possibleloans;
 
 import Investment.Investment;
 import client.Client;
+import clientbody.ClientController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +48,7 @@ public class PossibleLoansController {
 
     @FXML
     public void initialize(){
+
         initializeLoanCheckList();
     }
 
@@ -63,7 +65,7 @@ public class PossibleLoansController {
 
 
         Investment.investmentAssigning(chosenLoans, sumToInvest);
-
+        scrambleTabController.createTrees();
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
 

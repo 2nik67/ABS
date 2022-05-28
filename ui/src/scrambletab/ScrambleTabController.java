@@ -177,4 +177,9 @@ public class ScrambleTabController {
     public void resetUI() {
         categoryCheckList.getItems().clear();
     }
+
+    public void createTrees() {
+        clientController.createLoanTreeForClient(clientController.getChosenClient());
+        clientController.createInvestmentTreeForClient(clientController.getChosenClient());
+    }
 }
