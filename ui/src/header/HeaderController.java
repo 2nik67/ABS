@@ -87,7 +87,9 @@ public class HeaderController{
                 mainController.createLoanTreeForClient(value);
                 mainController.createInvestmentTreeForClient(value);
                 mainController.createLoanTreeForClientForPaymentTab();
+
                 mainController.createCategoryList();
+
             }
             mainController.changeScreen(value);
         }

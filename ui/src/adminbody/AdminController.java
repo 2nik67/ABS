@@ -77,12 +77,12 @@ public class AdminController {
                     LoadFile.setPath(selectedFile.getPath());
                     for (double i = 0; i < 6; i++) {
                         progressBar.setProgress(i/10);
-                        //Thread.sleep(200);
+                        Thread.sleep(200);
                     }
                     progressBar.setProgress(0.5);
                     for (double i = 6; i < 10; i++) {
                         progressBar.setProgress(i/10);
-                        //Thread.sleep(200);
+                        Thread.sleep(200);
                     }
                     LoadFile.readFile();
                     progressBar.setProgress(1);

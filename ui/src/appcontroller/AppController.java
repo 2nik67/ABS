@@ -70,8 +70,9 @@ public class AppController {
         }
         else {
             root.setCenter(clientBodyComponent);
+
+            //clientBodyComponentController.resetUIforClient();
             clientBodyComponentController.infoTabSelected();
-            clientBodyComponentController.resetUIforClient();
         }
     }
 
