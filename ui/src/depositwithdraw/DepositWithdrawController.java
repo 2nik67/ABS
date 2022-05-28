@@ -77,7 +77,9 @@ public class DepositWithdrawController {
         newStage.setResizable(false);
         newStage.setScene(scene);
         newStage.show();
-        scene.getStylesheets().add(style.get(0));
+
+        if(!style.isEmpty())
+            scene.getStylesheets().add(style.get(0));
     }
 
     public void setCurrentClient(Client currentClient) {
