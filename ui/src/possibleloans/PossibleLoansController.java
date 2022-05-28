@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import loan.Loan;
@@ -80,6 +81,8 @@ public class PossibleLoansController {
         Scene scene =new Scene(root, 600 , 600);
         newStage.setScene(scene);
         newStage.show();
+
+        newStage.getIcons().add(new Image("resources/coins.png"));
     }
 
     private void initializeLoanCheckList(){

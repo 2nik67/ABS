@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
@@ -77,6 +78,8 @@ public class DepositWithdrawController {
         newStage.setResizable(false);
         newStage.setScene(scene);
         newStage.show();
+
+        newStage.getIcons().add(new Image("resources/coins.png"));
 
         if(!style.isEmpty())
             scene.getStylesheets().add(style.get(0));
