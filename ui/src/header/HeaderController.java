@@ -51,8 +51,9 @@ public class HeaderController{
         hackTooltipStartTiming(pathToolTip);
         pathToolTip.setText("After you load a file, its path will appear here!");
 
-        skinMenu.getItems().clear();
-        //skinMenu.setOnAction();
+        skinMenu.getItems().add(new MenuItem());
+        skinMenu.setOnAction(e -> initializeSkinContextMenu());
+
     }
     public void updateYazLabel(){
         currentYazLabel.setText("Current YAZ: " + Yaz.getYaz());
@@ -122,11 +123,11 @@ public class HeaderController{
         comboBoxUser.getItems().clear();
         comboBoxUser.getItems().add("Admin");
         comboBoxUser.getSelectionModel().selectFirst();
-        currentYazLabel.setText("Current Yaz: 0");
+        currentYazLabel.setText("Current YAZ: 0");
     }
 
     public void initializeSkinContextMenu(){
-        if(skinMenu.getItems().isEmpty() == false)
+        if(skinMenu.getItems().size() > 1)
             return;
 
         Scene thisScene = headerMenuBar.getScene();
@@ -139,6 +140,10 @@ public class HeaderController{
         MenuItem sakuraSkin = new MenuItem("Sakura");
         sakuraSkin.setOnAction(e -> {thisScene.getStylesheets().clear(); thisScene.getStylesheets().add("resources/SakuraStyle.css");});
         skinMenu.getItems().add(sakuraSkin);
+
+        MenuItem basicSkin = new MenuItem("BasicFX");
+        basicSkin.setOnAction(e -> thisScene.getStylesheets().clear());
+        skinMenu.getItems().add(basicSkin);
     }
 }
 

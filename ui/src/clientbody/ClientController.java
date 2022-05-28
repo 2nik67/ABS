@@ -5,15 +5,11 @@ import client.Client;
 import client.Clients;
 import client.Transaction;
 import depositwithdraw.DepositWithdrawController;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import loan.Loan;
 import loan.Loans;
@@ -21,16 +17,17 @@ import loan.Status;
 import paymenttab.PaymentTabController;
 import possibleloans.PossibleLoansController;
 import scrambletab.ScrambleTabController;
-import time.Yaz;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 
 public class ClientController {
+
     private PossibleLoansController possibleLoansController;
+
     private DepositWithdrawController depositWithdrawController;
+
     private Client chosenClient;
 
     @FXML
@@ -87,7 +84,6 @@ public class ClientController {
     @FXML
     public void initialize(){
         if (scrambleTabComponentController != null) {
-            System.out.println("Banana");
             scrambleTabComponentController.setClientController(this);
             paymentTabComponentController.setClientController(this);
         }
@@ -100,7 +96,7 @@ public class ClientController {
         depositWithdrawController = new DepositWithdrawController();
         depositWithdrawController.setCurrentClient(Clients.getClientByName(mainController.getChosenClient()));
         DepositWithdrawController.setClientController(this);
-        depositWithdrawController.popUp(mainController.getChosenClient());
+        depositWithdrawController.popUp(mainController.getChosenClient(), getCurrentStyle());
         infoTabSelected();
     }
 
@@ -269,5 +265,9 @@ public class ClientController {
     public void resetUIforClient() {
         investmentsTreeView.setRoot(null);
         loansTreeView.setRoot(null);
+    }
+
+    public ObservableList<String> getCurrentStyle(){
+        return loansTreeView.getScene().getStylesheets();
     }
 }

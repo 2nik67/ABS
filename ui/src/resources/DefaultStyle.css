@@ -11,16 +11,47 @@ secondary color: #9b7fd5
     -fx-focus-color: transparent;
 }
 
+#active-label {
+    -fx-text-fill: BLUE;
+}
+
+#timetopay-label {
+    -fx-text-fill: GREEN;
+}
+
+#risk-label {
+    -fx-text-fill: RED;
+}
+
+.label {
+    -fx-text-fill: #c7c7c7;
+}
+
 .button {
     -fx-background-color: linear-gradient(#453f52, #9b7fd5);
+    -fx-text-fill: #c7c7c7;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#9b7fd5, #453f52);
 }
 
 .combo-box {
     -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
+    -fx-text-fill: #c7c7c7;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #c7c7c7;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-text-fill: black;
 }
 
 .choice-box {
     -fx-background-color: linear-gradient(#3b3150, #9b7fd5);
+    -fx-text-fill: #c7c7c7;
 }
 
 .text-field {
@@ -93,6 +124,14 @@ secondary color: #9b7fd5
     -fx-background-color: linear-gradient(#453f52, #9b7fd5);
 }
 
+.tab:selected {
+    -fx-background-color: linear-gradient(#c0b5da, #453f52);
+}
+
+.tab-label {
+    -fx-text-fill: #c7c7c7;
+}
+
 .split-pane:horizontal > .split-pane-divider {
     -fx-background-color: transparent;
 }
@@ -113,6 +152,10 @@ secondary color: #9b7fd5
 }
 .list-view .list-cell .check-box {
     -fx-background-color: #9b7fd5;
+}
+
+#information-tableview .column-header .label {
+    -fx-text-fill: black;
 }
 
 /* ############################ */

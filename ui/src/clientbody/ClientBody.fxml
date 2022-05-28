@@ -45,7 +45,7 @@
                                        </HBox.margin></Button>
                                  </children>
                               </HBox>
-                              <TableView fx:id="transactionTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+                              <TableView id="information-tableview" fx:id="transactionTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="yazTableColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="36.0" prefWidth="53.0" text="Yaz" />
                                     <TableColumn fx:id="beforeChangeTableColumn" prefWidth="131.0" text="Before Change" />

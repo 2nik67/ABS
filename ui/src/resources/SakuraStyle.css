@@ -15,6 +15,10 @@ secondary color: #9b7fd5
     -fx-background-color: linear-gradient(#ffa6f7, #ffc8fa);
 }
 
+.button:hover {
+    -fx-background-color: linear-gradient(#ffc8fa, #ffa6f7);
+}
+
 .combo-box {
     -fx-background-color: linear-gradient(#ffa6f7, #ffc8fa);
 }
@@ -98,6 +102,10 @@ secondary color: #9b7fd5
     -fx-background-color: linear-gradient(#ffc8fa, #ffa6f7);
 }
 
+.tab:selected {
+    -fx-background-color: linear-gradient(#ffc8fa, #ffffff);
+}
+
 .split-pane:horizontal > .split-pane-divider {
     -fx-background-color: transparent;
 }
@@ -123,5 +131,5 @@ secondary color: #9b7fd5
 /* ############################ */
 
 .deposit-containers {
-    -fx-background-color: #ffc8fa;
+    -fx-background-color: #ffa6f7;
 }

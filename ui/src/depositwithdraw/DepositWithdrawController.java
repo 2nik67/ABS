@@ -5,6 +5,7 @@ import client.Client;
 import client.Clients;
 import clientbody.ClientController;
 import header.HeaderController;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,7 +67,7 @@ public class DepositWithdrawController {
         initializeMoneyTextField();
     }
 
-    public void popUp(String name) throws Exception{
+    public void popUp(String name, ObservableList<String> style) throws Exception{
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("/depositwithdraw/depositAndWithdraw.fxml");
@@ -76,7 +77,7 @@ public class DepositWithdrawController {
         newStage.setResizable(false);
         newStage.setScene(scene);
         newStage.show();
-        scene.getStylesheets().add("resources/DefaultStyle.css");
+        scene.getStylesheets().add(style.get(0));
     }
 
     public void setCurrentClient(Client currentClient) {

@@ -23,7 +23,7 @@
             </Label>
          </center>
          <right>
-            <Label id="header-yaz-label" fx:id="currentYazLabel" styleClass="header-label" text="Current Yaz:" BorderPane.alignment="CENTER">
+            <Label id="header-yaz-label" fx:id="currentYazLabel" styleClass="header-label" text="Current YAZ:" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="1.0" left="10.0" right="10.0" top="1.0" />
                </BorderPane.margin>
@@ -39,7 +39,7 @@
                </BorderPane.margin></ComboBox>
          </left>
          <top>
-            <MenuBar id="header-menu-bar" fx:id="headerMenuBar" onMouseClicked="#initializeSkinContextMenu" styleClass="header-containers" BorderPane.alignment="CENTER">
+            <MenuBar id="header-menu-bar" fx:id="headerMenuBar" styleClass="header-containers" BorderPane.alignment="CENTER">
               <menus>
                 <Menu id="header-skin-menu" fx:id="skinMenu" mnemonicParsing="false" onAction="#initializeSkinContextMenu" onMenuValidation="#initializeSkinContextMenu" text="Skin" />
               </menus>
