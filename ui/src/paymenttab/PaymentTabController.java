@@ -25,6 +25,12 @@ public class PaymentTabController{
     private ClientController clientController;
 
     @FXML
+    private TextField moneyTextFiled;
+
+    @FXML
+    private Button payBtn;
+
+    @FXML
     private TreeView<String> loansTreeView;
 
     @FXML
@@ -40,7 +46,29 @@ public class PaymentTabController{
     void autoPayOnAction(ActionEvent event) {
         Loan loanToPay = Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem());
         loanToPay.payLoan();
+        payBtn.setDisable(true);
+        moneyTextFiled.setDisable(true);
         autoPayBtn.setDisable(true);
+        closeLoanBtn.setDisable(true);
+        ObservableList<String> observableList = loansListView.getItems();
+        observableList.remove(loansListView.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    void payBtnOnAction(ActionEvent event) {
+        Loan loan = Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem());
+        if (loan.getOwner().getMoney() < Double.parseDouble(moneyTextFiled.getText())){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("");
+            alert.setContentText("Not enough money in the bank account");
+            return;
+        }
+        loan.payPartOfLoan(Double.parseDouble(moneyTextFiled.getText()));
+        payBtn.setDisable(true);
+        moneyTextFiled.setDisable(true);
+        autoPayBtn.setDisable(true);
+        closeLoanBtn.setDisable(true);
         ObservableList<String> observableList = loansListView.getItems();
         observableList.remove(loansListView.getSelectionModel().getSelectedItem());
     }
@@ -61,15 +89,30 @@ public class PaymentTabController{
             closeLoanBtn.setDisable(true);
             clientController.createInvestmentTreeForClient(clientController.getChosenClient());
             clientController.createLoanTreeForClient(clientController.getChosenClient());
+            payBtn.setDisable(true);
+            moneyTextFiled.setDisable(true);
+            autoPayBtn.setDisable(true);
+            closeLoanBtn.setDisable(true);
         }
+
 
     }
 
     @FXML
     private void initialize() {
         loansListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue!=null &&
+                    Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).getStatus().equals(Status.RISK)){
+                payBtn.setDisable(false);
+                moneyTextFiled.setDisable(false);
+            }
+            else{
+                payBtn.setDisable(true);
+                moneyTextFiled.setDisable(true);
+            }
             if (newValue!=null && Loans.getLoanByID(newValue).timeToPay() && (Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).isActive() ||
                     (Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).getStatus().equals(Status.RISK)))){
+
                 autoPayBtn.setDisable(false);
             }
             else
@@ -158,7 +201,7 @@ public class PaymentTabController{
                 else if(loan.getStatus().equals(Status.RISK)){
                     TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
                             + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                    TreeItem<String> missedPayments = new TreeItem<>("Total payments missed: " + loan.getAmountOfMissedPayments() + " | Total amount missed: " + loan.getTotalAmountMissed());
+                    TreeItem<String> missedPayments = new TreeItem<>("Total amount missed: " + loan.getTotalAmountMissed());
 
                     loanID.getChildren().add(payments);
                     loanID.getChildren().add(missedPayments);

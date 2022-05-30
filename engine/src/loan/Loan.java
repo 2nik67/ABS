@@ -162,6 +162,20 @@ public class Loan {
         return finishYaz;
     }
 
+    public void payPartOfLoan(double toPay) {
+        double interest = toPay * interestPercentage/100;
+        double partOfLoan = toPay - interest;
+        paymentInfo.add(new Payment(Yaz.getYaz(), interest, partOfLoan));
+        for (Pair<Client, Double> loaner : loaners) {
+            double payBack = loaner.getValue() /loan;
+            loaner.getKey().loadMoney(payBack * partOfLoan + interest * payBack, loaner.getKey().getMoney());
+
+        }
+        loanPaid += partOfLoan;
+        interestPaid +=interest;
+        owner.loadMoney(-1*(toPay), owner.getMoney());
+    }
+
     public void payLoan() {
         if((Yaz.getYaz()-activeYaz) % periodOfYazToPay == 0){
             paymentInfo.add(new Payment(Yaz.getYaz(), loanEveryYaz, interestEveryYaz ));
@@ -192,10 +206,10 @@ public class Loan {
     public void printLatePayments() {
         System.out.println("Number of payments missed: " + latePayments.size());
         int sum=0;
-        for (int i = 0; i < latePayments.size(); i++) {
+        for (Pair<Integer, Double> latePayment : latePayments) {
             //System.out.println("Payment " + (i+1) + ":");
             //System.out.println("Yaz: " + latePayments.get(i).getKey() + " | "+"Amount: " + latePayments.get(i).getValue());
-            sum+=latePayments.get(i).getValue();
+            sum += latePayment.getValue();
         }
         System.out.println("Total amount missed: " + sum);
     }
@@ -208,11 +222,8 @@ public class Loan {
     }
 
     public double getTotalAmountMissed(){
-        double sum=0;
-        for (int i = 0; i < latePayments.size(); i++) {
-            sum+=latePayments.get(i).getValue();
-        }
-        return sum;
+        int periodOfLoan = Yaz.getYaz()-startedYaz;
+        return (double) periodOfLoan / periodOfYazToPay * (loanEveryYaz + interestEveryYaz);
     }
 
     public double getInterestPaid() {
@@ -250,4 +261,6 @@ public class Loan {
         int amountOfPayments = yazSinceActive/periodOfYazToPay;
         return !(loanPaid < amountOfPayments * (interestPaid + loanPaid));
     }
+
+
 }

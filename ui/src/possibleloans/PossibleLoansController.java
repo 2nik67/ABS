@@ -3,17 +3,21 @@ package possibleloans;
 import Investment.Investment;
 import client.Client;
 import clientbody.ClientController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import load.LoadFile;
 import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
@@ -49,9 +53,11 @@ public class PossibleLoansController {
 
     @FXML
     public void initialize(){
-
         initializeLoanCheckList();
     }
+
+    @FXML
+    private ProgressIndicator scrambleProgressIndicator;
 
     @FXML
     void okBtnOnAction(ActionEvent event) {
@@ -64,11 +70,39 @@ public class PossibleLoansController {
             }
         }
 
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (double i = 0; i < 6; i++) {
+                    scrambleProgressIndicator.setProgress(i/10);
+                    Thread.sleep(100);
+                }
 
-        Investment.investmentAssigning(chosenLoans, sumToInvest);
-        scrambleTabController.createTrees();
-        Stage stage = (Stage) cancelBtn.getScene().getWindow();
-        stage.close();
+                for (double i = 6; i <= 10; i++) {
+                    scrambleProgressIndicator.setProgress(i/10);
+                    Thread.sleep(100);
+                }
+                Thread.sleep(500);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Investment.investmentAssigning(chosenLoans, sumToInvest);
+                        scrambleTabController.createTrees();
+                        Stage stage = (Stage) cancelBtn.getScene().getWindow();
+                        stage.close();
+                    }
+                });
+                return null;
+            }
+        };
+        Thread t= new Thread(task);
+
+        t.start();
+
+
+
+
 
     }
 

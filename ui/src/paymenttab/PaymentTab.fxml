@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,7 +16,7 @@
    <content>
       <SplitPane dividerPositions="0.6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="513.0" styleClass="client-containers">
          <items>
-            <SplitPane dividerPositions="0.85" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="client-containers">
+            <SplitPane dividerPositions="0.8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="client-containers">
               <items>
                   <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="client-containers">
                      <center>
@@ -26,35 +27,53 @@
                         </TreeView>
                      </center>
                   </BorderPane>
-                  <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="303.0" spacing="10.0" styleClass="client-containers">
-                     <children>
-                        <Button fx:id="closeLoanBtn" disable="true" mnemonicParsing="false" onAction="#closeLoanOnAction" text="Close Loan">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="autoPayBtn" disable="true" mnemonicParsing="false" onAction="#autoPayOnAction" text="Auto Pay">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Label id="active-label" text="Active" textFill="BLUE">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <Label id="timetopay-label" text="Time to pay" textFill="GREEN">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <Label id="risk-label" text="Risk" textFill="RED">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                     <items>
+                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="303.0" spacing="10.0" styleClass="client-containers">
+                           <children>
+                              <Button fx:id="closeLoanBtn" disable="true" mnemonicParsing="false" onAction="#closeLoanOnAction" text="Close Loan">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="autoPayBtn" disable="true" mnemonicParsing="false" onAction="#autoPayOnAction" text="Auto Pay">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Label id="active-label" text="Active" textFill="BLUE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label id="timetopay-label" text="Time to pay" textFill="GREEN">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label id="risk-label" text="Risk" textFill="RED">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="moneyTextFiled" disable="true" promptText="Desired amount of money">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="payBtn" disable="true" mnemonicParsing="false" onAction="#payBtnOnAction" text="Pay">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </items>
+                  </SplitPane>
               </items>
             </SplitPane>
             <BorderPane styleClass="client-containers">
