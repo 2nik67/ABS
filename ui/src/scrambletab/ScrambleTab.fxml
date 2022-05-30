@@ -19,7 +19,7 @@
          <items>
             <VBox id="scramble-vbox" fx:id="leftVBox" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" styleClass="client-containers">
                <children>
-                  <Label prefHeight="21.0" prefWidth="204.0" text="*Red is a must" textFill="RED">
+                  <Label id="scramble-red-must" prefHeight="21.0" prefWidth="204.0" text="*Red is a must" textFill="RED">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -36,7 +36,7 @@
                         </ContextMenu>
                      </contextMenu>
                   </TextField>
-                  <Label text="Amount to invest" textFill="RED">
+                  <Label id="scramble-amount-label" text="Amount to invest" textFill="RED">
                      <padding>
                         <Insets bottom="5.0" />
                      </padding>

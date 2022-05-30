@@ -27,7 +27,7 @@
                         </TreeView>
                      </center>
                   </BorderPane>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="client-containers">
                      <items>
                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="303.0" spacing="10.0" styleClass="client-containers">
                            <children>
@@ -58,9 +58,9 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0" styleClass="client-containers">
                            <children>
-                              <TextField fx:id="moneyTextFiled" disable="true" promptText="Desired amount of money">
+                              <TextField fx:id="moneyTextFiled" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Enter amount">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>

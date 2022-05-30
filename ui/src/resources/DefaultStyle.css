@@ -27,6 +27,14 @@ secondary color: #9b7fd5
     -fx-text-fill: #c7c7c7;
 }
 
+#scramble-red-must {
+    -fx-text-fill: RED;
+}
+
+#scramble-amount-label {
+    -fx-text-fill: RED;
+}
+
 .button {
     -fx-background-color: linear-gradient(#453f52, #9b7fd5);
     -fx-text-fill: #c7c7c7;

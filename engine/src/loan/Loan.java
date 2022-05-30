@@ -166,11 +166,15 @@ public class Loan {
         double interest = toPay * interestPercentage/100;
         double partOfLoan = toPay - interest;
         paymentInfo.add(new Payment(Yaz.getYaz(), interest, partOfLoan));
+        if(loan+interest - (loanPaid+interestPaid) < toPay){
+            payFullLoan();
+        }
         for (Pair<Client, Double> loaner : loaners) {
             double payBack = loaner.getValue() /loan;
             loaner.getKey().loadMoney(payBack * partOfLoan + interest * payBack, loaner.getKey().getMoney());
 
         }
+
         loanPaid += partOfLoan;
         interestPaid +=interest;
         owner.loadMoney(-1*(toPay), owner.getMoney());

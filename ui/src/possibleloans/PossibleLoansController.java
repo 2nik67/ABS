@@ -69,7 +69,8 @@ public class PossibleLoansController {
                 chosenLoans.add(loans.get(i));
             }
         }
-
+        cancelBtn.setDisable(true);
+        okBtn.setDisable(true);
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {

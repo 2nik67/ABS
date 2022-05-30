@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+import javafx.util.converter.IntegerStringConverter;
 import loan.Loan;
 import loan.Loans;
 import loan.Status;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
+import java.util.function.UnaryOperator;
 
 public class PaymentTabController{
 
@@ -58,19 +60,34 @@ public class PaymentTabController{
     void payBtnOnAction(ActionEvent event) {
         Loan loan = Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem());
         if (loan.getOwner().getMoney() < Double.parseDouble(moneyTextFiled.getText())){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("ERROR");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
             alert.setHeaderText("");
-            alert.setContentText("Not enough money in the bank account");
-            return;
+            alert.setContentText("Not enough money in your balance.");
+            alert.show();
         }
-        loan.payPartOfLoan(Double.parseDouble(moneyTextFiled.getText()));
-        payBtn.setDisable(true);
-        moneyTextFiled.setDisable(true);
-        autoPayBtn.setDisable(true);
-        closeLoanBtn.setDisable(true);
-        ObservableList<String> observableList = loansListView.getItems();
-        observableList.remove(loansListView.getSelectionModel().getSelectedItem());
+        else {
+            loan.payPartOfLoan(Double.parseDouble(moneyTextFiled.getText()));
+            payBtn.setDisable(true);
+            moneyTextFiled.setDisable(true);
+            autoPayBtn.setDisable(true);
+            closeLoanBtn.setDisable(true);
+            ObservableList<String> observableList = loansListView.getItems();
+            observableList.remove(loansListView.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+        String newText = change.getControlNewText();
+        if (newText.matches("-?([0-9][0-9]*)?")) {
+            return change;
+        }
+        return null;
+    };
+
+    public void initializeTextFields(){
+        moneyTextFiled.setTextFormatter(
+                new TextFormatter<Integer>(new IntegerStringConverter(), null, integerFilter));
     }
 
     @FXML
@@ -100,6 +117,7 @@ public class PaymentTabController{
 
     @FXML
     private void initialize() {
+        initializeTextFields();
         loansListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue!=null &&
                     Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).getStatus().equals(Status.RISK)){
