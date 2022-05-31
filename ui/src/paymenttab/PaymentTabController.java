@@ -123,20 +123,25 @@ public class PaymentTabController{
                     Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).getStatus().equals(Status.RISK)){
                 payBtn.setDisable(false);
                 moneyTextFiled.setDisable(false);
+                closeLoanBtn.setDisable(false);
             }
             else{
                 payBtn.setDisable(true);
                 moneyTextFiled.setDisable(true);
+                closeLoanBtn.setDisable(false);
             }
             if (newValue!=null && Loans.getLoanByID(newValue).timeToPay() && (Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).isActive() ||
                     (Loans.getLoanByID(loansListView.getSelectionModel().getSelectedItem()).getStatus().equals(Status.RISK)))){
 
                 autoPayBtn.setDisable(false);
+                closeLoanBtn.setDisable(false);
             }
-            else
+            else{
                 autoPayBtn.setDisable(true);
 
-            closeLoanBtn.setDisable(false);
+                closeLoanBtn.setDisable(false);
+            }
+
         });
 
         loansListView.setCellFactory(lv -> new ListCell<String>(){
