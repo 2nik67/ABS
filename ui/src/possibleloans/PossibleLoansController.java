@@ -66,7 +66,7 @@ public class PossibleLoansController {
         List<Loan> loans = Loans.getLoans();
         for (int i = 0; i < loans.size(); i++) {
             if(loansCheckList.getCheckModel().isChecked(i)){
-                chosenLoans.add(loans.get(i));
+                chosenLoans.add(Loans.getLoanByID(loansCheckList.getCheckModel().getItem(i)));
             }
         }
         cancelBtn.setDisable(true);
