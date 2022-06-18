@@ -84,7 +84,7 @@ public class AdminController {
                         progressBar.setProgress(i/10);
                         Thread.sleep(200);
                     }
-                    LoadFile.readFile();
+                    //LoadFile.readFile();
                     progressBar.setProgress(1);
                     Platform.runLater(new Runnable() {
                         @Override

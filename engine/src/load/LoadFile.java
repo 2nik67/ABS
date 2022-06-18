@@ -4,9 +4,12 @@ import client.Client;
 import client.Clients;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import load.jaxb.schema.generated.AbsCustomer;
-import load.jaxb.schema.generated.AbsDescriptor;
-import load.jaxb.schema.generated.AbsLoan;
+
+import load.jaxbv2.schema.generated.AbsDescriptor;
+import load.jaxbv2.schema.generated.AbsLoan;
+import load.jaxbv2.schema.generated.AbsLoan;
+import load.jaxbv2.schema.generated.AbsLoans;
+import load.jaxbv2.schema.generated.ObjectFactory;
 import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
@@ -47,16 +50,16 @@ public abstract class LoadFile{
         return path;
     }
 
-    public static void readFile(){
+    public static void readFile(Client client){
 
         try {
             File file=new File(path);
             InputStream inputStream = new FileInputStream(file);
             JAXBContext jaxbContext = JAXBContext.newInstance(AbsDescriptor.class);
-            JAXBContext jc = JAXBContext.newInstance("load.jaxb.schema.generated");
+            JAXBContext jc = JAXBContext.newInstance("load.jaxbv2.schema.generated");
             Unmarshaller u = jc.createUnmarshaller();
             absDescriptor = (AbsDescriptor) u.unmarshal(inputStream);
-            importData();
+            importDataForLoan(client);
 
         }catch (JAXBException e){
             e.printStackTrace();
@@ -69,6 +72,17 @@ public abstract class LoadFile{
 
     }
 
+    private static void importDataForLoan(Client client) {
+        AbsLoans absLoans = absDescriptor.getAbsLoans();
+        for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
+            loans.add(new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
+                    returnCategoryByString(absLoans.getAbsLoan().get(i).getAbsCategory()), absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
+                    absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment()));
+
+        }
+
+    }
+/*
     private static void importData(){
         importCategory();
         importCustomers();
@@ -177,7 +191,7 @@ public abstract class LoadFile{
             }
         }
         return null;
-    }
+    }*/
     public static Category returnCategoryByString(String category){
         for (Category value : categories) {
             if (value.getCategory().equalsIgnoreCase(category)) {
