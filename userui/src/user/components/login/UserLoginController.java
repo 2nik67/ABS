@@ -13,12 +13,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import user.components.main.UserAppMainController;
 import user.utils.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class UserLoginController extends Application {
+public class UserLoginController {
+
+    private UserAppMainController userAppMainController;
+
+    private String currentClient;
 
     @FXML
     private TextField userNameTextField;
@@ -33,9 +38,6 @@ public class UserLoginController extends Application {
 
     @FXML
     void loginBtnOnAction(ActionEvent event) throws IOException {
-
-
-
         String userName= userNameTextField.getText();
         if(userName.isEmpty()){
             return;
@@ -46,6 +48,8 @@ public class UserLoginController extends Application {
                 .build()
                 .toString();
         //updatehttpline
+
+        this.currentClient = userName;
 
         HttpClientUtil.runAsync(finalUrl, new Callback() {
             @Override
@@ -59,14 +63,16 @@ public class UserLoginController extends Application {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200){
                     String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            label.setText("Something went wrong" + responseBody)
-                    );
+                    Platform.runLater(() -> {
+                        label.setText("Something went wrong" + responseBody);
+                        System.out.println(responseBody);
+                    });
                 }else{
                     String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            label.setText(responseBody)
-                    );
+                    Platform.runLater(() -> {
+                        label.setText(responseBody);
+                        userAppMainController.switchToUserApp();
+                    });
                 }
 
             }
@@ -76,18 +82,15 @@ public class UserLoginController extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void setUserAppMainController(UserAppMainController userAppMainController)
+    {
+        this.userAppMainController = userAppMainController;
+    }
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/user/components/login/login.fxml");
-        fxmlLoader.setLocation(url);
-        AnchorPane root = fxmlLoader.load(url.openStream());
-        Scene scene =new Scene(root, 1000, 700);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public String getCurrentClient() {
+        return currentClient;
     }
 }

@@ -100,7 +100,7 @@ public abstract class Menu {
                 System.out.println("Please enter full path for XML file:\n");
                 path=scanner.nextLine();
                 LoadFile.setPath(path);
-                LoadFile.readFile();
+                //LoadFile.readFile();
                 break;
             case 2:
                 Loans.printLoans();
