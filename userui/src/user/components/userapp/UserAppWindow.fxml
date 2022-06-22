@@ -83,5 +83,14 @@
             </BorderPane>
          </content>
       </Tab>
+      <Tab fx:id="newLoanTab" text="New Loan">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <fx:include fx:id="newLoanTabComponent" source="../newloantab/NewLoan.fxml" />
+               </center>
+            </BorderPane>
+         </content>
+      </Tab>
    </tabs>
 </TabPane>

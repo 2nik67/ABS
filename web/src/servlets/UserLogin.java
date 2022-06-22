@@ -31,7 +31,7 @@ public class UserLogin extends HttpServlet {
             Clients.addClient(client);
             resp.getWriter().println("NEW");
         }else{
-            resp.getWriter().println("NOT NEW");
+            resp.getWriter().println("EXISTING");
         }
 
     }

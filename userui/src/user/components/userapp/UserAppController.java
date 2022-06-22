@@ -19,6 +19,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import user.components.depositwithdraw.DepositWithdrawController;
 import user.components.main.UserAppMainController;
+import user.components.newloantab.NewLoanTabController;
 import user.components.paymenttab.PaymentTabController;
 import user.components.possibleloans.PossibleLoansController;
 import user.components.scrambletab.ScrambleTabController;
@@ -35,6 +36,8 @@ public class UserAppController {
     private PossibleLoansController possibleLoansController;
 
     private DepositWithdrawController depositWithdrawController;
+
+    private NewLoanTabController newLoanTabController;
 
     private Client chosenClient;
 
@@ -87,6 +90,7 @@ public class UserAppController {
     private Tab paymentTab;
 
     final static String getClientFinalUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
+
     @FXML
     public void initialize(){
         if (scrambleTabComponentController != null) {
@@ -131,10 +135,6 @@ public class UserAppController {
                 }
             }
         });
-
-
-
-
 
     }
 

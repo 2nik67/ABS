@@ -68,18 +68,18 @@ public class UserLoginController {
                         label.setText("Something went wrong" + responseBody);
                         System.out.println(responseBody);
                     });
-                }else{
+                }
+                else{
                     String responseBody = response.body().string();
+                    System.out.println(responseBody);
 
                    Platform.runLater(() -> {
-                       if(responseBody.toString().equals("NEW\n")){
-
+                       if(responseBody.contains("NEW")) {
                            userAppMainController.switchToUserApp(userNameTextField.getText());
-                       }else {
-                           label.setText("Client already signed in!");
-
                        }
-
+                       else {
+                           label.setText("Client already signed in!");
+                       }
                     });
                 }
 
