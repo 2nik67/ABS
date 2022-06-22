@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -47,7 +48,7 @@ public class UserLoginController {
                 .addQueryParameter("username", userName)
                 .build()
                 .toString();
-        //updatehttpline
+
 
         this.currentClient = userName;
 
@@ -69,9 +70,16 @@ public class UserLoginController {
                     });
                 }else{
                     String responseBody = response.body().string();
-                    Platform.runLater(() -> {
-                        label.setText(responseBody);
-                        userAppMainController.switchToUserApp();
+
+                   Platform.runLater(() -> {
+                       if(responseBody.toString().equals("NEW\n")){
+
+                           userAppMainController.switchToUserApp(userNameTextField.getText());
+                       }else {
+                           label.setText("Client already signed in!");
+
+                       }
+
                     });
                 }
 

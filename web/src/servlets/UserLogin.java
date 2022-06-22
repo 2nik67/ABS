@@ -29,9 +29,9 @@ public class UserLogin extends HttpServlet {
         if (client == null){
             client = new Client(userName, 0);
             Clients.addClient(client);
-            resp.getWriter().println("new client");
+            resp.getWriter().println("NEW");
         }else{
-            resp.getWriter().println("not a new ");
+            resp.getWriter().println("NOT NEW");
         }
 
     }

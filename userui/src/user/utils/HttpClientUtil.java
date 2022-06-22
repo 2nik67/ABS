@@ -1,13 +1,12 @@
 package user.utils;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
 
 import java.util.function.Consumer;
 
 public class HttpClientUtil {
+
+    private final static String loadMoneyFinalUrl = "http://localhost:8080/web_Web/servlets/LoadMoney";
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
@@ -22,6 +21,18 @@ public class HttpClientUtil {
 
     public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
+    }
+
+    public static String createLoadMoneyUrl(boolean isDeposit, String money, String name){
+        if (!isDeposit) {
+            money = "-" + money;
+        }
+        return HttpUrl.parse(loadMoneyFinalUrl)
+                .newBuilder()
+                .addQueryParameter("ClientName", name)
+                .addQueryParameter("Money", money)
+                .build().toString();
+
     }
 
     public static void runAsync(String finalUrl, Callback callback) {

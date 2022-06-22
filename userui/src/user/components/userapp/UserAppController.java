@@ -3,6 +3,7 @@ package user.components.userapp;
 import client.Client;
 import client.Clients;
 import client.Transaction;
+import com.google.gson.Gson;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,12 +13,18 @@ import javafx.util.Pair;
 import loan.Loan;
 import loan.Loans;
 import loan.Status;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import user.components.depositwithdraw.DepositWithdrawController;
 import user.components.main.UserAppMainController;
 import user.components.paymenttab.PaymentTabController;
 import user.components.possibleloans.PossibleLoansController;
 import user.components.scrambletab.ScrambleTabController;
+import user.utils.HttpClientUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +86,7 @@ public class UserAppController {
     @FXML
     private Tab paymentTab;
 
+    final static String getClientFinalUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
     @FXML
     public void initialize(){
         if (scrambleTabComponentController != null) {
@@ -97,16 +105,36 @@ public class UserAppController {
     }
 
     public void infoTabSelected(){
+
         transactionTableView.getItems().clear();
         String name = userAppMainController.getChosenClient();
-        Client client = Clients.getClientByName(name);
-        yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
-        beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
-        moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
-        afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
-        paymentTabComponentController.clearListView();
-        paymentTabComponentController.createLoansListView();
-        transactionTableView.getItems().addAll(client.getTransactions());
+        String finalUrl = getClientFinalUrl + "?ClientName=" + name;
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.exit(0);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String jsonOfClient = response.body().string();
+                System.out.println(jsonOfClient);
+                Client client = new Gson().fromJson(jsonOfClient, Client.class);
+                if (!client.getTransactions().isEmpty()){
+                    yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
+                    beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
+                    moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
+                    afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
+                    paymentTabComponentController.clearListView();
+                    paymentTabComponentController.createLoansListView();
+                    transactionTableView.getItems().addAll(client.getTransactions());
+                }
+            }
+        });
+
+
+
+
 
     }
 
@@ -119,7 +147,7 @@ public class UserAppController {
     }
 
     public String getChosenClient(){
-        return userAppMainController.getChosenClient();
+        return userAppMainController.getClientsName();
     }
 
     public void createLoanTreeForClient(String name){

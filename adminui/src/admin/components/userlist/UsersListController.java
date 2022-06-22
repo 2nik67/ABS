@@ -39,12 +39,12 @@ public class UsersListController extends Application {
 
     @FXML
     void initialize() {
-
+        startListRefresher();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        startListRefresher();
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("/admin/components/userlist/AdminApp.fxml");
         fxmlLoader.setLocation(url);

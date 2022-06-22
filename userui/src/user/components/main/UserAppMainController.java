@@ -28,6 +28,8 @@ public class UserAppMainController {
     @FXML
     private AnchorPane mainPanel;
 
+    private String clientsName;
+
     private AnchorPane userLoginComponent;
     private UserLoginController userLoginComponentController;
 
@@ -77,11 +79,16 @@ public class UserAppMainController {
         AnchorPane.setRightAnchor(pane, 1.0);
     }
 
+    public String getClientsName() {
+        return clientsName;
+    }
+
     public String getChosenClient(){
         return userLoginComponentController.getCurrentClient();
     }
 
-    public void switchToUserApp() {
+    public void switchToUserApp(String name) {
+        clientsName = name;
         setMainPanelTo(userAppComponent);
         // *.setActive();
     }

@@ -32,18 +32,16 @@ public class UserListRefresher  extends TimerTask {
     @Override
     public void run() {
 
-        if (!shouldUpdate.get()) {
-            return;
-        }
+
 
         final int finalRequestNumber = ++requestNumber;
        // httpRequestLoggerConsumer.accept("About to invoke: " +"http://localhost:8080/web_Web/servlets/UsersList"+ " | Users Request # " + finalRequestNumber);
-        HttpClientUtil.runAsync("http://localhost:8080/web_Web/servlets/UsersList", new Callback() {
+        HttpClientUtil.runAsync("http://localhost:8080/web_Web/servlets/UserList", new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                // httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Ended with failure...");
-
+                System.out.println(e);
             }
 
             @Override

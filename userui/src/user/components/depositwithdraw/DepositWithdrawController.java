@@ -2,6 +2,7 @@ package user.components.depositwithdraw;
 
 import client.Client;
 import client.Clients;
+import com.google.gson.Gson;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +16,14 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import user.components.userapp.UserAppController;
+import user.utils.HttpClientUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.function.UnaryOperator;
 
@@ -37,6 +44,10 @@ public class DepositWithdrawController {
     @FXML
     private ChoiceBox<String> withdrawDepositChoiceBox;
 
+    private final static String getClientFinalUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
+
+
+
     @FXML
     void cancelBtnOnAction(ActionEvent event) {
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
@@ -45,14 +56,25 @@ public class DepositWithdrawController {
 
     @FXML
     void okBtnOnAction(ActionEvent event) {
-        if (withdrawDepositChoiceBox.getValue().equals("Withdraw")){
-            currentClient.loadMoney(Double.parseDouble(moneyTextField.getText()) * -1, currentClient.getMoney());
+        String url;
+        if(moneyTextField.getText().equals("Deposit")){
+            url = HttpClientUtil.createLoadMoneyUrl(true, moneyTextField.getText(), userAppController.getChosenClient());
+        }else{
+            url = HttpClientUtil.createLoadMoneyUrl(false, moneyTextField.getText(), userAppController.getChosenClient());
         }
-        else {
-            currentClient.loadMoney(Double.parseDouble(moneyTextField.getText()), currentClient.getMoney());
-        }
-        userAppController.infoTabSelected();
+        HttpClientUtil.runAsync(url, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+            }
+        });
+
+        userAppController.infoTabSelected();
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
 
@@ -72,7 +94,7 @@ public class DepositWithdrawController {
     public void popUp(String name, ObservableList<String> style) throws Exception{
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/depositwithdraw/depositAndWithdraw.fxml");
+        URL url = getClass().getResource("/user/components/depositwithdraw/depositAndWithdraw.fxml");
         fxmlLoader.setLocation(url);
         AnchorPane root = fxmlLoader.load(url.openStream());
         Scene scene =new Scene(root, 400 , 200);
@@ -80,7 +102,7 @@ public class DepositWithdrawController {
         newStage.setScene(scene);
         newStage.show();
 
-        newStage.getIcons().add(new Image("resources/coins.png"));
+        //newStage.getIcons().add(new Image("resources/coins.png"));
 
         if(!style.isEmpty())
             scene.getStylesheets().add(style.get(0));
