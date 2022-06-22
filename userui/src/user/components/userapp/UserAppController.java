@@ -96,6 +96,7 @@ public class UserAppController {
         if (scrambleTabComponentController != null) {
             scrambleTabComponentController.setUserAppController(this);
             paymentTabComponentController.setUserAppController(this);
+            newLoanTabController.setUserAppController(this);
         }
     }
 
