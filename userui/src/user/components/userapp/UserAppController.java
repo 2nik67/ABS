@@ -37,8 +37,6 @@ public class UserAppController {
 
     private DepositWithdrawController depositWithdrawController;
 
-    private NewLoanTabController newLoanTabController;
-
     private Client chosenClient;
 
     @FXML
@@ -81,6 +79,12 @@ public class UserAppController {
     private PaymentTabController paymentTabComponentController;
 
     @FXML
+    private ScrollPane newLoanTabComponent;
+
+    @FXML
+    private NewLoanTabController newLoanTabComponentController;
+
+    @FXML
     private Button withdrawBtn;
 
     @FXML
@@ -89,6 +93,9 @@ public class UserAppController {
     @FXML
     private Tab paymentTab;
 
+    @FXML
+    private Tab newLoanTab;
+
     final static String getClientFinalUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
 
     @FXML
@@ -96,7 +103,7 @@ public class UserAppController {
         if (scrambleTabComponentController != null) {
             scrambleTabComponentController.setUserAppController(this);
             paymentTabComponentController.setUserAppController(this);
-            newLoanTabController.setUserAppController(this);
+            newLoanTabComponentController.setUserAppController(this);
         }
     }
 

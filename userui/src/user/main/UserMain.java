@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.net.URL;
 
 public class UserMain extends Application {
+
     private UserAppMainController userAppMainController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(600);
-        primaryStage.setTitle("Chat App Client");
+        primaryStage.setTitle("ABS Customer Client");
 
         URL loginPage = getClass().getResource("/user/components/main/UserAppMain.fxml");
         try {

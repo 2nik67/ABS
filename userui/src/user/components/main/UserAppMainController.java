@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import user.components.login.UserLoginController;
@@ -27,6 +28,9 @@ public class UserAppMainController {
 
     @FXML
     private AnchorPane mainPanel;
+
+    @FXML
+    private Label currentYazLabel;
 
     private String clientsName;
 

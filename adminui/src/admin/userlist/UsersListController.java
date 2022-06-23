@@ -1,4 +1,4 @@
-package admin.components.userlist;
+package admin.userlist;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -46,7 +46,7 @@ public class UsersListController extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/admin/components/userlist/AdminApp.fxml");
+        URL url = getClass().getResource("/admin/userlist/AdminApp.fxml");
         fxmlLoader.setLocation(url);
         BorderPane root = fxmlLoader.load(url.openStream());
         Scene scene =new Scene(root, 1000, 700);

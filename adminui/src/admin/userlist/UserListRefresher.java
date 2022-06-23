@@ -1,4 +1,4 @@
-package admin.components.userlist;
+package admin.userlist;
 
 import admin.utils.HttpClientUtil;
 import com.google.gson.Gson;

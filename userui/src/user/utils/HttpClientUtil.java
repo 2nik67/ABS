@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 public class HttpClientUtil {
 
     private final static String loadMoneyFinalUrl = "http://localhost:8080/web_Web/servlets/LoadMoney";
+    private final static String getClientUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
+    private final static String loadLoanUrl = "http://localhost:8080/web_Web/servlets/NewLoan";
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
@@ -19,6 +21,20 @@ public class HttpClientUtil {
         simpleCookieManager.setLogData(logConsumer);
     }
 
+    public static String createLoadLoanUrl(String name, String path){
+        return HttpUrl.parse(loadLoanUrl)
+                .newBuilder()
+                .addQueryParameter("ClientName", name)
+                .build().toString();
+    }
+    public static String createGetClientUrl(String name){
+        return HttpUrl.parse(getClientUrl)
+                .newBuilder()
+                .addQueryParameter("ClientName", name)
+
+                .build().toString();
+
+    }
     public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }
@@ -33,6 +49,18 @@ public class HttpClientUtil {
                 .addQueryParameter("Money", money)
                 .build().toString();
 
+    }
+
+    public static void runAsyncPost(String finalUrl, RequestBody requestBody, Callback callback){
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(requestBody)
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
     }
 
     public static void runAsync(String finalUrl, Callback callback) {
