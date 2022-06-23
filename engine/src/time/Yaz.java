@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import loan.Loans;
 
 public abstract class Yaz {
-    private static int yaz;
+    private static int yaz = 0;
 
     public static int getYaz() {
         return yaz;

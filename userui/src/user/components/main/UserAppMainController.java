@@ -2,6 +2,7 @@ package user.components.main;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +18,14 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserAppMainController {
+
+    private TimerTask yazRefresher;
+    private Timer timer;
 
     @FXML
     private MenuBar headerMenuBar;
@@ -45,6 +52,7 @@ public class UserAppMainController {
     public void initialize() {
         loadLoginPage();
         loadUserAppPage();
+        startYazRefresher();
     }
 
     private void loadLoginPage() {
@@ -87,6 +95,19 @@ public class UserAppMainController {
         return clientsName;
     }
 
+    public void startYazRefresher() {
+        yazRefresher = new YazRefresher(
+                this::updateYazLabel);
+        timer = new Timer();
+        timer.schedule(yazRefresher, 2000, 2000);
+    }
+
+    private void updateYazLabel(String currentYaz) {
+        Platform.runLater(() -> {
+
+            currentYazLabel.setText("Current yaz: " + currentYaz);
+        });
+    }
     public String getChosenClient(){
         return userLoginComponentController.getCurrentClient();
     }

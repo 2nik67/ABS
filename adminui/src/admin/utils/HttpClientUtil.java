@@ -1,13 +1,13 @@
 package admin.utils;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
 
 import java.util.function.Consumer;
 
 public class HttpClientUtil {
+
+    private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
+
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
@@ -18,6 +18,22 @@ public class HttpClientUtil {
 
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
+    }
+
+    public static String getYazUrl(){
+        return yazUrl;
+    }
+
+    public static void runAsyncHead(String finalUrl, RequestBody requestBody, Callback callback){
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .head()
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
     }
 
     public static void removeCookiesOf(String domain) {

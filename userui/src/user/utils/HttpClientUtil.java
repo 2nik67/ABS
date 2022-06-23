@@ -9,7 +9,7 @@ public class HttpClientUtil {
     private final static String loadMoneyFinalUrl = "http://localhost:8080/web_Web/servlets/LoadMoney";
     private final static String getClientUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
     private final static String loadLoanUrl = "http://localhost:8080/web_Web/servlets/NewLoan";
-
+    private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -17,6 +17,9 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
+    public static String getYazUrl(){
+        return yazUrl;
+    }
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
     }
@@ -35,6 +38,7 @@ public class HttpClientUtil {
                 .build().toString();
 
     }
+
     public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }
