@@ -24,12 +24,13 @@ public class HttpClientUtil {
         simpleCookieManager.setLogData(logConsumer);
     }
 
-    public static String createLoadLoanUrl(String name, String path){
+    public static String createLoadLoanUrl(String name){
         return HttpUrl.parse(loadLoanUrl)
                 .newBuilder()
                 .addQueryParameter("ClientName", name)
                 .build().toString();
     }
+
     public static String createGetClientUrl(String name){
         return HttpUrl.parse(getClientUrl)
                 .newBuilder()

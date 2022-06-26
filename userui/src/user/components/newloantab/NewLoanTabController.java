@@ -11,6 +11,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.stage.FileChooser;
 import javafx.util.converter.IntegerStringConverter;
 import load.LoadFile;
+import loan.Loans;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import user.components.userapp.UserAppController;
@@ -54,8 +55,8 @@ public class NewLoanTabController {
                 new FileChooser.ExtensionFilter("XML Files", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null){
-            String url = HttpClientUtil.createLoadLoanUrl(userAppController.getChosenClient(),selectedFile.getPath().toString());
-            HttpClientUtil.runAsyncPost(url, createBodyRequestForLoadFile(selectedFile.getPath()), new Callback() {
+            String url = HttpClientUtil.createLoadLoanUrl(userAppController.getChosenClient());
+            HttpClientUtil.runAsyncPost(url, createBodyRequestForLoadFile(selectedFile), new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     System.out.println(e.toString());
@@ -63,14 +64,18 @@ public class NewLoanTabController {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    System.out.println(response.body().string());
+                    System.out.println("responded" + response.body().string());
+                    System.out.println(Loans.getLoans().isEmpty());
                 }
             });
         }
     }
 
-    private RequestBody createBodyRequestForLoadFile(String path) {
-        return new FormBody.Builder().add("Path", path).build();
+    private RequestBody createBodyRequestForLoadFile(File f) {
+        return  new MultipartBody.Builder()
+                .addFormDataPart("file1", f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
+                //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                .build();
     }
 
     @FXML
