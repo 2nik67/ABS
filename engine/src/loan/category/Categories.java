@@ -10,9 +10,9 @@ public abstract class Categories {
        Categories.categoryList=new ArrayList<>(categoryList);
     }
 
-    /*public static void addCategory(Category category){
+    public static void addCategory(Category category){
         categoryList.add(category);
-    }*/
+    }
 
     public static void printCategories(){
         for (int i = 0; i < categoryList.size(); i++) {

@@ -10,6 +10,8 @@ public abstract class Loans {
         loans=new ArrayList<>(loansList);
     }
 
+    public static void addLoan(Loan newLoan) { loans.add(newLoan); }
+
     public static List<Loan> getLoans() {
         return loans;
     }
@@ -19,9 +21,6 @@ public abstract class Loans {
         for(Loan l: loans){
             if(l.getStatus().equals(Status.NEW)){
                 System.out.println("\nLoanID: "+ l.getId() +" | "+ "Status: NEW" + " | "+ "Owner: " + l.getOwner().getName()+ " | "+ "Loan amount: " + l.getLoan());
-
-
-
 
             }
             else if (l.getStatus().equals(Status.PENDING)){

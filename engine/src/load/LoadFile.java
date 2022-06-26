@@ -80,7 +80,6 @@ public abstract class LoadFile{
                     absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment()));
 
         }
-
     }
 /*
     private static void importData(){

@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import load.LoadFile;
+import loan.Loan;
+import loan.Loans;
+import loan.category.Categories;
+import loan.category.Category;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,13 +24,20 @@ import java.io.IOException;
 public class NewLoan extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getReader().readLine().toString();
-        resp.getWriter().println("get" + path);
-       // String clientName = req.getParameter("ClientName");
-        //Client client = Clients.getClientByName(clientName);
-       // LoadFile.setPath(path);
-        //LoadFile.readFile(client);
-       // resp.getWriter().println("Hey");
+        String clientName = req.getParameter("ClientName");
+        Client client = Clients.getClientByName(clientName);
+
+        Double capital = Double.parseDouble(req.getParameter("Capital"));
+
+        String loanID = req.getParameter("LoanID");
+
+        Category cat = Categories.getCategoryByName(req.getParameter("Category"));
+
+        int totalYaz = Integer.parseInt(req.getParameter("TotalYaz"));
+        int yazInterval = Integer.parseInt(req.getParameter("YazInterval"));
+        int interest = Integer.parseInt(req.getParameter("InterestPerPayment"));
+
+        Loans.getLoans().add(new Loan(loanID, capital, client, cat, totalYaz, yazInterval, interest));
     }
 
     @Override

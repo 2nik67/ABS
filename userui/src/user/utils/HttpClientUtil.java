@@ -1,5 +1,6 @@
 package user.utils;
 
+import client.Client;
 import okhttp3.*;
 
 import java.util.function.Consumer;
@@ -28,6 +29,20 @@ public class HttpClientUtil {
         return HttpUrl.parse(loadLoanUrl)
                 .newBuilder()
                 .addQueryParameter("ClientName", name)
+                .build().toString();
+    }
+
+    public static String createNewLoanUrl(String clientName, String loanID, String capital, String totalYaz,
+                                          String yazInterval, String interest, String category) {
+        return HttpUrl.parse(loadLoanUrl)
+                .newBuilder()
+                .addQueryParameter("LoanID", loanID)
+                .addQueryParameter("ClientName", clientName)
+                .addQueryParameter("Capital", capital)
+                .addQueryParameter("TotalYaz", totalYaz)
+                .addQueryParameter("YazInterval", yazInterval)
+                .addQueryParameter("InterestPerPayment", interest)
+                .addQueryParameter("Category", category)
                 .build().toString();
     }
 

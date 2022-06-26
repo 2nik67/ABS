@@ -4,14 +4,14 @@ import client.Client;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.util.converter.IntegerStringConverter;
 import load.LoadFile;
+import loan.Loan;
 import loan.Loans;
+import loan.category.Categories;
+import loan.category.Category;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import user.components.userapp.UserAppController;
@@ -27,6 +27,15 @@ public class NewLoanTabController {
     private UserAppController userAppController;
 
     @FXML
+    private TextField loanIDTextField;
+
+    @FXML
+    private ContextMenu loanIDContext;
+
+    @FXML
+    private ScrollPane newLoanTabComponent;
+
+    @FXML
     private TextField capitalTextField;
 
     @FXML
@@ -36,16 +45,91 @@ public class NewLoanTabController {
     private TextField yazIntervalTextField;
 
     @FXML
+    private ContextMenu yazIntervalContext;
+
+    @FXML
     private TextField interestTextField;
 
     @FXML
     private Button createLoanButton;
 
     @FXML
-    private ComboBox<?> categoryComboBox;
+    private ComboBox<String> categoryComboBox;
 
     @FXML
     private Button loadFileBtn;
+
+    @FXML
+    void createLoanBtnOnAction(ActionEvent event) {
+        if(loanIDTextField.getText().equals("")){
+            MenuItem string = new MenuItem("Please enter an id for your loan, it can be anything.");
+            loanIDContext.getItems().clear();
+            loanIDContext.getItems().add(string);
+
+            loanIDContext.show(newLoanTabComponent,loanIDTextField.localToScreen(loanIDTextField.getBoundsInLocal()).getMinX(),
+                    loanIDTextField.localToScreen(loanIDTextField.getBoundsInLocal()).getMaxY());
+
+            return;
+        }
+
+        if(capitalTextField.getText().equals(""))
+            capitalTextField.setText("0");
+        if(interestTextField.getText().equals(""))
+            interestTextField.setText("0");
+        if(totalYAZTextField.getText().equals(""))
+            totalYAZTextField.setText("0");
+        if(yazIntervalTextField.getText().equals(""))
+            yazIntervalTextField.setText("0");
+
+        if(Loans.getLoanByID(loanIDTextField.getText()) != null){
+            MenuItem string = new MenuItem("This loan id is taken, please choose another one.");
+            loanIDContext.getItems().clear();
+            loanIDContext.getItems().add(string);
+
+            loanIDContext.show(newLoanTabComponent,loanIDTextField.localToScreen(loanIDTextField.getBoundsInLocal()).getMinX(),
+                    loanIDTextField.localToScreen(loanIDTextField.getBoundsInLocal()).getMaxY());
+
+            return;
+        }
+
+        if(Double.parseDouble(yazIntervalTextField.getText()) > Double.parseDouble(totalYAZTextField.getText())){
+            MenuItem string = new MenuItem("Yaz interval can't be bigger than total Yaz.");
+            yazIntervalContext.getItems().clear();
+            yazIntervalContext.getItems().add(string);
+
+            yazIntervalContext.show(newLoanTabComponent,yazIntervalTextField.localToScreen(yazIntervalTextField.getBoundsInLocal()).getMinX(),
+                    yazIntervalTextField.localToScreen(yazIntervalTextField.getBoundsInLocal()).getMaxY());
+
+            return;
+        }
+
+        /*Double capital = Double.parseDouble(capitalTextField.getText()),
+                totalYaz = Double.parseDouble(totalYAZTextField.getText()),
+                yazInterval = Double.parseDouble(yazIntervalTextField.getText()),
+                interest = Double.parseDouble(interestTextField.getText());*/
+
+        String capital = capitalTextField.getText(),
+                totalYaz = totalYAZTextField.getText(),
+                yazInterval = yazIntervalTextField.getText(),
+                interest = interestTextField.getText(),
+                category = categoryComboBox.getValue(),
+                loanID = loanIDTextField.getText();
+
+        String url = HttpClientUtil.createNewLoanUrl(userAppController.getChosenClient(), loanID,
+                capital, totalYaz, yazInterval, interest, category);
+        HttpClientUtil.runAsync(url, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println(e.toString());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                System.out.println("Loan added!");
+                Loans.printLoans();
+            }
+        });
+    }
 
     @FXML
     void loadFileOnAction(ActionEvent event) {
@@ -79,7 +163,7 @@ public class NewLoanTabController {
     }
 
     @FXML
-    public void initialize() { initializeTextFields(); }
+    public void initialize() { initializeTextFields(); initializeComboBox(); }
 
     UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         String newText = change.getControlNewText();
@@ -105,6 +189,15 @@ public class NewLoanTabController {
 
     public void setUserAppController(UserAppController userAppController) {
         this.userAppController = userAppController;
+    }
+
+    private void initializeComboBox(){
+        categoryComboBox.getItems().clear();
+        Categories.addCategory(new Category("Default"));
+
+        for(Category cat : Categories.getCategoryList()){
+            categoryComboBox.getItems().add(cat.getCategory());
+        }
     }
 
 }
