@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="newLoanTabComponent" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.components.newloantab.NewLoanTabController">
+<ScrollPane fx:id="newLoanTabComponent" fitToHeight="true" fitToWidth="true" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.components.newloantab.NewLoanTabController">
    <content>
       <SplitPane dividerPositions="0.5">
          <items>
@@ -41,7 +41,7 @@
                   </TextField>
                   <Label text="Loan ID">
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets bottom="10.0" left="5.0" />
                      </VBox.margin>
                   </Label>
                   <TextField fx:id="capitalTextField">
@@ -51,7 +51,7 @@
                   </TextField>
                   <Label text="Capital">
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets bottom="10.0" left="5.0" />
                      </VBox.margin>
                   </Label>
                   <TextField fx:id="totalYAZTextField">
@@ -61,7 +61,7 @@
                   </TextField>
                   <Label text="Total YAZ">
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets bottom="10.0" left="5.0" />
                      </VBox.margin>
                   </Label>
                   <TextField fx:id="yazIntervalTextField">
@@ -74,7 +74,7 @@
                   </TextField>
                   <Label text="YAZ between payments">
                      <VBox.margin>
-                        <Insets left="5.0" />
+                        <Insets bottom="10.0" left="5.0" />
                      </VBox.margin>
                   </Label>
                   <TextField fx:id="interestTextField">
@@ -84,7 +84,7 @@
                   </TextField>
                   <Label text="Interest per payment">
                      <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" />
+                        <Insets bottom="10.0" left="5.0" />
                      </VBox.margin>
                   </Label>
                   <Button fx:id="createLoanButton" mnemonicParsing="false" onAction="#createLoanBtnOnAction" text="Create Loan">
