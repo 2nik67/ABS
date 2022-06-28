@@ -20,8 +20,6 @@ import java.util.List;
 @WebServlet (name="UserLogin", urlPatterns = "/servlets/UserLogin")
 public class UserLogin extends HttpServlet {
 
-    //private final String CHAT_ROOM_URL = "../web2/index.html";
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

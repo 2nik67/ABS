@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -23,16 +22,22 @@
                      <items>
                         <VBox minHeight="-Infinity" minWidth="-Infinity" styleClass="client-containers">
                            <children>
-                              <TreeView fx:id="loansTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="248.0" VBox.vgrow="SOMETIMES">
+                              <TableView fx:id="loansTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn prefWidth="200.0" text="Loans" />
+                                </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
-                              </TreeView>
-                              <TreeView id="investmentsTreeView" fx:id="investmentsTreeView" prefHeight="212.0" prefWidth="248.0" VBox.vgrow="SOMETIMES">
+                              </TableView>
+                              <TableView fx:id="investmentsTableView" prefHeight="200.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn prefWidth="200.0" text="Investments" />
+                                </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
-                              </TreeView>
+                              </TableView>
                            </children>
                         </VBox>
                         <VBox styleClass="client-containers">

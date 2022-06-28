@@ -47,11 +47,19 @@ public class UserAppController {
     @FXML
     private Tab informationTab;
 
+
+    //TODO: remove trees
     @FXML
     private TreeView<String> loansTreeView;
 
     @FXML
     private TreeView<String> investmentsTreeView;
+
+    @FXML
+    private TableView<String> loansTableView;
+
+    @FXML
+    private TableView<String> investmentsTableView;
 
     @FXML
     private Button depositBtn;
@@ -185,8 +193,7 @@ public class UserAppController {
 
 
 
-    private static TreeItem getTreeViewItem(TreeItem<String> item , String value)
-    {
+    private static TreeItem getTreeViewItem(TreeItem<String> item , String value) {
         if (item != null && item.getValue().contains(value))
             return  item;
 
