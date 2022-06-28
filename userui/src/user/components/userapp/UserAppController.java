@@ -20,6 +20,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import user.components.depositwithdraw.DepositWithdrawController;
+import user.components.loanpopup.LoanPopUpController;
 import user.components.main.UserAppMainController;
 import user.components.newloantab.NewLoanTabController;
 import user.components.paymenttab.PaymentTabController;
@@ -129,9 +130,6 @@ public class UserAppController {
 
         startLoanClientListRefresher();
         startInvestmentsClientListRefresher();
-
-
-
     }
 
     public void startInvestmentsClientListRefresher() {
@@ -214,14 +212,13 @@ public class UserAppController {
         loansTableView.getItems().clear();
         loansTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
         loansTableView.getItems().addAll(loans);
-
-
-
-
     }
     @FXML
-    public void onMouseClickedLoans(MouseEvent event) {
-
+    public void onMouseClickedLoans(MouseEvent event) throws Exception{
+        if(event.getClickCount() == 2){
+            LoanPopUpController loanPopUpController = new LoanPopUpController();
+            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0), getCurrentStyle());
+        }
     }
 
     @FXML
