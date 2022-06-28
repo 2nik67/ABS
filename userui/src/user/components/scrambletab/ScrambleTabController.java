@@ -6,6 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
@@ -14,10 +18,16 @@ import loan.Loans;
 import loan.category.Categories;
 import loan.category.Category;
 import Investment.Investment;
+import okhttp3.*;
 import org.controlsfx.control.CheckListView;
+import org.jetbrains.annotations.NotNull;
 import user.components.possibleloans.PossibleLoansController;
 import user.components.userapp.UserAppController;
+import user.utils.HttpClientUtil;
 
+import java.awt.*;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -137,7 +147,26 @@ public class ScrambleTabController {
         }
 
         //TODO: other text field ifs
+
+
         List<Category> categoryList = createCategoryList();
+        String bodyRequest = HttpClientUtil.createCategoriesForBody(categoryList);
+        RequestBody requestBody = RequestBody.create(bodyRequest.getBytes(StandardCharsets.UTF_8));
+        String url = HttpClientUtil.createPostPossibleLoansListUrl(userAppController.getChosenClient(), amountTextField.getText(),
+                interestTextField.getText(), minYazTextField.getText(), maxOpenLoansTextField.getText(), maxLoanOwnTextField.getText());
+        HttpClientUtil.runAsyncPost(url, requestBody, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+            }
+        });
+
+
         List <Loan> possibleLoans = Investment.fillList(Loans.getLoans(), categoryList, Integer.parseInt(minYazTextField.getText()), Integer.parseInt(minYazTextField.getText()),
                 Clients.getClientByName(userAppController.getChosenClient()), Integer.parseInt(maxOpenLoansTextField.getText()));
         possibleLoansController = new PossibleLoansController();

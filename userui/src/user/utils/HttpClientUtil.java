@@ -1,8 +1,10 @@
 package user.utils;
 
-import client.Client;
+import com.google.gson.Gson;
+import loan.category.Category;
 import okhttp3.*;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class HttpClientUtil {
@@ -12,6 +14,7 @@ public class HttpClientUtil {
     private final static String loadLoanUrl = "http://localhost:8080/web_Web/servlets/NewLoan";
     private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
     private final static String loanList = "http://localhost:8080/web_Web/servlets/LoanList";
+    private final static String scambleUrl = "http://localhost:8080/web_Web/servlets/Scramble";
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -20,6 +23,19 @@ public class HttpClientUtil {
                     .build();
 
 
+
+    public static String createPostPossibleLoansListUrl(String name, String amountToInvest, String minimumInterestYaz,
+                                                        String minimumYaz, String maxLoanOwnerShip, String maxLoanOwn){
+        return HttpUrl.parse(loanList)
+                .newBuilder()
+                .addQueryParameter("ClientName", name)
+                .addQueryParameter("AmountToInvest", amountToInvest)
+                .addQueryParameter("MinimumInterestYaz", minimumInterestYaz)
+                .addQueryParameter("MinimumYaz", minimumYaz)
+                .addQueryParameter("MaxLoanOwnerShip", maxLoanOwnerShip)
+                .addQueryParameter("MaxLoanOwn", maxLoanOwn)
+                .build().toString();
+    }
 
     public static String createLoanListUrl(){
         return HttpUrl.parse(loanList)
@@ -78,6 +94,11 @@ public class HttpClientUtil {
                 .addQueryParameter("Money", money)
                 .build().toString();
 
+    }
+
+    public static String createCategoriesForBody(List<Category> categoryList){
+        Gson gson = new Gson();
+        return gson.toJson(categoryList);
     }
 
     public static void runAsyncPost(String finalUrl, RequestBody requestBody, Callback callback){

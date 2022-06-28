@@ -32,4 +32,17 @@ public class LoanListServlet extends HttpServlet {
             out.flush();
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String loanId = req.getParameter("LoanID");
+        resp.setContentType("application/json");
+        try (PrintWriter out = resp.getWriter()) {
+            Gson gson = new Gson();
+            Loan loan = Loans.getLoanByID(loanId);
+            String json = gson.toJson(loan);
+            out.println(json);
+            out.flush();
+        }
+    }
 }

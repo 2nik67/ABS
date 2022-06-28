@@ -19,7 +19,6 @@ public class UserMain extends Application {
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(600);
         primaryStage.setTitle("ABS Customer Client");
-
         URL loginPage = getClass().getResource("/user/components/main/UserAppMain.fxml");
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

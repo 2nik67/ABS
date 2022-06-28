@@ -217,7 +217,8 @@ public class UserAppController {
     public void onMouseClickedLoans(MouseEvent event) throws Exception{
         if(event.getClickCount() == 2){
             LoanPopUpController loanPopUpController = new LoanPopUpController();
-            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0), getCurrentStyle());
+            DepositWithdrawController.setUserAppController(this);
+            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0));
         }
     }
 
