@@ -128,7 +128,7 @@ public class UserAppController {
         }
 
         startLoanClientListRefresher();
-        //startInvestmentsClientListRefresher();
+        startInvestmentsClientListRefresher();
 
 
 
@@ -138,7 +138,7 @@ public class UserAppController {
         investmentsTableRefresher = new InvestmentsTableRefresher(
                 this::updateInvestmentsTable);
         timer = new Timer();
-        timer.schedule(loanOfClientRefresher, 2000, 2000);
+        timer.schedule(investmentsTableRefresher, 2000, 2000);
     }
 
     public void updateInvestmentsTable(List<Loan> loansOfClient) {
