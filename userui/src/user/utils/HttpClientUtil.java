@@ -11,7 +11,7 @@ public class HttpClientUtil {
     private final static String getClientUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
     private final static String loadLoanUrl = "http://localhost:8080/web_Web/servlets/NewLoan";
     private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
-    private final static String loanList = "http://localhost:8080/web_Web/servlets/LoanList";
+    private final static String loanList = "http://localhost:8080/web_Web/servlets/LoanListServlet";
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()

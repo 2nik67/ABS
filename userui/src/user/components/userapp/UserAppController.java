@@ -149,7 +149,7 @@ public class UserAppController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
-                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                     chosenClient = client;
                 }
@@ -192,7 +192,7 @@ public class UserAppController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
-                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                     chosenClient = client;
                 }
@@ -217,7 +217,8 @@ public class UserAppController {
     public void onMouseClickedLoans(MouseEvent event) throws Exception{
         if(event.getClickCount() == 2){
             LoanPopUpController loanPopUpController = new LoanPopUpController();
-            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0), getCurrentStyle());
+            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0));
+            //add style
         }
     }
 

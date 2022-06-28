@@ -38,7 +38,7 @@ public class LoanPopUpController {
 
     @FXML
     void initialize() {
-        fillLoanInfo();
+        //fillLoanInfo();
     }
 
     private void fillLoanInfo() {
@@ -49,7 +49,9 @@ public class LoanPopUpController {
         capitalLabel.textProperty().setValue("Capital: " + thisLoan.getLoan());
     }
 
-    public void popUp(Loan loan, ObservableList<String> style) throws Exception{
+    public void popUp(Loan loan) throws Exception{
+        this.thisLoan = loan;
+
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("/user/components/loanpopup/loanPopUp.fxml");
@@ -59,8 +61,6 @@ public class LoanPopUpController {
         newStage.setResizable(false);
         newStage.setScene(scene);
         newStage.show();
-
-        this.thisLoan = loan;
 
         //newStage.getIcons().add(new Image("resources/coins.png"));
 
