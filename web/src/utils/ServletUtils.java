@@ -5,7 +5,10 @@ import client.Clients;
 import client.UserManager;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import loan.Loan;
+import loan.Loans;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +39,19 @@ public class ServletUtils {
         List<Client> clients= Clients.getClientsList();
         Set<String> res = new HashSet<>();
         synchronized(userManagerLock){
-
             for (Client client : clients) {
                 res.add(client.getName());
+            }
+        }
+        return res;
+    }
+
+    public static List<Loan> getLoansOfClient(String name) {
+        List<Loan> res = new ArrayList<>();
+        List<Loan> loans = Loans.getLoans();
+        for (Loan loan : loans) {
+            if (loan.getOwner().getName().equals(name)) {
+                res.add(loan);
             }
         }
         return res;

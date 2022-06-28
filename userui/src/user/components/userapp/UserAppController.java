@@ -4,6 +4,7 @@ import client.Client;
 import client.Clients;
 import client.Transaction;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -26,10 +27,14 @@ import user.components.scrambletab.ScrambleTabController;
 import user.utils.HttpClientUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class UserAppController {
+
+    private TimerTask loanOfClientRefresher;
+    private Timer timer;
+
+    private boolean firstTimeTree = true;
 
     private UserAppMainController userAppMainController;
 
@@ -105,6 +110,148 @@ public class UserAppController {
             paymentTabComponentController.setUserAppController(this);
             newLoanTabComponentController.setUserAppController(this);
         }
+        startLoanClientListRefresher();
+
+    }
+    public void startLoanClientListRefresher() {
+        loanOfClientRefresher = new LoanTreeRefresher(
+                this::updateDataLoanTree);
+        timer = new Timer();
+        timer.schedule(loanOfClientRefresher, 2000, 2000);
+    }
+
+
+
+    private void updateDataLoanTree(List<Loan> loansOfClient) {
+        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String jsonArrayOfUsersNames = response.body().string();
+                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                    Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
+                    chosenClient = client;
+                }
+            }
+        });
+        int loanOfClientSize = getNumberOfLoans(loansOfClient);
+        if (chosenClient == null)
+            return;
+        if (loansOfClient.isEmpty())
+            return;
+        if (investmentsTreeView.getRoot() != null){
+            if (checkForChange(loansOfClient)){
+                updateLoanTree(loansOfClient);
+            }
+        }
+        else{
+            if (loanOfClientSize > 0){
+                updateLoanTree(loansOfClient);
+            }
+
+        }
+
+
+
+    }
+
+    private boolean checkForChange(List<Loan> loansOfClient){
+        int loanOfClientSize = getNumberOfLoans(loansOfClient);
+        if (loanOfClientSize < investmentsTreeView.getRoot().getChildren().size()){
+            return true;
+        }
+        for (Loan loan : loansOfClient) {
+            if(loan.getOwner().getName().equals(chosenClient.getName())){
+
+                TreeItem loanId =getTreeViewItem(investmentsTreeView.getRoot(), loan.getId());
+                TreeItem status = getTreeViewItem(loanId, "Status");
+                if (!status.toString().contains(loan.getStatus().toString())){
+                    return true;
+                }
+                String totalPaid = getTreeViewItem(loanId, "Total paid: ").toString();
+                Double paid = Double.parseDouble(totalPaid.split("Total paid: ")[1].split(" | ")[0]);
+                if (paid != loan.getLoanPaid()){
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+
+
+    private static TreeItem getTreeViewItem(TreeItem<String> item , String value)
+    {
+        if (item != null && item.getValue().contains(value))
+            return  item;
+
+        for (TreeItem<String> child : item.getChildren()){
+            TreeItem<String> s=getTreeViewItem(child, value);
+            if(s!=null)
+                return s;
+
+        }
+        return null;
+    }
+
+    private void updateLoanTree(List<Loan> loansOfClient){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                TreeItem<String> loans = new TreeItem<>("Loans");
+                for (Loan loan : loansOfClient) {
+                    if(loan.getOwner().getName().equals(chosenClient.getName())){
+                        TreeItem<String> loanID = new TreeItem<>(loan.getId());
+                        TreeItem<String> owner = new TreeItem<>("Loaner: " + loan.getOwner().getName());
+                        TreeItem<String> status = new TreeItem<>("Status: " + loan.getStatus().toString());
+                        TreeItem<String> category= new TreeItem<>("Category: " + loan.getLoanCategory().getCategory());
+                        TreeItem<String> loanAmountAndTotalYaz = new TreeItem<>("Loan amount: " + loan.getLoan() + " | " + "Total YAZ: " + loan.getTotalYaz());
+
+                        if(loan.getStatus().equals(Status.PENDING) || loan.getStatus().equals(Status.NEW)){
+                            TreeItem<String> loaners = new TreeItem<>("Loaners");
+                            List<Pair<Client,Double>> loanersList = loan.getLoaners();
+
+                            for (Pair<Client, Double> clientDoublePair : loanersList) {
+                                TreeItem<String> loaner = new TreeItem<>("Name: " + clientDoublePair.getKey().getName() +
+                                        "| " + "Invested: " + clientDoublePair.getValue());
+                                loaners.getChildren().add(loaner);
+                            }
+                            TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
+                                    "Missing: " + loan.getMissingToActive());
+                            loanID.getChildren().add(total);
+
+                        }
+                        else if(loan.getStatus().equals(Status.ACTIVE)){
+                            TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
+                                    + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
+                            loanID.getChildren().add(payments);
+                        }
+                        loanID.getChildren().add(owner);
+                        loanID.getChildren().add(category);
+                        loanID.getChildren().add(status);
+                        loanID.getChildren().add(loanAmountAndTotalYaz);
+                        loans.getChildren().add(loanID);
+                    }
+                }
+                investmentsTreeView.setRoot(loans);
+
+            }
+        });
+    }
+
+
+    private int getNumberOfLoans(List <Loan> loans) {
+        int res = 0;
+        for (Loan loan : loans) {
+            if (loan.getOwner().getName().equals(chosenClient.getName()))
+                res++;
+        }
+        return res;
     }
 
     @FXML

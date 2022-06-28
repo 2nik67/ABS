@@ -9,10 +9,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import loan.Loan;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet (name="UserLogin", urlPatterns = "/servlets/UserLogin")
 public class UserLogin extends HttpServlet {
@@ -28,7 +31,9 @@ public class UserLogin extends HttpServlet {
         Client client = Clients.getClientByName(userName);
         if (client == null){
             client = new Client(userName, 0);
-            Clients.addClient(client);
+            List<Client> clients = new ArrayList<>();
+            clients.add(client);
+            Clients.setClientsList(clients);
             resp.getWriter().println("NEW");
         }else{
             resp.getWriter().println("EXISTING");
