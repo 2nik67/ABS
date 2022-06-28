@@ -1,5 +1,7 @@
 package loan;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,9 @@ public abstract class Loans {
         loans=new ArrayList<>(loansList);
     }
 
+    public static ObservableList<Loan> getObservableLoans(){
+        return (ObservableList<Loan>) loans;
+    }
     public static void addLoan(Loan newLoan) { loans.add(newLoan); }
 
     public static List<Loan> getLoans() {

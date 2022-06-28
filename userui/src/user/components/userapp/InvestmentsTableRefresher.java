@@ -14,14 +14,13 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-public class LoanTreeRefresher extends TimerTask {
+public class InvestmentsTableRefresher extends TimerTask {
 
     private final Consumer<List<Loan>> loanOfClients;
 
-    public LoanTreeRefresher(Consumer<List<Loan>> loanConsumer) {
+    public InvestmentsTableRefresher(Consumer<List<Loan>> loanConsumer) {
         this.loanOfClients = loanConsumer;
     }
-
 
     @Override
     public void run() {

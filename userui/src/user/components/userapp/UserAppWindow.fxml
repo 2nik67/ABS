@@ -22,17 +22,17 @@
                      <items>
                         <VBox minHeight="-Infinity" minWidth="-Infinity" styleClass="client-containers">
                            <children>
-                              <TableView fx:id="loansTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="loansTableView" onMouseClicked="#onMouseClickedLoans" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn prefWidth="200.0" text="Loans" />
+                                  <TableColumn fx:id="loansTableColumn" prefWidth="200.0" text="Loans" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </TableView>
-                              <TableView fx:id="investmentsTableView" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="investmentsTableView" onMouseClicked="#onMouseClickedInvestment" prefHeight="200.0" prefWidth="200.0">
                                 <columns>
-                                  <TableColumn prefWidth="200.0" text="Investments" />
+                                  <TableColumn fx:id="investmentsTableColumn" prefWidth="200.0" text="Investments" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

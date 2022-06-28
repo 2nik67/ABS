@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Pair;
 import loan.Loan;
 import loan.Loans;
@@ -47,6 +48,7 @@ public class UserAppController {
     @FXML
     private Tab informationTab;
 
+    private InvestmentsTableRefresher investmentsTableRefresher;
 
     //TODO: remove trees
     @FXML
@@ -56,10 +58,10 @@ public class UserAppController {
     private TreeView<String> investmentsTreeView;
 
     @FXML
-    private TableView<String> loansTableView;
+    private TableView<Loan> loansTableView;
 
     @FXML
-    private TableView<String> investmentsTableView;
+    private TableView<Loan> investmentsTableView;
 
     @FXML
     private Button depositBtn;
@@ -104,6 +106,12 @@ public class UserAppController {
     private Tab scrambleTab;
 
     @FXML
+    private TableColumn <Loan, String> investmentsTableColumn;
+
+    @FXML
+    private TableColumn <Loan, String> loansTableColumn;
+
+    @FXML
     private Tab paymentTab;
 
     @FXML
@@ -118,19 +126,22 @@ public class UserAppController {
             paymentTabComponentController.setUserAppController(this);
             newLoanTabComponentController.setUserAppController(this);
         }
+
         startLoanClientListRefresher();
+        //startInvestmentsClientListRefresher();
+
+
 
     }
-    public void startLoanClientListRefresher() {
-        loanOfClientRefresher = new LoanTreeRefresher(
-                this::updateDataLoanTree);
+
+    public void startInvestmentsClientListRefresher() {
+        investmentsTableRefresher = new InvestmentsTableRefresher(
+                this::updateInvestmentsTable);
         timer = new Timer();
         timer.schedule(loanOfClientRefresher, 2000, 2000);
     }
 
-
-
-    private void updateDataLoanTree(List<Loan> loansOfClient) {
+    public void updateInvestmentsTable(List<Loan> loansOfClient) {
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -146,27 +157,82 @@ public class UserAppController {
                 }
             }
         });
-        int loanOfClientSize = getNumberOfLoans(loansOfClient);
-        if (chosenClient == null)
-            return;
-        if (loansOfClient.isEmpty())
-            return;
-        if (investmentsTreeView.getRoot() != null){
-            if (checkForChange(loansOfClient)){
-                updateLoanTree(loansOfClient);
+        List <Loan> loans = new ArrayList<>();
+        for (Loan loan : loansOfClient) {
+            for (int i = 0; i < loansOfClient.get(i).getLoaners().size(); i++) {
+                if(loan.getLoaners().get(i).getKey().getName().equals(chosenClient.getName())){
+                    loans.add(loan);
+                }
             }
         }
-        else{
-            if (loanOfClientSize > 0){
-                updateLoanTree(loansOfClient);
+        if (loans.isEmpty()){
+            return;
+        }
+        investmentsTableView.getItems().clear();
+        investmentsTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
+        investmentsTableView.getItems().addAll(loans);
+    }
+
+    public void startLoanClientListRefresher() {
+        loanOfClientRefresher = new LoanTableRefresher(
+                this::updateDataLoanTable);
+        timer = new Timer();
+        timer.schedule(loanOfClientRefresher, 2000, 2000);
+    }
+
+
+
+
+
+    private void updateDataLoanTable(List<Loan> loansOfClient) {
+        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
             }
 
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String jsonArrayOfUsersNames = response.body().string();
+                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                    Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
+                    chosenClient = client;
+                }
+            }
+        });
+
+
+        List <Loan> loans = new ArrayList<>();
+        for (Loan loan : loansOfClient) {
+            if (loan.getOwner().getName().equals(chosenClient.getName())) {
+                loans.add(loan);
+            }
         }
+        if (loans.isEmpty()){
+            return;
+        }
+        loansTableView.getItems().clear();
+        loansTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
+        loansTableView.getItems().addAll(loans);
+
 
 
 
     }
+    @FXML
+    public void onMouseClickedLoans(MouseEvent event) {
 
+    }
+
+    @FXML
+    public void onMouseClickedInvestment(MouseEvent event)
+    {
+        if (event.getClickCount() == 2) //Checking double click
+        {
+            System.out.println(loansTableView.getSelectionModel().getSelectedItems().get(0).getOwner().getName());
+
+        }
+    }
     private boolean checkForChange(List<Loan> loansOfClient){
         int loanOfClientSize = getNumberOfLoans(loansOfClient);
         if (loanOfClientSize < investmentsTreeView.getRoot().getChildren().size()){
