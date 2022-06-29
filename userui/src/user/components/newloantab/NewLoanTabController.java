@@ -149,8 +149,7 @@ public class NewLoanTabController {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    System.out.println("responded" + response.body().string());
-                    System.out.println(Loans.getLoans().isEmpty());
+//
                 }
             });
         }

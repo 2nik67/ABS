@@ -30,7 +30,7 @@ public class PaymentTabController{
 
     @FXML
     private TreeView<String> loansTreeView;
-
+//
     @FXML
     private Button closeLoanBtn;
 

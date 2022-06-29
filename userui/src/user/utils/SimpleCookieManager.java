@@ -17,7 +17,7 @@ public class SimpleCookieManager implements CookieJar {
     public void setLogData(Consumer<String> logData) {
         this.logData = logData;
     }
-
+//
     @NotNull
     @Override
     public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {

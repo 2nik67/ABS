@@ -66,7 +66,7 @@ public class LoanPopUpController {
             newStage.setResizable(false);
             newStage.setScene(scene);
             newStage.show();
-
+//
 
         }catch (Exception e){
             System.out.println(e);

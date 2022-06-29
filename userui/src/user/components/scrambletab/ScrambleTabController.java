@@ -148,10 +148,10 @@ public class ScrambleTabController {
 
         //TODO: other text field ifs*/
 
-
+//
         List<Category> categoryList = createCategoryList();
         String bodyRequest = HttpClientUtil.createCategoriesForBody(categoryList);
-        RequestBody requestBody = RequestBody.create(bodyRequest.getBytes(StandardCharsets.UTF_8));
+        RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
         String url = HttpClientUtil.createPostPossibleLoansListUrl(userAppController.getChosenClient(), amountTextField.getText(),
                 interestTextField.getText(), minYazTextField.getText(), maxOpenLoansTextField.getText(), maxLoanOwnTextField.getText());
         HttpClientUtil.runAsyncPost(url, requestBody, new Callback() {

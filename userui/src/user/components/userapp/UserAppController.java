@@ -221,7 +221,7 @@ public class UserAppController {
             loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0));
         }
     }
-
+//
     @FXML
     public void onMouseClickedInvestment(MouseEvent event)
     {

@@ -30,7 +30,7 @@ public class LoanTableRefresher extends TimerTask {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
             }
-
+//
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200){

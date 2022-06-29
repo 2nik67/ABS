@@ -109,7 +109,7 @@ public class HttpClientUtil {
                 .build();
 
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
-
+//
         call.enqueue(callback);
     }
 

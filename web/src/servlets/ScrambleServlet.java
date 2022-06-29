@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(name="Scramble", urlPatterns = "/servlets/Scramble")
 public class ScrambleServlet extends HttpServlet {
@@ -34,10 +35,10 @@ public class ScrambleServlet extends HttpServlet {
         String maxOpenLoans = req.getParameter("MaxOpenLoans");
         String maxLoanOwnerShip = req.getParameter("MaxLoanOwnerShip");
         Client chosenClient = Clients.getClientByName(client);
-        String jsonArrayCategories = req.getReader().toString();
-        //httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
-        Category[] usersNames = new Gson().fromJson(jsonArrayCategories, Category[].class);
-        //List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), )
+        String jsonArrayCategories = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        Category[] categoriesArray = new Gson().fromJson(jsonArrayCategories, Category[].class);
+        List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), Arrays.asList(categoriesArray), Integer.parseInt(minimumYaz), Integer.parseInt(minimumInterestYaz),
+                Clients.getClientByName(client), Integer.parseInt(maxOpenLoans));
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Gson gson = new Gson();

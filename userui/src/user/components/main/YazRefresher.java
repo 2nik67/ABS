@@ -18,7 +18,7 @@ public class YazRefresher extends TimerTask {
         this.yazConsumer = usersListConsumer;
     }
 
-
+//
     @Override
     public void run() {
         HttpClientUtil.runAsync(HttpClientUtil.getYazUrl(), new Callback() {

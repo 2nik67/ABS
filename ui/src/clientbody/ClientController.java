@@ -183,7 +183,7 @@ public class ClientController {
         }
         investmentsTreeView.setRoot(loans);
     }
-
+//
     public void createInvestmentTreeForClient(String name){
         List<Loan> loansList = new ArrayList<>(Loans.getLoans());
         TreeItem<String> loans = new TreeItem<>("Investments");
