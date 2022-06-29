@@ -91,7 +91,7 @@ public class DepositWithdrawController {
         initializeMoneyTextField();
     }
 
-    public void popUp(String name, ObservableList<String> style) throws Exception{
+    public void popUp(String name) throws Exception{
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("/user/components/depositwithdraw/depositAndWithdraw.fxml");
@@ -104,8 +104,8 @@ public class DepositWithdrawController {
 
         //newStage.getIcons().add(new Image("resources/coins.png"));
 
-        if(!style.isEmpty())
-            scene.getStylesheets().add(style.get(0));
+        /*if(!style.isEmpty())
+            scene.getStylesheets().add(style.get(0));*/
     }
 
     public void setCurrentClient(Client currentClient) {

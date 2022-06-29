@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Yaz {
-    private static int yaz = 0;
+    private static int yaz = 1;
     private static SaveInfoByYazList archive = new SaveInfoByYazList();
 
     public static int getYaz() {
@@ -15,7 +15,7 @@ public abstract class Yaz {
     }
 
     public static void advanceYaz(int yaz) {
-        archive.yazWasAdvanced();
+        //archive.yazWasAdvanced();
         Yaz.yaz += yaz;
         Loans.checkForRiskLoans();
     }

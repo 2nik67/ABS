@@ -180,10 +180,6 @@ public class UserAppController {
         timer.schedule(loanOfClientRefresher, 2000, 2000);
     }
 
-
-
-
-
     private void updateDataLoanTable(List<Loan> loansOfClient) {
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
             @Override
@@ -215,13 +211,14 @@ public class UserAppController {
         loansTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
         loansTableView.getItems().addAll(loans);
     }
+
     @FXML
     public void onMouseClickedLoans(MouseEvent event) throws Exception{
         if(event.getClickCount() == 2){
-            //loanPopUpController = new LoanPopUpController();
+            loanPopUpController = new LoanPopUpController();
             Loan loan = loansTableView.getSelectionModel().getSelectedItems().get(0);
             loanPopUpController.popUp(loan);
-            loanPopUpController.fillLoanInfo();
+            loanPopUpController.fillLoanInfo(loan);
             //add style
         }
     }
@@ -334,7 +331,7 @@ public class UserAppController {
         depositWithdrawController = new DepositWithdrawController();
         depositWithdrawController.setCurrentClient(Clients.getClientByName(userAppMainController.getChosenClient()));
         DepositWithdrawController.setUserAppController(this);
-        depositWithdrawController.popUp(userAppMainController.getChosenClient(), getCurrentStyle());
+        depositWithdrawController.popUp(userAppMainController.getChosenClient());
         infoTabSelected();
     }
 

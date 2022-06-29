@@ -5,11 +5,12 @@ import admin.utils.HttpClientUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import okhttp3.*;
+import okio.BufferedSink;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AdminAppController {
@@ -40,10 +41,24 @@ public class AdminAppController {
 
     @FXML
     void IncreaseYaz(ActionEvent event) {
-        HttpClientUtil.runAsyncHead(HttpClientUtil.getYazUrl(), null, new Callback() {
+        adminAppMainController.increaseYaz();
+
+        RequestBody body = new RequestBody() {
+            @Nullable
+            @Override
+            public MediaType contentType() {
+                return MediaType.parse("text/plain");
+            }
+
+            @Override
+            public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
+
+            }
+        };
+        HttpClientUtil.runAsyncHead(HttpClientUtil.getYazUrl(), body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                e.printStackTrace();
             }
 
             @Override

@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import loan.Loan;
 import user.utils.HttpClientUtil;
@@ -41,16 +40,16 @@ public class LoanPopUpController {
 
     @FXML
     void initialize() {
-        fillLoanInfo();
-
+        //fillLoanInfo();
+        //loanIDLabel.setText("Loan ID: " + thisLoan.getId());
     }
 
-    private void fillLoanInfo() {
-        loanIDLabel.textProperty().setValue("Loan ID: " + thisLoan.getId());
-        loanerLabel.textProperty().setValue("Loaner: " + thisLoan.getOwner().getName());
-        statusLabel.textProperty().setValue("Status: " + thisLoan.getStatus().name());
-        categoryLabel.textProperty().setValue("Category: " + thisLoan.getLoanCategory());
-        capitalLabel.textProperty().setValue("Capital: " + thisLoan.getLoan());
+    public void fillLoanInfo(Loan thisLoan) {
+        loanIDLabel.setText("Loan ID: " + thisLoan.getId());
+        loanerLabel.setText("Loaner: " + thisLoan.getOwner().getName());
+        statusLabel.setText("Status: " + thisLoan.getStatus().name());
+        categoryLabel.setText("Category: " + thisLoan.getLoanCategory());
+        capitalLabel.setText("Capital: " + thisLoan.getLoan());
     }
 
     public void popUp(Loan loan) throws Exception{
@@ -66,7 +65,6 @@ public class LoanPopUpController {
             newStage.setResizable(false);
             newStage.setScene(scene);
             newStage.show();
-//
 
         }catch (Exception e){
             System.out.println(e);
