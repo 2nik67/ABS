@@ -17,9 +17,16 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import loan.Loan;
 import loan.Loans;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.controlsfx.control.CheckListView;
+import org.jetbrains.annotations.NotNull;
 import user.components.scrambletab.ScrambleTabController;
+import user.utils.HttpClientUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,63 +63,50 @@ public class PossibleLoansController {
 
     @FXML
     void okBtnOnAction(ActionEvent event) {
-
-        List<Loan> chosenLoans = new ArrayList<>();
-        List<Loan> loans = Loans.getLoans();
-        for (int i = 0; i < loans.size(); i++) {
-            if(loansCheckList.getCheckModel().isChecked(i)){
-                chosenLoans.add(Loans.getLoanByID(loansCheckList.getCheckModel().getItem(i)));
-            }
-        }
-        cancelBtn.setDisable(true);
-        okBtn.setDisable(true);
-        Task<Void> task = new Task<Void>() {
+        List<Loan> checkedLoans = getCheckedLoans();
+        String bodyRequest = HttpClientUtil.createLoansForBody(checkedLoans);
+        RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
+        HttpClientUtil.runAsyncPost(HttpClientUtil.createInvestmentUrl(sumToInvest), requestBody, new Callback() {
             @Override
-            protected Void call() throws Exception {
-                for (double i = 0; i < 6; i++) {
-                    scrambleProgressIndicator.setProgress(i/10);
-                    Thread.sleep(100);
-                }
-
-                for (double i = 6; i <= 10; i++) {
-                    scrambleProgressIndicator.setProgress(i/10);
-                    Thread.sleep(100);
-                }
-                Thread.sleep(500);
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Investment.investmentAssigning(chosenLoans, sumToInvest);
-                        scrambleTabController.createTrees();
-                        Stage stage = (Stage) cancelBtn.getScene().getWindow();
-                        stage.close();
-                    }
-                });
-                return null;
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println(e);
             }
-        };
-        Thread t= new Thread(task);
 
-        t.start();
-
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                System.out.println(response.body().string());
+            }
+        });
 
 
 
 
     }
 
+    private List<Loan> getCheckedLoans() {
+        List<Loan> res = new ArrayList<>();
+        for (int i = 0; i < loansCheckList.getItems().size(); i++) {
+            for (Loan loan : possibleLoanList) {
+                if (loansCheckList.getCheckModel().isChecked(i) && loan.getId().equals(loansCheckList.getCheckModel().getItem(i))) {
+                    res.add(loan);
+                }
+            }
+
+        }
+        return res;
+    }
+
     public void popUp() throws Exception{
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/possibleloans/PossibleLoans.fxml");
+        URL url = getClass().getResource("/user/components/possibleloans/PossibleLoans.fxml");
         fxmlLoader.setLocation(url);
         ScrollPane root = fxmlLoader.load(url.openStream());
         Scene scene =new Scene(root, 600 , 600);
         newStage.setScene(scene);
         newStage.show();
 
-        newStage.getIcons().add(new Image("resources/coins.png"));
+        //newStage.getIcons().add(new Image("resources/coins.png"));
     }
 
     private void initializeLoanCheckList(){

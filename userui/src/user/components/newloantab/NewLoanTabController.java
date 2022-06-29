@@ -14,14 +14,22 @@ import loan.category.Categories;
 import loan.category.Category;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import user.components.scrambletab.CategoryCheckListRefresher;
 import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.UnaryOperator;
 
 public class NewLoanTabController {
+
+
+    private TimerTask categoryComboBoxRefresh;
+    private Timer timer;
 
     private Client client;
     private UserAppController userAppController;
@@ -149,7 +157,7 @@ public class NewLoanTabController {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//
+                    System.out.println(response.body().string());
                 }
             });
         }
@@ -163,7 +171,28 @@ public class NewLoanTabController {
     }
 
     @FXML
-    public void initialize() { initializeTextFields(); initializeComboBox(); }
+    public void initialize() { initializeTextFields();
+        startComboBoxRefresh();
+        initializeComboBox();
+
+    }
+
+    private void startComboBoxRefresh() {
+        categoryComboBoxRefresh = new CategoryCheckListRefresher(this::refreshCategoryComboBox);
+        timer = new Timer();
+        timer.schedule(categoryComboBoxRefresh, 2000, 2000);
+    }
+
+    private void refreshCategoryComboBox(List<Category> categories) {
+        if(categories.size() == categoryComboBox.getItems().size()){
+            return;
+        }
+        categoryComboBox.getItems().clear();
+        for (Category category : categories) {
+            categoryComboBox.getItems().add(category.getCategory());
+        }
+
+    }
 
     UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         String newText = change.getControlNewText();

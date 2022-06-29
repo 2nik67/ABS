@@ -10,14 +10,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import loan.Loan;
+import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
 
 import java.net.URL;
 
 public class LoanPopUpController {
 
-    private Loan thisLoan;
+    private UserAppController userAppController;
 
+    private Loan thisLoan;
     @FXML
     private Label loanIDLabel;
 
@@ -45,12 +47,14 @@ public class LoanPopUpController {
 
     }
 
-    private void fillLoanInfo() {
-        loanIDLabel.textProperty().setValue("Loan ID: " + thisLoan.getId());
-        loanerLabel.textProperty().setValue("Loaner: " + thisLoan.getOwner().getName());
-        statusLabel.textProperty().setValue("Status: " + thisLoan.getStatus().name());
-        categoryLabel.textProperty().setValue("Category: " + thisLoan.getLoanCategory());
-        capitalLabel.textProperty().setValue("Capital: " + thisLoan.getLoan());
+    public void fillLoanInfo() {
+
+        loanIDLabel.setText("Loan ID: " + thisLoan.getId());
+/*        loanerLabel.setText("Loaner: " + thisLoan.getOwner().getName());
+        statusLabel.setText("Status: " + thisLoan.getStatus().name());
+        categoryLabel.setText("Category: " + thisLoan.getLoanCategory());
+        capitalLabel.setText("Capital: " + thisLoan.getLoan());*/
+        System.out.println("hey");
     }
 
     public void popUp(Loan loan) throws Exception{
@@ -77,5 +81,9 @@ public class LoanPopUpController {
 
        /* if(!style.isEmpty())
             scene.getStylesheets().add(style.get(0));*/
+    }
+
+    public void setAppController(UserAppController userAppControllerSent) {
+        userAppController = userAppControllerSent;
     }
 }

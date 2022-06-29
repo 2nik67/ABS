@@ -145,7 +145,7 @@ public class UserAppController {
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override
@@ -158,6 +158,7 @@ public class UserAppController {
             }
         });
         List <Loan> loans = new ArrayList<>();
+
         for (Loan loan : loansOfClient) {
             for (int i = 0; i < loansOfClient.get(i).getLoaners().size(); i++) {
                 if(loan.getLoaners().get(i).getKey().getName().equals(chosenClient.getName())){
@@ -218,10 +219,11 @@ public class UserAppController {
     @FXML
     public void onMouseClickedLoans(MouseEvent event) throws Exception{
         if(event.getClickCount() == 2){
-            //loanPopUpController = new LoanPopUpController();
+            loanPopUpController = new LoanPopUpController();
             Loan loan = loansTableView.getSelectionModel().getSelectedItems().get(0);
+            loanPopUpController.setAppController(this);
             loanPopUpController.popUp(loan);
-            loanPopUpController.fillLoanInfo();
+            //loanPopUpController.fillLoanInfo();
             //add style
         }
     }
@@ -334,7 +336,7 @@ public class UserAppController {
         depositWithdrawController = new DepositWithdrawController();
         depositWithdrawController.setCurrentClient(Clients.getClientByName(userAppMainController.getChosenClient()));
         DepositWithdrawController.setUserAppController(this);
-        depositWithdrawController.popUp(userAppMainController.getChosenClient(), getCurrentStyle());
+        depositWithdrawController.popUp(userAppMainController.getChosenClient());
         infoTabSelected();
     }
 
@@ -497,14 +499,7 @@ public class UserAppController {
         scrambleTabComponentController.initializeCategoryCheckList();
     }
 
-    public void resetUIforClient() {
-        investmentsTreeView.setRoot(null);
-        loansTreeView.setRoot(null);
-    }
 
-    public ObservableList<String> getCurrentStyle(){
-        return loansTreeView.getScene().getStylesheets();
-    }
 
     public void setUserAppMainController(UserAppMainController userAppMainController) {
         this.userAppMainController = userAppMainController;

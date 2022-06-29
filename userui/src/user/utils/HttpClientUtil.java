@@ -1,6 +1,7 @@
 package user.utils;
 
 import com.google.gson.Gson;
+import loan.Loan;
 import loan.category.Category;
 import okhttp3.*;
 
@@ -15,6 +16,9 @@ public class HttpClientUtil {
     private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
     private final static String loanList = "http://localhost:8080/web_Web/servlets/LoanList";
     private final static String scrambleUrl = "http://localhost:8080/web_Web/servlets/Scramble";
+    private final static String categoryList = "http://localhost:8080/web_Web/servlets/CategoryList";
+    private final static String investmentUrl = "http://localhost:8080/web_Web/servlets/Invest";
+
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -23,6 +27,18 @@ public class HttpClientUtil {
                     .build();
 
 
+    public static String createInvestmentUrl(Double amountToInvest){
+        return HttpUrl.parse(investmentUrl)
+                .newBuilder()
+                .addQueryParameter("SumToInvest", String.valueOf(amountToInvest))
+                .build().toString();
+    }
+
+    public static String getCategoryList(){
+        return HttpUrl.parse(categoryList)
+                .newBuilder()
+                .build().toString();
+    }
 
     public static String createPostPossibleLoansListUrl(String name, String amountToInvest, String minimumInterestYaz,
                                                         String minimumYaz, String maxLoanOwnerShip, String maxLoanOwn){
@@ -101,6 +117,9 @@ public class HttpClientUtil {
         return gson.toJson(categoryList);
     }
 
+
+
+
     public static void runAsyncPost(String finalUrl, RequestBody requestBody, Callback callback){
 
         Request request = new Request.Builder()
@@ -109,7 +128,6 @@ public class HttpClientUtil {
                 .build();
 
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
-//
         call.enqueue(callback);
     }
 
@@ -127,6 +145,11 @@ public class HttpClientUtil {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();
         HTTP_CLIENT.connectionPool().evictAll();
+    }
+
+    public static String createLoansForBody(List<Loan> checkedLoans) {
+        Gson gson = new Gson();
+        return gson.toJson(checkedLoans);
     }
 }
 

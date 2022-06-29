@@ -28,7 +28,6 @@ public class Investment {
         double minLoan = getMinLoan(loans);
         double temp=investment;
         while(temp>0){
-
             payEachLoan = Math.min(minLoan, temp / tempLoans.size());
             if (tempLoans.isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -73,7 +72,7 @@ public class Investment {
     public static List <Loan> fillList(List<Loan> loans, List<Category> categories, int yaz, double minimumInterest, Client client, int maxOpenLoans) {
         List <Loan> possibleLoan = new ArrayList<>();
         for (Loan allLoan : loans) {
-            if (validLoan(allLoan, categories,yaz, minimumInterest, client, maxOpenLoans)) {
+            if (validLoan(allLoan, categories, yaz, minimumInterest, client, maxOpenLoans)) {
                 possibleLoan.add(allLoan);
             }
         }
@@ -94,7 +93,7 @@ public class Investment {
         if (!categories.isEmpty()){
             boolean exist=false;
             for (Category category : categories) {
-                if (category.equals(loan.getLoanCategory())) {
+                if (category.getCategory().equals(loan.getLoanCategory().getCategory())) {
                     exist = true;
                     break;
                 }

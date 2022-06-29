@@ -76,6 +76,7 @@ public abstract class LoadFile{
         AbsLoans absLoans = absDescriptor.getAbsLoans();
         for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
             Category category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
+            Categories.addCategory(category);
             loans.add(new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
                     category, absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
                     absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment()));

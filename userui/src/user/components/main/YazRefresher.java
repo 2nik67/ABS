@@ -24,7 +24,7 @@ public class YazRefresher extends TimerTask {
         HttpClientUtil.runAsync(HttpClientUtil.getYazUrl(), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override

@@ -38,12 +38,11 @@ public class ScrambleServlet extends HttpServlet {
         String jsonArrayCategories = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Category[] categoriesArray = new Gson().fromJson(jsonArrayCategories, Category[].class);
         List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), Arrays.asList(categoriesArray), Integer.parseInt(minimumYaz), Integer.parseInt(minimumInterestYaz),
-                Clients.getClientByName(client), Integer.parseInt(maxOpenLoans));
+                Clients.getClientByName(client), Integer.parseInt(maxLoanOwnerShip));
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Gson gson = new Gson();
-            List<Loan> loanList = Loans.getLoans();
-            String json = gson.toJson(loanList);
+            String json = gson.toJson(possibleLoans);
             out.println(json);
             out.flush();
         };

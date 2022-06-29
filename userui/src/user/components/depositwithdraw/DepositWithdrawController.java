@@ -57,7 +57,7 @@ public class DepositWithdrawController {
     @FXML
     void okBtnOnAction(ActionEvent event) {
         String url;
-        if(moneyTextField.getText().equals("Deposit")){
+        if(withdrawDepositChoiceBox.getSelectionModel().getSelectedItem().equals("Deposit")){
             url = HttpClientUtil.createLoadMoneyUrl(true, moneyTextField.getText(), userAppController.getChosenClient());
         }else{
             url = HttpClientUtil.createLoadMoneyUrl(false, moneyTextField.getText(), userAppController.getChosenClient());
@@ -65,12 +65,12 @@ public class DepositWithdrawController {
         HttpClientUtil.runAsync(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+                System.out.println(response.body().string());
             }
         });
 
@@ -86,12 +86,11 @@ public class DepositWithdrawController {
         withdrawDepositChoiceBox.getItems().add("Withdraw");
         withdrawDepositChoiceBox.getItems().add("Deposit");
         currentClient= Clients.getClientByName(userAppController.getChosenClient());
-
         withdrawDepositChoiceBox.getSelectionModel().selectFirst();
         initializeMoneyTextField();
     }
 
-    public void popUp(String name, ObservableList<String> style) throws Exception{
+    public void popUp(String name) throws Exception{
         Stage newStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("/user/components/depositwithdraw/depositAndWithdraw.fxml");
@@ -104,8 +103,8 @@ public class DepositWithdrawController {
 
         //newStage.getIcons().add(new Image("resources/coins.png"));
 
-        if(!style.isEmpty())
-            scene.getStylesheets().add(style.get(0));
+        /*if(!style.isEmpty())
+            scene.getStylesheets().add(style.get(0));*/
     }
 
     public void setCurrentClient(Client currentClient) {

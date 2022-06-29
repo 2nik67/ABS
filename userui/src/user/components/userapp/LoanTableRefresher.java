@@ -28,7 +28,7 @@ public class LoanTableRefresher extends TimerTask {
         HttpClientUtil.runAsync(HttpClientUtil.createLoanListUrl(), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 //
             @Override

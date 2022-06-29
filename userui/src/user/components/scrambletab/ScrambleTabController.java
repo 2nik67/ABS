@@ -2,6 +2,8 @@ package user.components.scrambletab;
 
 import client.Client;
 import client.Clients;
+import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,7 +30,7 @@ import user.utils.HttpClientUtil;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -36,6 +38,15 @@ import static client.Clients.*;
 
 
 public class ScrambleTabController {
+
+    private ScrambleTabController scrambleTabController = this;
+
+    private Timer timer;
+    private TimerTask listRefresher;
+
+    private List <Category> categoryList;
+
+    private List <Loan> possibleLoans;
 
     private PossibleLoansController possibleLoansController;
 
@@ -78,7 +89,34 @@ public class ScrambleTabController {
 
     @FXML
     public void initialize(){
+
         initializeTextFields();
+        startCategoryCheckListRefresh();
+    }
+
+    private void startCategoryCheckListRefresh() {
+        listRefresher = new CategoryCheckListRefresher(this::categoryListRefresher);
+        timer = new Timer();
+        timer.schedule(listRefresher, 2000, 2000);
+    }
+
+    private void categoryListRefresher(List<Category> categories) {
+        categoryList = categories;
+        if (categories.size() == categoryCheckList.getItems().size()){
+            return;
+        }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ObservableList<String> strings = FXCollections.observableArrayList();
+                for (Category category : categories) {
+                    strings.add(category.getCategory());
+                }
+                categoryCheckList.setItems(strings);
+            }
+        });
+
     }
 
     public void setUserAppController(UserAppController userAppController) {
@@ -148,12 +186,15 @@ public class ScrambleTabController {
 
         //TODO: other text field ifs*/
 
-//
+
+
         List<Category> categoryList = createCategoryList();
         String bodyRequest = HttpClientUtil.createCategoriesForBody(categoryList);
         RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
         String url = HttpClientUtil.createPostPossibleLoansListUrl(userAppController.getChosenClient(), amountTextField.getText(),
                 interestTextField.getText(), minYazTextField.getText(), maxOpenLoansTextField.getText(), maxLoanOwnTextField.getText());
+
+        possibleLoans = new ArrayList<>();
         HttpClientUtil.runAsyncPost(url, requestBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -162,28 +203,46 @@ public class ScrambleTabController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println("IM HERE" + response.code() + call.toString());
+                if (response.code() != 200){
+                    return;
+                }
+                String jsonArrayOfUsersNames = response.body().string();
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
+                    Loan[] loans = new Gson().fromJson(jsonArrayOfUsersNames, Loan[].class);
+                    possibleLoans = Arrays.asList(loans);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            possibleLoansController = new PossibleLoansController();
+                            PossibleLoansController.setScrambleTabController(scrambleTabController);
+                            PossibleLoansController.setSumToInvest(Double.parseDouble(amountTextField.getText()));
+                            PossibleLoansController.setPossibleLoanList(possibleLoans);
+                            try {
+                                possibleLoansController.popUp();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
         });
 
 
-        List <Loan> possibleLoans = Investment.fillList(Loans.getLoans(), categoryList, Integer.parseInt(minYazTextField.getText()), Integer.parseInt(minYazTextField.getText()),
-                Clients.getClientByName(userAppController.getChosenClient()), Integer.parseInt(maxOpenLoansTextField.getText()));
-        //possibleLoansController = new PossibleLoansController();
-        //PossibleLoansController.setScrambleTabController(this);
-        //PossibleLoansController.setSumToInvest(Double.parseDouble(amountTextField.getText()));
-        //PossibleLoansController.setPossibleLoanList(possibleLoans);
-        //possibleLoansController.popUp();
     }
 
     private List<Category> createCategoryList(){
-        List<Category> categoryList = new ArrayList<>();
-        for (int i = 0; i < Categories.getNumOfCategories(); i++) {
+        List<Category> res = new ArrayList<>();
+        for (int i = 0; i < categoryCheckList.getItems().size(); i++) {
             if(categoryCheckList.getCheckModel().isChecked(i)){
-                categoryList.add(Categories.getCategoryByName(categoryCheckList.getCheckModel().getItem(i)));
+                for (int j = 0; j < categoryList.size(); j++) {
+                    if (categoryList.get(j).getCategory().equals(categoryCheckList.getCheckModel().getItem(i))){
+                        res.add(categoryList.get(j));
+                    }
+                }
             }
         }
-        return categoryList;
+        return res;
     }
 
     public void initializeCategoryCheckList(){
