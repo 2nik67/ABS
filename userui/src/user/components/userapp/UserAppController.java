@@ -159,7 +159,7 @@ public class UserAppController {
         });
         List <Loan> loans = new ArrayList<>();
         for (Loan loan : loansOfClient) {
-            for (int i = 0; i < loansOfClient.get(i).getLoaners().size(); i++) {
+            for (int i = 0; i <loan.getLoaners().size(); i++) {
                 if(loan.getLoaners().get(i).getKey().getName().equals(chosenClient.getName())){
                     loans.add(loan);
                 }
