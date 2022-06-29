@@ -112,7 +112,7 @@ public class ScrambleTabController {
 
     @FXML
     public void scrambleOperation() throws  Exception{
-        Client currClient = getClientByName(currentClient);
+        /*Client currClient = getClientByName(currentClient);
 
         if(amountTextField.getText().equals(""))
             amountTextField.setText("0");
@@ -146,7 +146,7 @@ public class ScrambleTabController {
             return;
         }
 
-        //TODO: other text field ifs
+        //TODO: other text field ifs*/
 
 
         List<Category> categoryList = createCategoryList();
@@ -157,23 +157,23 @@ public class ScrambleTabController {
         HttpClientUtil.runAsyncPost(url, requestBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+                System.out.println("IM HERE" + response.code() + call.toString());
             }
         });
 
 
         List <Loan> possibleLoans = Investment.fillList(Loans.getLoans(), categoryList, Integer.parseInt(minYazTextField.getText()), Integer.parseInt(minYazTextField.getText()),
                 Clients.getClientByName(userAppController.getChosenClient()), Integer.parseInt(maxOpenLoansTextField.getText()));
-        possibleLoansController = new PossibleLoansController();
-        PossibleLoansController.setScrambleTabController(this);
-        PossibleLoansController.setSumToInvest(Double.parseDouble(amountTextField.getText()));
-        PossibleLoansController.setPossibleLoanList(possibleLoans);
-        possibleLoansController.popUp();
+        //possibleLoansController = new PossibleLoansController();
+        //PossibleLoansController.setScrambleTabController(this);
+        //PossibleLoansController.setSumToInvest(Double.parseDouble(amountTextField.getText()));
+        //PossibleLoansController.setPossibleLoanList(possibleLoans);
+        //possibleLoansController.popUp();
     }
 
     private List<Category> createCategoryList(){

@@ -33,7 +33,9 @@ public class LoanTableRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+                if (response.code() != 200){
+                    return;
+                }
                 String jsonArrayOfUsersNames = response.body().string();
                 if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Loan[] loans = new Gson().fromJson(jsonArrayOfUsersNames, Loan[].class);

@@ -11,9 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import loan.Loan;
 import loan.Loans;
+import loan.category.Category;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name="Scramble", urlPatterns = "/servlets/Scramble")
@@ -32,7 +34,9 @@ public class ScrambleServlet extends HttpServlet {
         String maxOpenLoans = req.getParameter("MaxOpenLoans");
         String maxLoanOwnerShip = req.getParameter("MaxLoanOwnerShip");
         Client chosenClient = Clients.getClientByName(client);
-
+        String jsonArrayCategories = req.getReader().toString();
+        //httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
+        Category[] usersNames = new Gson().fromJson(jsonArrayCategories, Category[].class);
         //List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), )
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {

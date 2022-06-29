@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@WebServlet(name="LoanList", urlPatterns = "/servlets/LoanListServlet")
+@WebServlet(name="LoanList", urlPatterns = "/servlets/LoanList")
 public class LoanListServlet extends HttpServlet {
 
     @Override

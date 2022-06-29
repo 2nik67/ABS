@@ -14,7 +14,7 @@ public class HttpClientUtil {
     private final static String loadLoanUrl = "http://localhost:8080/web_Web/servlets/NewLoan";
     private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
     private final static String loanList = "http://localhost:8080/web_Web/servlets/LoanList";
-    private final static String scambleUrl = "http://localhost:8080/web_Web/servlets/Scramble";
+    private final static String scrambleUrl = "http://localhost:8080/web_Web/servlets/Scramble";
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -26,7 +26,7 @@ public class HttpClientUtil {
 
     public static String createPostPossibleLoansListUrl(String name, String amountToInvest, String minimumInterestYaz,
                                                         String minimumYaz, String maxLoanOwnerShip, String maxLoanOwn){
-        return HttpUrl.parse(loanList)
+        return HttpUrl.parse(scrambleUrl)
                 .newBuilder()
                 .addQueryParameter("ClientName", name)
                 .addQueryParameter("AmountToInvest", amountToInvest)
