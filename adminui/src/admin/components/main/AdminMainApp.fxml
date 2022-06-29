@@ -20,7 +20,7 @@
                   <Menu id="header-skin-menu" fx:id="skinMenu" mnemonicParsing="false" onAction="#initializeSkinContextMenu" onMenuValidation="#initializeSkinContextMenu" text="Skin" />
                </menus>
             </MenuBar>
-            <Label fx:id="currentYazLabel" text="Current Yaz:" HBox.hgrow="ALWAYS">
+            <Label fx:id="currentYazLabel" text="Current Yaz: 1" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>

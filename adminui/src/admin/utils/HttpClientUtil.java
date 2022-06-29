@@ -36,6 +36,18 @@ public class HttpClientUtil {
         call.enqueue(callback);
     }
 
+    public static void runAsyncPost(String finalUrl, RequestBody requestBody, Callback callback){
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(requestBody)
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
+    }
+
     public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }

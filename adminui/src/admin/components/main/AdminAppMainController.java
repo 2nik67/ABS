@@ -15,6 +15,8 @@ import java.net.URL;
 
 public class AdminAppMainController {
 
+    private int currentYaz = 1;
+
     @FXML
     private AnchorPane mainPanel;
 
@@ -89,6 +91,11 @@ public class AdminAppMainController {
             //userAppComponentController.setInActive();
             setMainPanelTo(adminLoginComponent);
         });
+    }
+
+    public void increaseYaz(){
+        currentYaz++;
+        currentYazLabel.setText("Current Yaz: " + currentYaz);
     }
 
     @FXML
