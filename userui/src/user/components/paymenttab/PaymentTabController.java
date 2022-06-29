@@ -100,8 +100,6 @@ public class PaymentTabController{
             ObservableList<String> observableList = loansListView.getItems();
             observableList.remove(loansListView.getSelectionModel().getSelectedItem());
             closeLoanBtn.setDisable(true);
-            userAppController.createInvestmentTreeForClient(userAppController.getChosenClient());
-            userAppController.createLoanTreeForClient(userAppController.getChosenClient());
             payBtn.setDisable(true);
             moneyTextFiled.setDisable(true);
             autoPayBtn.setDisable(true);

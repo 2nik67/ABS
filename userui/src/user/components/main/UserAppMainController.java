@@ -114,7 +114,9 @@ public class UserAppMainController {
 
     public void switchToUserApp(String name) {
         clientsName = name;
+        userAppComponentController.setCurrentClient(name);
         setMainPanelTo(userAppComponent);
+
         // *.setActive();
     }
 

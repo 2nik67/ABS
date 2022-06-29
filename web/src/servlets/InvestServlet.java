@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 public class InvestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //String client = req.getParameter("ClientName");
+        /*//String client = req.getParameter("ClientName");
         Double sumToInvest = Double.parseDouble(req.getParameter("SumToInvest"));
         //Client chosenClient = Clients.getClientByName(client);
         String jsonArrayLoans = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Loan[] loansArray = new Gson().fromJson(jsonArrayLoans, Loan[].class);
         List<Loan> loans = Arrays.asList(loansArray);
         Investment.investmentAssigning(loans, sumToInvest);
-/*        try (PrintWriter out = resp.getWriter()) {
+*//*        try (PrintWriter out = resp.getWriter()) {
             Gson gson = new Gson();
             String json = gson.toJson(possibleLoans);
             out.println(json);

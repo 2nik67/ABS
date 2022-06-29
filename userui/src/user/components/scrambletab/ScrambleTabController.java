@@ -265,8 +265,4 @@ public class ScrambleTabController {
         categoryCheckList.getItems().clear();
     }
 
-    public void createTrees() {
-        userAppController.createLoanTreeForClient(userAppController.getChosenClient());
-        userAppController.createInvestmentTreeForClient(userAppController.getChosenClient());
-    }
 }

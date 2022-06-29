@@ -38,6 +38,8 @@ public class UserAppController {
 
     private boolean firstTimeTree = true;
 
+    private String clientName;
+
     private UserAppMainController userAppMainController;
 
     private PossibleLoansController possibleLoansController;
@@ -142,7 +144,7 @@ public class UserAppController {
     }
 
     public void updateInvestmentsTable(List<Loan> loansOfClient) {
-        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
+        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
@@ -160,7 +162,7 @@ public class UserAppController {
         List <Loan> loans = new ArrayList<>();
         for (Loan loan : loansOfClient) {
             for (int i = 0; i <loan.getLoaners().size(); i++) {
-                if(loan.getLoaners().get(i).getKey().getName().equals(chosenClient.getName())){
+                if(loan.getLoaners().get(i).getKey().getName().equals(clientName)){
                     loans.add(loan);
                 }
             }
@@ -181,10 +183,10 @@ public class UserAppController {
     }
 
     private void updateDataLoanTable(List<Loan> loansOfClient) {
-        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppMainController.getClientsName()), new Callback() {
+        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override
@@ -200,7 +202,7 @@ public class UserAppController {
 
         List <Loan> loans = new ArrayList<>();
         for (Loan loan : loansOfClient) {
-            if (loan.getOwner().getName().equals(chosenClient.getName())) {
+            if (loan.getOwner().getName().equals(clientName)) {
                 loans.add(loan);
             }
         }
@@ -232,89 +234,12 @@ public class UserAppController {
 
         }
     }
-    private boolean checkForChange(List<Loan> loansOfClient){
-        int loanOfClientSize = getNumberOfLoans(loansOfClient);
-        if (loanOfClientSize < investmentsTreeView.getRoot().getChildren().size()){
-            return true;
-        }
-        for (Loan loan : loansOfClient) {
-            if(loan.getOwner().getName().equals(chosenClient.getName())){
-
-                TreeItem loanId =getTreeViewItem(investmentsTreeView.getRoot(), loan.getId());
-                TreeItem status = getTreeViewItem(loanId, "Status");
-                if (!status.toString().contains(loan.getStatus().toString())){
-                    return true;
-                }
-                String totalPaid = getTreeViewItem(loanId, "Total paid: ").toString();
-                Double paid = Double.parseDouble(totalPaid.split("Total paid: ")[1].split(" | ")[0]);
-                if (paid != loan.getLoanPaid()){
-                    return true;
-                }
-
-            }
-        }
-        return false;
-    }
 
 
 
-    private static TreeItem getTreeViewItem(TreeItem<String> item , String value) {
-        if (item != null && item.getValue().contains(value))
-            return  item;
 
-        for (TreeItem<String> child : item.getChildren()){
-            TreeItem<String> s=getTreeViewItem(child, value);
-            if(s!=null)
-                return s;
 
-        }
-        return null;
-    }
 
-    private void updateLoanTree(List<Loan> loansOfClient){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                TreeItem<String> loans = new TreeItem<>("Loans");
-                for (Loan loan : loansOfClient) {
-                    if(loan.getOwner().getName().equals(chosenClient.getName())){
-                        TreeItem<String> loanID = new TreeItem<>(loan.getId());
-                        TreeItem<String> owner = new TreeItem<>("Loaner: " + loan.getOwner().getName());
-                        TreeItem<String> status = new TreeItem<>("Status: " + loan.getStatus().toString());
-                        TreeItem<String> category= new TreeItem<>("Category: " + loan.getLoanCategory().getCategory());
-                        TreeItem<String> loanAmountAndTotalYaz = new TreeItem<>("Loan amount: " + loan.getLoan() + " | " + "Total YAZ: " + loan.getTotalYaz());
-
-                        if(loan.getStatus().equals(Status.PENDING) || loan.getStatus().equals(Status.NEW)){
-                            TreeItem<String> loaners = new TreeItem<>("Loaners");
-                            List<Pair<Client,Double>> loanersList = loan.getLoaners();
-
-                            for (Pair<Client, Double> clientDoublePair : loanersList) {
-                                TreeItem<String> loaner = new TreeItem<>("Name: " + clientDoublePair.getKey().getName() +
-                                        "| " + "Invested: " + clientDoublePair.getValue());
-                                loaners.getChildren().add(loaner);
-                            }
-                            TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
-                                    "Missing: " + loan.getMissingToActive());
-                            loanID.getChildren().add(total);
-
-                        }
-                        else if(loan.getStatus().equals(Status.ACTIVE)){
-                            TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
-                                    + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                            loanID.getChildren().add(payments);
-                        }
-                        loanID.getChildren().add(owner);
-                        loanID.getChildren().add(category);
-                        loanID.getChildren().add(status);
-                        loanID.getChildren().add(loanAmountAndTotalYaz);
-                        loans.getChildren().add(loanID);
-                    }
-                }
-                investmentsTreeView.setRoot(loans);
-
-            }
-        });
-    }
 
 
     private int getNumberOfLoans(List <Loan> loans) {
@@ -365,139 +290,26 @@ public class UserAppController {
 
     }
 
-    public void refreshCategoriesInScramble(){
-        scrambleTabComponentController.initializeCategoryCheckList();
-    }
+
 
     public void setCurrentClient(String currentClient) {
-        scrambleTabComponentController.setCurrentClient(currentClient);
+        clientName = currentClient;
     }
 
     public String getChosenClient(){
         return userAppMainController.getClientsName();
     }
 
-    public void createLoanTreeForClient(String name){
-        chosenClient = Clients.getClientByName(userAppMainController.getChosenClient());
-        List<Loan> loansList = new ArrayList<>(Loans.getLoans());
-        TreeItem<String> loans = new TreeItem<>("Loans");
-
-        for (Loan loan : loansList) {
-            if(loan.getOwner().getName().equals(chosenClient.getName())){
-                TreeItem<String> loanID = new TreeItem<>(loan.getId());
-                TreeItem<String> owner = new TreeItem<>("Loaner: " + loan.getOwner().getName());
-                TreeItem<String> status = new TreeItem<>("Status: " + loan.getStatus().toString());
-                TreeItem<String> category= new TreeItem<>("Category: " + loan.getLoanCategory().getCategory());
-                TreeItem<String> loanAmountAndTotalYaz = new TreeItem<>("Loan amount: " + loan.getLoan() + " | " + "Total YAZ: " + loan.getTotalYaz());
-                if(loan.getStatus().equals(Status.PENDING)){
-                    TreeItem<String> loaners = new TreeItem<>("Loaners");
-                    List<Pair<Client,Double>> loanersList = loan.getLoaners();
-
-                    for (Pair<Client, Double> clientDoublePair : loanersList) {
-                        TreeItem<String> loaner = new TreeItem<>("Name: " + clientDoublePair.getKey().getName() +
-                                "| " + "Invested: " + clientDoublePair.getValue());
-                        loaners.getChildren().add(loaner);
-                    }
-                    TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
-                            "Missing: " + loan.getMissingToActive());
-                    loanID.getChildren().add(total);
-
-                }
-                else if(loan.getStatus().equals(Status.ACTIVE)){
-                    TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
-                            + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                    loanID.getChildren().add(payments);
-                }
-                loanID.getChildren().add(owner);
-                loanID.getChildren().add(category);
-                loanID.getChildren().add(status);
-                loanID.getChildren().add(loanAmountAndTotalYaz);
 
 
-                loans.getChildren().add(loanID);
-            }
-
-        }
-        investmentsTreeView.setRoot(loans);
-    }
-
-    public void createInvestmentTreeForClient(String name){
-        List<Loan> loansList = new ArrayList<>(Loans.getLoans());
-        TreeItem<String> loans = new TreeItem<>("Investments");
-
-        for (Loan loan : loansList) {
-            if(chosenClient.isInvestor(loan)){
-                TreeItem<String> loanID = new TreeItem<>(loan.getId());
-                TreeItem<String> owner = new TreeItem<>("Loaner: " + loan.getOwner().getName());
-                TreeItem<String> status = new TreeItem<>("Status: " + loan.getStatus().toString());
-                TreeItem<String> category= new TreeItem<>("Category: " + loan.getLoanCategory().getCategory());
-                TreeItem<String> loanAmountAndTotalYaz = new TreeItem<>("Loan amount: " + loan.getLoan() + " | " + "Total YAZ: " + loan.getTotalYaz());
-                if(loan.getStatus().equals(Status.PENDING)){
-                    TreeItem<String> loaners = new TreeItem<>("Loaners");
-                    List<Pair<Client,Double>> loanersList = loan.getLoaners();
-
-                    for (Pair<Client, Double> clientDoublePair : loanersList) {
-                        TreeItem<String> loaner = new TreeItem<>("Name: " + clientDoublePair.getKey().getName() +
-                                "| " + "Invested: " + clientDoublePair.getValue());
-                        loaners.getChildren().add(loaner);
-                    }
-                    TreeItem<String> total =new TreeItem<>("Total paid: " +(loan.getLoan() - loan.getMissingToActive()) + " | " +
-                            "Missing: " + loan.getMissingToActive());
-                    loanID.getChildren().add(total);
-
-                }
-                else if(loan.getStatus().equals(Status.ACTIVE)){
-                    TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
-                            + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                    loanID.getChildren().add(payments);
-                }
-                else if(loan.getStatus().equals(Status.RISK)){
-                    TreeItem<String> payments =new TreeItem<>("Total Loan paid (with no interest): " + loan.getLoanPaid() + " | Total interest paid: " + loan.getInterestPaid() + "\n"
-                            + "Loan left to pay(with no interest): " + (loan.getLoan() - loan.getLoanPaid()) + " | Interest left to pay: " + (loan.getInterest()- loan.getInterestPaid()));
-                    TreeItem<String> missedPayments = new TreeItem<>("Total amount missed: " + loan.getTotalAmountMissed());
-
-                    loanID.getChildren().add(payments);
-                    loanID.getChildren().add(missedPayments);
-                }
-                else if(loan.getStatus().equals(Status.FINISHED)){
-                    TreeItem<String> finished = new TreeItem<>("Loan finished in Yaz: " + loan.getFinishYaz());
-                    loanID.getChildren().add(finished);
-                }
-                loanID.getChildren().add(owner);
-                loanID.getChildren().add(category);
-                loanID.getChildren().add(status);
-                loanID.getChildren().add(loanAmountAndTotalYaz);
-
-                //loanID.getChildren().addAll(owner, category, status, loanAmountAndTotalYaz);
-                loans.getChildren().add(loanID);
-            }
-        }
-
-        loansTreeView.setRoot(loans);
-    }
 
     public void createTransactionInfo(String name){
         Clients.getClientByName(name);
     }
 
-    public void resetUI() {
-        investmentsTreeView.setRoot(null);
-        loansTreeView.setRoot(null);
-        scrambleTabComponentController.resetUI();
-    }
 
-    public void createLoanTreeForClientForPaymentTab() {
-        paymentTabComponentController.createLoanTreeForClientForPaymentTab();
-    }
 
-    public void createCategoryList() {
-        scrambleTabComponentController.initializeCategoryCheckList();
-    }
 
-    public void resetUIforClient() {
-        investmentsTreeView.setRoot(null);
-        loansTreeView.setRoot(null);
-    }
 
     public ObservableList<String> getCurrentStyle(){
         return loansTreeView.getScene().getStylesheets();
