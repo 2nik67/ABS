@@ -44,6 +44,8 @@ public class UserAppController {
 
     private DepositWithdrawController depositWithdrawController;
 
+    private LoanPopUpController loanPopUpController;
+
     private Client chosenClient;
 
     @FXML
@@ -149,7 +151,7 @@ public class UserAppController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
-                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                     chosenClient = client;
                 }
@@ -192,7 +194,7 @@ public class UserAppController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
-                if (!jsonArrayOfUsersNames.equals("[]\n")){
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                     chosenClient = client;
                 }
@@ -216,9 +218,11 @@ public class UserAppController {
     @FXML
     public void onMouseClickedLoans(MouseEvent event) throws Exception{
         if(event.getClickCount() == 2){
-            LoanPopUpController loanPopUpController = new LoanPopUpController();
-            DepositWithdrawController.setUserAppController(this);
-            loanPopUpController.popUp(loansTableView.getSelectionModel().getSelectedItems().get(0));
+            //loanPopUpController = new LoanPopUpController();
+            Loan loan = loansTableView.getSelectionModel().getSelectedItems().get(0);
+            loanPopUpController.popUp(loan);
+            loanPopUpController.fillLoanInfo();
+            //add style
         }
     }
 //
