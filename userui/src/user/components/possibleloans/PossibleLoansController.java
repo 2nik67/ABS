@@ -78,6 +78,11 @@ public class PossibleLoansController {
             }
         });
 
+
+
+        /*Stage stage = (Stage) cancelBtn.getScene().getWindow();
+        stage.close();*/
+
     }
 
     private List<String> getCheckedLoans() {
