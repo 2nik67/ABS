@@ -75,14 +75,40 @@ public class PossibleLoansController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 System.out.println(response.body().string());
+                advanceProgressBarAndClose();
             }
         });
 
+    }
 
+    private void advanceProgressBarAndClose(){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (double i = 0; i < 6; i++) {
+                    scrambleProgressIndicator.setProgress(i/10);
+                    Thread.sleep(100);
+                }
 
-        /*Stage stage = (Stage) cancelBtn.getScene().getWindow();
-        stage.close();*/
+                for (double i = 6; i <= 10; i++) {
+                    scrambleProgressIndicator.setProgress(i/10);
+                    Thread.sleep(100);
+                }
+                Thread.sleep(500);
 
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Stage stage = (Stage) cancelBtn.getScene().getWindow();
+                        stage.close();
+                    }
+                });
+                return null;
+            }
+        };
+        Thread t= new Thread(task);
+
+        t.start();
     }
 
     private List<String> getCheckedLoans() {
