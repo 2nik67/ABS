@@ -42,9 +42,6 @@ public class LoanPopUpController {
     private Label capitalLabel;
 
     @FXML
-    private Label investorsLabel;
-
-    @FXML
     private Label totalPaidLabel;
 
     @FXML
@@ -78,7 +75,7 @@ public class LoanPopUpController {
             URL url = getClass().getResource("/user/components/loanpopup/loanPopUp.fxml");
             fxmlLoader.setLocation(url);
             ScrollPane root = fxmlLoader.load(url.openStream());
-            Scene scene =new Scene(root, 400 , 200);
+            Scene scene =new Scene(root, 1000 , 600);
             newStage.setResizable(true);
             newStage.setScene(scene);
             newStage.show();

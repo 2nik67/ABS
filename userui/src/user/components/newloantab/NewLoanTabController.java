@@ -186,7 +186,7 @@ public class NewLoanTabController {
         if(categories.size() == categoryComboBox.getItems().size()){
             return;
         }
-        categoryComboBox.getItems().clear();
+        categoryComboBox.getItems().clear(); //TODO: is the combobox here null?
         for (Category category : categories) {
             categoryComboBox.getItems().add(category.getCategory());
         }

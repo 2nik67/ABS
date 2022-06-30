@@ -6,12 +6,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.components.loanpopup.LoanPopUpController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.components.loanpopup.LoanPopUpController">
    <content>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane>
          <top>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="loanIDLabel" text="Loan ID:">
                      <HBox.margin>
@@ -38,11 +39,6 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="investorsLabel" text="Investors:">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </HBox.margin>
-                  </Label>
                   <Label fx:id="totalPaidLabel" text="Total paid:">
                      <HBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -51,8 +47,29 @@
                </children>
             </HBox>
          </top>
+         <center>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Investors:">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ListView fx:id="investorsListView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </center>
          <bottom>
-            <ListView fx:id="investorsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Missed payments:">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ListView minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
          </bottom>
       </BorderPane>
    </content>

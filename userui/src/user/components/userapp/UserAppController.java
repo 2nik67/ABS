@@ -21,6 +21,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import user.components.depositwithdraw.DepositWithdrawController;
 import user.components.loanpopup.LoanPopUpController;
+import user.components.loantrade.LoanTradeController;
 import user.components.main.UserAppMainController;
 import user.components.newloantab.NewLoanTabController;
 import user.components.paymenttab.PaymentTabController;
@@ -124,6 +125,14 @@ public class UserAppController {
     @FXML
     private Tab newLoanTab;
 
+    @FXML
+    private Tab loanTradeTab;
+
+    private LoanTradeController loanTradeComponentController;
+
+    @FXML
+    private ScrollPane loanTradeTabComponent;
+
     final static String getClientFinalUrl = "http://localhost:8080/web_Web/servlets/GetUserByName";
 
     @FXML
@@ -132,6 +141,7 @@ public class UserAppController {
             scrambleTabComponentController.setUserAppController(this);
             paymentTabComponentController.setUserAppController(this);
             newLoanTabComponentController.setUserAppController(this);
+            //loanTradeComponentController.setUserAppController(this);
         }
 
         startLoanClientListRefresher();
@@ -240,13 +250,6 @@ public class UserAppController {
         }
     }
 
-
-
-
-
-
-
-
     private int getNumberOfLoans(List <Loan> loans) {
         int res = 0;
         for (Loan loan : loans) {
@@ -293,8 +296,6 @@ public class UserAppController {
         });
 
     }
-
-
 
     public void setCurrentClient(String currentClient) {
         clientName = currentClient;

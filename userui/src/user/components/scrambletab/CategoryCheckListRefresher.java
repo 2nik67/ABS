@@ -36,6 +36,7 @@ public class CategoryCheckListRefresher extends TimerTask {
                 //httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
                 Category[] categories = new Gson().fromJson(jsonArrayOfCategories, Category[].class);
                 categoryConsumer.accept(Arrays.asList(categories));
+                //TODO: is something here null?
             }
         });
     }
