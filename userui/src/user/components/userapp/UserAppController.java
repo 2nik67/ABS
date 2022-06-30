@@ -40,6 +40,8 @@ public class UserAppController {
 
     private String clientName;
 
+
+
     private UserAppMainController userAppMainController;
 
     private PossibleLoansController possibleLoansController;
@@ -219,12 +221,15 @@ public class UserAppController {
         if(event.getClickCount() == 2){
             loanPopUpController = new LoanPopUpController();
             Loan loan = loansTableView.getSelectionModel().getSelectedItems().get(0);
-            loanPopUpController.popUp(loan);
-            loanPopUpController.fillLoanInfo(loan);
-            //add style
+            if (loan == null){
+                return;
+            }
+            loanPopUpController.setLoan(loan);
+            loanPopUpController.popUp();
+
         }
     }
-//
+
     @FXML
     public void onMouseClickedInvestment(MouseEvent event)
     {
@@ -261,7 +266,6 @@ public class UserAppController {
     }
 
     public void infoTabSelected(){
-
         transactionTableView.getItems().clear();
         String name = userAppMainController.getChosenClient();
         String finalUrl = getClientFinalUrl + "?ClientName=" + name;

@@ -1,21 +1,30 @@
 package user.components.loanpopup;
 
+import client.Client;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 
 import javafx.stage.Stage;
+
+import javafx.util.Pair;
 import loan.Loan;
+import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
 
 import java.net.URL;
+import java.util.List;
 
 public class LoanPopUpController {
 
-    private Loan thisLoan;
+    private static Loan thisLoan;
+
+    private static UserAppController userAppController;
 
     @FXML
     private Label loanIDLabel;
@@ -39,21 +48,29 @@ public class LoanPopUpController {
     private Label totalPaidLabel;
 
     @FXML
+    private ListView<String> investorsListView;
+
+
+    @FXML
     void initialize() {
-        //fillLoanInfo();
+        fillLoanInfo();
         //loanIDLabel.setText("Loan ID: " + thisLoan.getId());
     }
 
-    public void fillLoanInfo(Loan thisLoan) {
+    public void fillLoanInfo() {
         loanIDLabel.setText("Loan ID: " + thisLoan.getId());
         loanerLabel.setText("Loaner: " + thisLoan.getOwner().getName());
         statusLabel.setText("Status: " + thisLoan.getStatus().name());
-        categoryLabel.setText("Category: " + thisLoan.getLoanCategory());
+        categoryLabel.setText("Category: " + thisLoan.getLoanCategory().getCategory());
         capitalLabel.setText("Capital: " + thisLoan.getLoan());
+        totalPaidLabel.setText("Total paid: " + thisLoan.getLoanPaid());
+        for (int i = 0; i < thisLoan.getLoaners().size(); i++) {
+            String str = thisLoan.getLoaners().get(i).getKey().getName() + " invested " + thisLoan.getLoaners().get(i).getValue();
+            investorsListView.getItems().add(str);
+        }
     }
 
-    public void popUp(Loan loan) throws Exception{
-        this.thisLoan = loan;
+    public void popUp() throws Exception{
         try{
 
             Stage newStage = new Stage();
@@ -62,7 +79,7 @@ public class LoanPopUpController {
             fxmlLoader.setLocation(url);
             ScrollPane root = fxmlLoader.load(url.openStream());
             Scene scene =new Scene(root, 400 , 200);
-            newStage.setResizable(false);
+            newStage.setResizable(true);
             newStage.setScene(scene);
             newStage.show();
 
@@ -75,5 +92,9 @@ public class LoanPopUpController {
 
        /* if(!style.isEmpty())
             scene.getStylesheets().add(style.get(0));*/
+    }
+
+    public void setLoan(Loan loan) {
+        this.thisLoan = loan;
     }
 }
