@@ -77,10 +77,14 @@ public abstract class LoadFile{
         for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
             Category category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
             Categories.addCategory(category);
-            loans.add(new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
+            Loan newLoan = new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
                     category, absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
-                    absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment()));
-
+                    absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment());
+            loans.add(newLoan);
+            if(Loans.getLoanByID(newLoan.getId()) != null){
+                System.out.println("files is not valid, at least one loan ID already in system");
+                return;
+            }
         }
         Loans.setLoans(loans);
         //TODO: check if file is valid.

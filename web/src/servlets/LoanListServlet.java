@@ -13,7 +13,6 @@ import utils.ServletUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -56,19 +55,17 @@ public class LoanListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //String client = req.getParameter("ClientName");
-        double sumToInvest = Double.parseDouble(req.getParameter("SumToInvest"));
+        Double sumToInvest = Double.parseDouble(req.getParameter("SumToInvest"));
         //Client chosenClient = Clients.getClientByName(client);
         String jsonArrayLoans = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        String[] loansIdArray = new Gson().fromJson(jsonArrayLoans, String[].class);
-        List<String> loansId = Arrays.asList(loansIdArray);
-        List<Loan> loans = new ArrayList<>();
-        for (String s : loansId) {
-            loans.add(Loans.getLoanByID(s));
-        }
+        Loan[] loansArray = new Gson().fromJson(jsonArrayLoans, Loan[].class);
+        List<Loan> loans = Arrays.asList(loansArray);
         Investment.investmentAssigning(loans, sumToInvest);
-        try (PrintWriter out = resp.getWriter()) {
-            resp.getWriter().println("Invested");
-        }
-
+/*        try (PrintWriter out = resp.getWriter()) {
+            Gson gson = new Gson();
+            String json = gson.toJson(possibleLoans);
+            out.println(json);
+            out.flush();
+        };*/
     }
 }

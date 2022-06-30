@@ -78,9 +78,6 @@ public class PossibleLoansController {
             }
         });
 
-
-
-
     }
 
     private List<String> getCheckedLoans() {

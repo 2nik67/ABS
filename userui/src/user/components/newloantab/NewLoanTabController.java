@@ -100,9 +100,8 @@ public class NewLoanTabController {
             return;
         }
 
-        //TODO: yaz interval needs to be modulo of total yaz
-        if(Double.parseDouble(yazIntervalTextField.getText()) > Double.parseDouble(totalYAZTextField.getText())){
-            MenuItem string = new MenuItem("Yaz interval can't be bigger than total Yaz.");
+        if((Double.parseDouble(totalYAZTextField.getText()))%(Double.parseDouble(yazIntervalTextField.getText())) != 0){
+            MenuItem string = new MenuItem("Yaz interval can't be bigger than total Yaz, and it needs to divide total Yaz.");
             yazIntervalContext.getItems().clear();
             yazIntervalContext.getItems().add(string);
 
