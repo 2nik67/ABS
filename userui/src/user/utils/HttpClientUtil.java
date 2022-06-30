@@ -147,7 +147,7 @@ public class HttpClientUtil {
         HTTP_CLIENT.connectionPool().evictAll();
     }
 
-    public static String createLoansForBody(List<Loan> checkedLoans) {
+    public static String createLoansForBody(List<String> checkedLoans) {
         Gson gson = new Gson();
         return gson.toJson(checkedLoans);
     }

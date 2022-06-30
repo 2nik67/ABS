@@ -63,7 +63,7 @@ public class PossibleLoansController {
 
     @FXML
     void okBtnOnAction(ActionEvent event) {
-        List<Loan> checkedLoans = getCheckedLoans();
+        List<String> checkedLoans = getCheckedLoans();
         String bodyRequest = HttpClientUtil.createLoansForBody(checkedLoans);
         RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
         HttpClientUtil.runAsyncPost(HttpClientUtil.createInvestmentUrl(sumToInvest), requestBody, new Callback() {
@@ -83,12 +83,12 @@ public class PossibleLoansController {
 
     }
 
-    private List<Loan> getCheckedLoans() {
-        List<Loan> res = new ArrayList<>();
+    private List<String> getCheckedLoans() {
+        List<String> res = new ArrayList<>();
         for (int i = 0; i < loansCheckList.getItems().size(); i++) {
             for (Loan loan : possibleLoanList) {
                 if (loansCheckList.getCheckModel().isChecked(i) && loan.getId().equals(loansCheckList.getCheckModel().getItem(i))) {
-                    res.add(loan);
+                    res.add(loan.getId());
                 }
             }
 
