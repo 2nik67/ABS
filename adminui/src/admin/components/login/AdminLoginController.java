@@ -34,9 +34,7 @@ public class AdminLoginController {
 
     @FXML
     void loginBtnOnAction(ActionEvent event) {
-        adminAppMainController.switchToAdminApp(adminNameTextField.getText());
-
-        /*String userName= adminNameTextField.getText();
+        String userName= adminNameTextField.getText();
         if(userName.isEmpty()){
             return;
         }
@@ -67,17 +65,17 @@ public class AdminLoginController {
                     String responseBody = response.body().string();
 
                     Platform.runLater(() -> {
-                        if(responseBody.contains("NEW")) {
-                            adminAppMainController.switchToUserApp(adminNameTextField.getText());
+                        if(responseBody.contains("WELCOME")) {
+                            adminAppMainController.switchToAdminApp(adminNameTextField.getText());
                         }
                         else {
-                            label.setText("Client already signed in!");
+                            label.setText(responseBody);
                         }
                     });
                 }
 
             }
-        });*/
+        });
 
     }
 

@@ -6,13 +6,14 @@ import java.util.Locale;
 
 public abstract class Clients {
     private static List <Client> clientsList = new ArrayList<>();
-
+    private static boolean isAdminOn = false;
 
     public static void setClientsList(List<Client> clients) {
         Clients.clientsList = new ArrayList<>(clients);
     }
 
     public static void addClient(Client client){clientsList.add(client);}
+
     public static void PrintList(){
         for (int i = 0; i < clientsList.size(); i++) {
             System.out.println( (i+1) + ") " + clientsList.get(i).getName() + " | " + "Money in the bank: " + String.format("%.2f", clientsList.get(i).getMoney()));
@@ -55,5 +56,11 @@ public abstract class Clients {
         }
 
         return null;
+    }
+
+    public static boolean getIsAdminOn(){ return isAdminOn; }
+
+    public static void setIsAdminOn(boolean isAdminOn) {
+        Clients.isAdminOn = isAdminOn;
     }
 }

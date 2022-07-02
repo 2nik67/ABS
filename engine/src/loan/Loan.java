@@ -273,4 +273,9 @@ public class Loan {
     public double getLoanEveryYaz() {
         return loanEveryYaz;
     }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }

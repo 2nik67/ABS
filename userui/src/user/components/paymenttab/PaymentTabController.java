@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import javafx.util.converter.IntegerStringConverter;
@@ -21,6 +22,7 @@ import loan.Status;
 import loan.category.Category;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import user.components.loanpopup.LoanPopUpController;
 import user.components.userapp.LoanTableRefresher;
 import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
@@ -34,6 +36,8 @@ import java.util.TimerTask;
 import java.util.function.UnaryOperator;
 
 public class PaymentTabController{
+
+    private LoanPopUpController loanPopUpController;
 
     private TimerTask loanOfClientRefresher;
     private Timer timer;
@@ -59,6 +63,9 @@ public class PaymentTabController{
 
     @FXML
     private ListView<Loan> loansListView;
+
+    @FXML
+    private ListView<Loan> loanDetailedListView;
 
     @FXML
     void autoPayOnAction(ActionEvent event) {
@@ -222,8 +229,6 @@ public class PaymentTabController{
 
     }
 
-
-
     @FXML
     private void initialize() {
 
@@ -274,9 +279,6 @@ public class PaymentTabController{
                 }
             }
         });
-
-
-
     }
 
     private void startLoanClientListRefresher() {
@@ -305,22 +307,48 @@ public class PaymentTabController{
 
 
         List <Loan> loans1 = new ArrayList<>();
+        List <Loan> loans2 = new ArrayList<>();
         for (Loan loan : loansOfClient) {
             if (loan.getOwner().getName().equals(chosenClient.getName())) {
+                loans2.add(loan);
                 if (loan.getStatus().equals(Status.RISK) || loan.getStatus().equals(Status.ACTIVE))
                     loans1.add(loan);
             }
         }
         if (loans1.isEmpty()){
             loansListView.getItems().clear();
-            return;
         }
-
-        if (loans1.size() > loansListView.getItems().size() || statusWasChanged(loans1, loansListView.getItems())){
+        else if (loans1.size() > loansListView.getItems().size() || statusWasChanged(loans1, loansListView.getItems())){
             loansListView.getItems().clear();
             loansListView.getItems().addAll(loans1);
         }
 
+        if(loans2.isEmpty())
+            return;
+
+        if (loans2.size() > loanDetailedListView.getItems().size()){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    loanDetailedListView.getItems().clear();
+                    loanDetailedListView.getItems().addAll(loans2);
+                }
+            });
+        }
+    }
+
+    @FXML
+    public void onMouseClickedLoans(MouseEvent event) throws Exception{
+        if(event.getClickCount() == 2){
+            loanPopUpController = new LoanPopUpController();
+            Loan loan = loanDetailedListView.getSelectionModel().getSelectedItem();
+            if (loan == null){
+                return;
+            }
+            loanPopUpController.setLoan(loan);
+            loanPopUpController.popUp("LOAN");
+
+        }
     }
 
     private boolean statusWasChanged(List<Loan> loans1, ObservableList<Loan> items) {

@@ -257,17 +257,22 @@ public class UserAppController {
                 return;
             }
             loanPopUpController.setLoan(loan);
-            loanPopUpController.popUp();
+            loanPopUpController.popUp("LOAN");
 
         }
     }
 
     @FXML
-    public void onMouseClickedInvestment(MouseEvent event) {
+    public void onMouseClickedInvestment(MouseEvent event) throws Exception {
         if (event.getClickCount() == 2) //Checking double click
         {
-            System.out.println(loansTableView.getSelectionModel().getSelectedItems().get(0).getOwner().getName());
-
+            loanPopUpController = new LoanPopUpController();
+            Loan loan = investmentsTableView.getSelectionModel().getSelectedItems().get(0);
+            if (loan == null){
+                return;
+            }
+            loanPopUpController.setLoan(loan);
+            loanPopUpController.popUp("INVESTMENT");
         }
     }
 
@@ -299,16 +304,9 @@ public class UserAppController {
         return userAppMainController.getClientsName();
     }
 
-
-
-
     public void createTransactionInfo(String name){
         Clients.getClientByName(name);
     }
-
-
-
-
 
     public ObservableList<String> getCurrentStyle(){
         return loansTreeView.getScene().getStylesheets();

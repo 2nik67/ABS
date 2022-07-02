@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import javafx.util.Pair;
 import loan.Loan;
+import loan.Status;
 import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
 
@@ -25,6 +26,8 @@ public class LoanPopUpController {
     private static Loan thisLoan;
 
     private static UserAppController userAppController;
+
+    private String type;
 
     @FXML
     private Label loanIDLabel;
@@ -65,11 +68,14 @@ public class LoanPopUpController {
             String str = thisLoan.getLoaners().get(i).getKey().getName() + " invested " + thisLoan.getLoaners().get(i).getValue();
             investorsListView.getItems().add(str);
         }
+        /*if(thisLoan.getStatus().equals(Status.RISK)){
+            thisLoan.getm
+        }*/
     }
 
-    public void popUp() throws Exception{
+    public void popUp(String type) throws Exception{
+        this.type = type;
         try{
-
             Stage newStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader();
             URL url = getClass().getResource("/user/components/loanpopup/loanPopUp.fxml");
@@ -78,6 +84,12 @@ public class LoanPopUpController {
             Scene scene =new Scene(root, 1000 , 600);
             newStage.setResizable(true);
             newStage.setScene(scene);
+
+            if(type == "LOAN")
+                newStage.setTitle("Loan detailed view");
+            else
+                newStage.setTitle("Investment detailed view");
+
             newStage.show();
 
         }catch (Exception e){

@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -20,11 +19,11 @@
               <items>
                   <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="client-containers">
                      <center>
-                        <TreeView fx:id="loansTreeView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <ListView fx:id="loanDetailedListView" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onMouseClickedLoans" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </BorderPane.margin>
-                        </TreeView>
+                        </ListView>
                      </center>
                   </BorderPane>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" styleClass="client-containers">
