@@ -18,6 +18,9 @@ public class HttpClientUtil {
     private final static String scrambleUrl = "http://localhost:8080/web_Web/servlets/Scramble";
     private final static String categoryList = "http://localhost:8080/web_Web/servlets/CategoryList";
     private final static String investmentUrl = "http://localhost:8080/web_Web/servlets/Invest";
+    private final static String payLoanUrl ="http://localhost:8080/web_Web/servlets/PayLoan";
+
+
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
@@ -26,6 +29,21 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
+
+    public static String createManualPayLoanUrl(Loan loan, String toPay){
+        return HttpUrl.parse(payLoanUrl)
+                .newBuilder()
+                .addQueryParameter("LoanId", loan.getId())
+                .addQueryParameter("ToPay", toPay)
+                .build().toString();
+    }
+
+    public static String createCloseLoanOrAutoPayUrl(Loan loan){
+        return HttpUrl.parse(payLoanUrl)
+                .newBuilder()
+                .addQueryParameter("LoanId", loan.getId())
+                .build().toString();
+    }
 
     public static String createInvestmentUrl(Double amountToInvest){
         return HttpUrl.parse(loanList)
@@ -128,6 +146,17 @@ public class HttpClientUtil {
                 .build();
 
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        call.enqueue(callback);
+    }
+
+    public static void runAsyncHead(String finalUrl, Callback callback) {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .head()
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
         call.enqueue(callback);
     }
 

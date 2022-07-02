@@ -37,6 +37,8 @@ public class UserAppController {
     private TimerTask loanOfClientRefresher;
     private Timer timer;
 
+    private TimerTask transactionListRefresher;
+
     private boolean firstTimeTree = true;
 
     private String clientName;
@@ -56,7 +58,7 @@ public class UserAppController {
     @FXML
     private Tab informationTab;
 
-    private InvestmentsTableRefresher investmentsTableRefresher;
+    private TimerTask investmentsTableRefresher;
 
     //TODO: remove trees
     @FXML
@@ -146,6 +148,23 @@ public class UserAppController {
 
         startLoanClientListRefresher();
         startInvestmentsClientListRefresher();
+
+
+    }
+
+    private void startTransactionListRefresher() {
+        transactionListRefresher = new TransactionListRefresher(this::transactionRefresh, clientName);
+        timer = new Timer();
+        timer.schedule(transactionListRefresher, 2000, 2000);
+    }
+
+    private void transactionRefresh(Client client) {
+        transactionTableView.getItems().clear();
+        yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
+        beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
+        moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
+        afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
+        transactionTableView.getItems().addAll(client.getTransactions());
     }
 
     public void startInvestmentsClientListRefresher() {
@@ -159,7 +178,7 @@ public class UserAppController {
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                System.out.println(e);
             }
 
             @Override
@@ -182,6 +201,7 @@ public class UserAppController {
         if (loans.isEmpty()){
             return;
         }
+
         investmentsTableView.getItems().clear();
         investmentsTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
         investmentsTableView.getItems().addAll(loans);
@@ -194,6 +214,7 @@ public class UserAppController {
         timer.schedule(loanOfClientRefresher, 2000, 2000);
     }
 
+
     private void updateDataLoanTable(List<Loan> loansOfClient) {
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
@@ -205,8 +226,7 @@ public class UserAppController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String jsonArrayOfUsersNames = response.body().string();
                 if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
-                    Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
-                    chosenClient = client;
+                    chosenClient = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                 }
             }
         });
@@ -218,12 +238,14 @@ public class UserAppController {
                 loans.add(loan);
             }
         }
+
         if (loans.isEmpty()){
             return;
         }
         loansTableView.getItems().clear();
         loansTableColumn.setCellValueFactory(new PropertyValueFactory<Loan, String> ("id"));
         loansTableView.getItems().addAll(loans);
+
     }
 
     @FXML
@@ -241,8 +263,7 @@ public class UserAppController {
     }
 
     @FXML
-    public void onMouseClickedInvestment(MouseEvent event)
-    {
+    public void onMouseClickedInvestment(MouseEvent event) {
         if (event.getClickCount() == 2) //Checking double click
         {
             System.out.println(loansTableView.getSelectionModel().getSelectedItems().get(0).getOwner().getName());
@@ -265,40 +286,13 @@ public class UserAppController {
         depositWithdrawController.setCurrentClient(Clients.getClientByName(userAppMainController.getChosenClient()));
         DepositWithdrawController.setUserAppController(this);
         depositWithdrawController.popUp(userAppMainController.getChosenClient());
-        infoTabSelected();
+        //infoTabSelected();
     }
 
-    public void infoTabSelected(){
-        transactionTableView.getItems().clear();
-        String name = userAppMainController.getChosenClient();
-        String finalUrl = getClientFinalUrl + "?ClientName=" + name;
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.exit(0);
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonOfClient = response.body().string();
-                System.out.println(jsonOfClient);
-                Client client = new Gson().fromJson(jsonOfClient, Client.class);
-                if (!client.getTransactions().isEmpty()){
-                    yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
-                    beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
-                    moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
-                    afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
-                    paymentTabComponentController.clearListView();
-                    paymentTabComponentController.createLoansListView();
-                    transactionTableView.getItems().addAll(client.getTransactions());
-                }
-            }
-        });
-
-    }
 
     public void setCurrentClient(String currentClient) {
         clientName = currentClient;
+        startTransactionListRefresher();
     }
 
     public String getChosenClient(){

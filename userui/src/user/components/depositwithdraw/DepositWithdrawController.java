@@ -73,8 +73,6 @@ public class DepositWithdrawController {
                 System.out.println(response.body().string());
             }
         });
-
-        userAppController.infoTabSelected();
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
 

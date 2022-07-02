@@ -145,11 +145,11 @@ public class Loan {
 
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object obj) {
         Loan loan=(Loan) obj;
         return this.id.equals(loan.id);
-    }
+    }*/
     public String getId(){
         return this.id;
     }
@@ -239,14 +239,14 @@ public class Loan {
     }
 
     public boolean payFullLoan(){
-        if (owner.getMoney() < loan - loanPaid){
+        if (owner.getMoney() < loan + interest - loanPaid - interestPaid){
             return false;
         }
         status = Status.FINISHED;
         finishYaz = Yaz.getYaz();
         for (Pair<Client, Double> loaner : loaners) {
             double payBack = loaner.getValue() / loan;
-            loaner.getKey().loadMoney(payBack * (loan-loanPaid) + interestEveryYaz * payBack, loaner.getKey().getMoney());
+            loaner.getKey().loadMoney(payBack * (loan-loanPaid) + (interest-interestPaid) * payBack, loaner.getKey().getMoney());
         }
         owner.loadMoney(-1*((loan-loanPaid) + (double)interestPercentage/100 *(loan-loanPaid)), owner.getMoney());
         return true;
@@ -266,5 +266,11 @@ public class Loan {
         return !(loanPaid < amountOfPayments * (interestPaid + loanPaid));
     }
 
+    public double getInterestEveryYaz() {
+        return interestEveryYaz;
+    }
 
+    public double getLoanEveryYaz() {
+        return loanEveryYaz;
+    }
 }

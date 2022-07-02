@@ -149,7 +149,7 @@ public class PaymentTabController{
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null) {
-
+                    return;
                 } else {
                     setText(item);
                     if (Loans.getLoanByID(item).timeToPay() && Loans.getLoanByID(item).getStatus().equals(Status.ACTIVE)){
