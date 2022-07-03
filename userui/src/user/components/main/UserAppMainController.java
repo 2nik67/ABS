@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import time.Yaz;
 import user.components.login.UserLoginController;
 import user.components.userapp.UserAppController;
 import javafx.fxml.FXML;
@@ -102,12 +103,20 @@ public class UserAppMainController {
         timer.schedule(yazRefresher, 2000, 2000);
     }
 
-    private void updateYazLabel(String currentYaz) {
+    private void updateYazLabel(String currentYaz, String isRewind) {
         Platform.runLater(() -> {
-
             currentYazLabel.setText("Current yaz: " + currentYaz);
+            if(isRewind.equals("true"))
+                setRewind(true);
+            else if(isRewind.equals("false"))
+                setRewind(false);
         });
     }
+
+    private void setRewind(boolean isRewind){
+        userAppComponentController.setRewind(isRewind);
+    }
+
     public String getChosenClient(){
         return userLoginComponentController.getCurrentClient();
     }

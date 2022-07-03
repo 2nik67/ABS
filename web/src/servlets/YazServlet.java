@@ -14,7 +14,16 @@ import java.io.IOException;
 public class YazServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String isRewind = req.getParameter("REWIND");
+        if(isRewind != null){
+            if(isRewind.contains("true"))
+                Yaz.setIsRewindActive(true);
+            else if(isRewind.contains("false"))
+                Yaz.setIsRewindActive(false);
+        }
+
         resp.getWriter().println(String.valueOf(Yaz.getYaz()));
+        resp.getWriter().println(Yaz.isIsRewindActive());
     }
 
     @Override

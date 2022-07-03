@@ -24,6 +24,13 @@ public class HttpClientUtil {
         return yazUrl;
     }
 
+    public static String createYazRewindUrl(String isRewind){
+        return HttpUrl.parse(yazUrl)
+                .newBuilder()
+                .addQueryParameter("REWIND", isRewind)
+                .build().toString();
+    }
+
     public static void runAsyncHead(String finalUrl, RequestBody requestBody, Callback callback){
 
         Request request = new Request.Builder()

@@ -10,7 +10,6 @@ import okio.BufferedSink;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 
 public class AdminAppController {
@@ -30,7 +29,7 @@ public class AdminAppController {
     private Button increaseYazBtn;
 
     @FXML
-    private Button decreaseYaxBtn;
+    private Button decreaseYazBtn;
 
     @FXML
     private CheckBox rewindCheckBox;
@@ -64,6 +63,28 @@ public class AdminAppController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 System.out.println(response.body().string());
+            }
+        });
+    }
+
+    @FXML
+    void rewindCheckBoxOnAction(ActionEvent event) {
+        String isRewind;
+        if(rewindCheckBox.isSelected())
+            isRewind = "true";
+        else
+            isRewind = "false";
+
+        HttpClientUtil.runAsync(HttpClientUtil.createYazRewindUrl(isRewind), new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                response.close();
+                decreaseYazBtn.setDisable(!rewindCheckBox.isSelected());
             }
         });
     }

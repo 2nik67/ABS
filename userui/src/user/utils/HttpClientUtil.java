@@ -80,6 +80,7 @@ public class HttpClientUtil {
     public static String getYazUrl(){
         return yazUrl;
     }
+
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
     }

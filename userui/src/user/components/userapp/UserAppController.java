@@ -4,17 +4,13 @@ import client.Client;
 import client.Clients;
 import client.Transaction;
 import com.google.gson.Gson;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Pair;
 import loan.Loan;
-import loan.Loans;
-import loan.Status;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -42,6 +38,8 @@ public class UserAppController {
     private boolean firstTimeTree = true;
 
     private String clientName;
+
+    private static boolean isRewind = false;
 
 
 
@@ -150,6 +148,25 @@ public class UserAppController {
         startInvestmentsClientListRefresher();
 
 
+    }
+
+    public void setRewind(boolean isRewindNow){
+        if(isRewindNow){
+            isRewind = true;
+            scrambleTab.setDisable(true);
+            paymentTab.setDisable(true);
+            newLoanTab.setDisable(true);
+            loanTradeTab.setDisable(true);
+            depositBtn.setDisable(true);
+        }
+        else if(isRewind){
+            isRewind = false;
+            scrambleTab.setDisable(false);
+            paymentTab.setDisable(false);
+            newLoanTab.setDisable(false);
+            loanTradeTab.setDisable(false);
+            depositBtn.setDisable(false);
+        }
     }
 
     private void startTransactionListRefresher() {

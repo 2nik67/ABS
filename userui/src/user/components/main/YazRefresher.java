@@ -9,12 +9,13 @@ import user.utils.HttpClientUtil;
 
 import java.io.IOException;
 import java.util.TimerTask;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class YazRefresher extends TimerTask {
-    private final Consumer<String> yazConsumer;
+    private final BiConsumer<String, String> yazConsumer;
 
-    public YazRefresher(Consumer<String> usersListConsumer) {
+    public YazRefresher(BiConsumer<String, String> usersListConsumer) {
         this.yazConsumer = usersListConsumer;
     }
 
@@ -29,7 +30,8 @@ public class YazRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                yazConsumer.accept(response.body().string());
+                String resp[] = response.body().string().split(System.lineSeparator());
+                yazConsumer.accept(resp[0], resp[1]);
             }
         });
     }

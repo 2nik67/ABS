@@ -80,7 +80,7 @@
             </ScrollPane>
          </content>
       </Tab>
-      <Tab text="Scramble">
+      <Tab fx:id="scrambleTab" text="Scramble">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                     <center>
@@ -89,7 +89,7 @@
             </BorderPane>
          </content>
       </Tab>
-      <Tab text="Payment">
+      <Tab fx:id="paymentTab" text="Payment">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
