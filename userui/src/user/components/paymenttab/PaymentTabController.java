@@ -328,8 +328,12 @@ public class PaymentTabController{
             loansListView.getItems().addAll(loans1);
         }
 
-        if(loans2.isEmpty())
+        if(loans2.isEmpty()){
+            loanDetailedListView.getItems().clear();
             return;
+        }
+
+
 
         if (loans2.size() > loanDetailedListView.getItems().size()){
             Platform.runLater(new Runnable() {

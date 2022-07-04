@@ -259,6 +259,7 @@ public class UserAppController {
         }
 
         if (loans.isEmpty()){
+            loansTableView.getItems().clear();
             return;
         }
         loansTableView.getItems().clear();

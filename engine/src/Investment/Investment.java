@@ -32,6 +32,7 @@ public class Investment {
             if (tempLoans.isEmpty()){
                 System.out.println("Could only invest " + String.format("%.2f",(investment-temp)));
                 Investment.investment=investment-temp;
+                investor.loadMoney(-1*(investment-temp), investor.getMoney());
                 return investment-temp;
             }
             for (Loan loan : tempLoans) {
