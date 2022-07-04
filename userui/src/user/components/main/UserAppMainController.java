@@ -29,16 +29,16 @@ public class UserAppMainController {
     private Timer timer;
 
     @FXML
-    private MenuBar headerMenuBar;
-
-    @FXML
-    private Menu skinMenu;
-
-    @FXML
     private AnchorPane mainPanel;
 
     @FXML
     private Label currentYazLabel;
+
+    @FXML
+    private Label welcomeLabel;
+
+    @FXML
+    private Label rewindLabel;
 
     private String clientsName;
 
@@ -51,6 +51,7 @@ public class UserAppMainController {
 
     @FXML
     public void initialize() {
+        welcomeLabel.setText("");
         loadLoginPage();
         loadUserAppPage();
         startYazRefresher();
@@ -125,20 +126,27 @@ public class UserAppMainController {
         clientsName = name;
         userAppComponentController.setCurrentClient(name);
         setMainPanelTo(userAppComponent);
-
-        // *.setActive();
     }
 
     public void switchToLogin() {
         Platform.runLater(() -> {
-            //currentUserName.set(JHON_DOE);
-            //userAppComponentController.setInActive();
             setMainPanelTo(userLoginComponent);
         });
     }
 
-    @FXML
-    void initializeSkinContextMenu(ActionEvent event) {
+    public void setWelcomeMessage(String value){
+        welcomeLabel.setText(value);
+    }
 
+    public void setRewindMessage(String value){
+        rewindLabel.setText(value);
+        rewindLabel.setStyle("-fx-text-fill: WHITE; -fx-background-color: RED;" +
+                "-fx-font-style: BOLD; -fx-font-size: 25px");
+    }
+
+    public void resetRewindMessage(){
+        rewindLabel.setText("");
+        /*rewindLabel.setStyle("-fx-text-fill: DEFAULT; -fx-background-color: DEFAULT;" +
+                "-fx-font-style: DEFAULT; -fx-font-size: 15px");*/
     }
 }

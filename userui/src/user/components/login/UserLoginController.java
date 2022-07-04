@@ -70,6 +70,7 @@ public class UserLoginController {
                    Platform.runLater(() -> {
                        if(responseBody.contains("NEW")) {
                            userAppMainController.switchToUserApp(userNameTextField.getText());
+                           userAppMainController.setWelcomeMessage("Welcome, " + userNameTextField.getText() + "!");
                        }
                        else {
                            label.setText("Client already signed in!");

@@ -159,6 +159,8 @@ public class UserAppController {
             newLoanTab.setDisable(true);
             loanTradeTab.setDisable(true);
             depositBtn.setDisable(true);
+
+            userAppMainController.setRewindMessage("REWIND ENGAGED!");
         }
         else if(isRewind){
             isRewind = false;
@@ -167,6 +169,8 @@ public class UserAppController {
             newLoanTab.setDisable(false);
             loanTradeTab.setDisable(false);
             depositBtn.setDisable(false);
+
+            userAppMainController.resetRewindMessage();
         }
     }
 

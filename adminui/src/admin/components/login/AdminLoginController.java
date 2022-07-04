@@ -67,6 +67,7 @@ public class AdminLoginController {
                     Platform.runLater(() -> {
                         if(responseBody.contains("WELCOME")) {
                             adminAppMainController.switchToAdminApp(adminNameTextField.getText());
+                            adminAppMainController.setWelcomeMessage("Welcome, " + adminNameTextField.getText() + "!");
                         }
                         else {
                             label.setText(responseBody);

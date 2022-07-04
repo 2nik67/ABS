@@ -2,30 +2,36 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.components.main.UserAppMainController">
    <center>
       <AnchorPane fx:id="mainPanel" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <HBox BorderPane.alignment="CENTER">
-         <children>
-            <MenuBar id="header-menu-bar" fx:id="headerMenuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header-containers" HBox.hgrow="ALWAYS">
-               <menus>
-                  <Menu id="header-skin-menu" fx:id="skinMenu" mnemonicParsing="false" onAction="#initializeSkinContextMenu" onMenuValidation="#initializeSkinContextMenu" text="Skin" />
-               </menus>
-            </MenuBar>
-            <Label fx:id="currentYazLabel" text="Current Yaz:" HBox.hgrow="ALWAYS">
-               <HBox.margin>
+      <BorderPane BorderPane.alignment="CENTER">
+         <left>
+            <Label fx:id="welcomeLabel" text="Welcome &lt;Anon&gt;!" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
+               </BorderPane.margin>
             </Label>
-         </children>
-      </HBox>
+         </left>
+         <right>
+            <Label fx:id="currentYazLabel" text="Current Yaz: 1" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </Label>
+         </right>
+         <center>
+            <Label fx:id="rewindLabel" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
    </top>
 </BorderPane>

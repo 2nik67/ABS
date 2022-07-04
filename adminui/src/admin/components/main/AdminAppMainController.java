@@ -21,13 +21,13 @@ public class AdminAppMainController {
     private AnchorPane mainPanel;
 
     @FXML
-    private MenuBar headerMenuBar;
-
-    @FXML
-    private Menu skinMenu;
-
-    @FXML
     private Label currentYazLabel;
+
+    @FXML
+    private Label welcomeLabel;
+
+    @FXML
+    private Label rewindLabel;
 
     private AnchorPane adminLoginComponent;
     private AdminLoginController adminLoginComponentController;
@@ -39,6 +39,7 @@ public class AdminAppMainController {
 
     @FXML
     public void initialize() {
+        welcomeLabel.setText("");
         loadLoginPage();
         loadAdminAppPage();
     }
@@ -107,10 +108,22 @@ public class AdminAppMainController {
 
     public void setCurrentYaz(int currentYaz) {
         this.currentYaz = currentYaz;
+        currentYazLabel.setText("Current Yaz: " + currentYaz);
     }
 
-    @FXML
-    void initializeSkinContextMenu(ActionEvent event) {
+    public void setWelcomeMessage(String value){
+        welcomeLabel.setText(value);
+    }
 
+    public void setRewindMessage(String value){
+        rewindLabel.setText(value);
+        rewindLabel.setStyle("-fx-text-fill: WHITE; -fx-background-color: RED;" +
+                "-fx-font-style: BOLD; -fx-font-size: 25px");
+    }
+
+    public void resetRewindMessage(){
+        rewindLabel.setText("");
+        /*rewindLabel.setStyle("-fx-text-fill: DEFAULT; -fx-background-color: DEFAULT;" +
+                "-fx-font-style: DEFAULT; -fx-font-size: 15px");*/
     }
 }

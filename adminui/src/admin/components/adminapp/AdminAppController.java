@@ -45,12 +45,13 @@ public class AdminAppController {
 
     @FXML
     void IncreaseYaz(ActionEvent event) {
-        //disable increase yaz btn
         if (isRewind && this.rewindYaz < this.currentYaz) {
             adminAppMainController.increaseYaz();
             this.rewindYaz++;
             if(decreaseYazBtn.isDisabled())
                 decreaseYazBtn.setDisable(false);
+            if(this.rewindYaz == this.currentYaz)
+                increaseYazBtn.setDisable(true);
 
             HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(this.rewindYaz), new Callback() {
                 @Override
@@ -104,6 +105,8 @@ public class AdminAppController {
         adminAppMainController.decreaseYaz();
         if(rewindYaz == 1)
             decreaseYazBtn.setDisable(true);
+        if(this.rewindYaz < this.currentYaz)
+            increaseYazBtn.setDisable(false);
 
         HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(rewindYaz), new Callback() {
             @Override
@@ -124,12 +127,16 @@ public class AdminAppController {
         if(rewindCheckBox.isSelected()) {
             isRewind = "true";
             this.isRewind = true;
-            //disable increase yaz Btn
+            if(this.rewindYaz == this.currentYaz)
+                increaseYazBtn.setDisable(true);
+
+            adminAppMainController.setRewindMessage("REWIND ENGAGED!");
         } else {
             isRewind = "false";
             this.isRewind = false;
             this.rewindYaz = this.currentYaz;
             adminAppMainController.setCurrentYaz(this.currentYaz);
+            adminAppMainController.resetRewindMessage();
             HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(this.currentYaz), new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -153,6 +160,7 @@ public class AdminAppController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 response.close();
                 decreaseYazBtn.setDisable(!rewindCheckBox.isSelected());
+                increaseYazBtn.setDisable(rewindCheckBox.isSelected());
             }
         });
     }
