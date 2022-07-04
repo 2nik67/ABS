@@ -18,7 +18,7 @@ public class Loan {
     private final double interest;//The interest of the loan.
     private final double interestEveryYaz;//how much to pay from the interest
     private final double loanEveryYaz;//How much to pay from the loan
-    private final Client owner;//The borrower of the loan.
+    private Client owner;//The borrower of the loan.
     private final List<Pair<Client,Double>> loaners;//List of the loaners
     private final Category loanCategory;//Category of the loan.
     private Status status;//Status of the loan. Using ENUM.
@@ -38,6 +38,10 @@ public class Loan {
 
     public void setForSale(boolean forSale) {
         isForSale = forSale;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
     }
 
     public Loan(String id, double loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {

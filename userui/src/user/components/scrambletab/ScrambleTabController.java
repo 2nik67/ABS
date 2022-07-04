@@ -150,7 +150,7 @@ public class ScrambleTabController {
 
     @FXML
     public void scrambleOperation() throws  Exception{
-        /*Client currClient = getClientByName(currentClient);
+        Client currClient = getClientByName(currentClient);
 
         if(amountTextField.getText().equals(""))
             amountTextField.setText("0");
@@ -184,7 +184,7 @@ public class ScrambleTabController {
             return;
         }
 
-        //TODO: other text field ifs*/
+        //TODO: other text field ifs
 
 
 
@@ -235,9 +235,9 @@ public class ScrambleTabController {
         List<Category> res = new ArrayList<>();
         for (int i = 0; i < categoryCheckList.getItems().size(); i++) {
             if(categoryCheckList.getCheckModel().isChecked(i)){
-                for (int j = 0; j < categoryList.size(); j++) {
-                    if (categoryList.get(j).getCategory().equals(categoryCheckList.getCheckModel().getItem(i))){
-                        res.add(categoryList.get(j));
+                for (Category category : categoryList) {
+                    if (category.getCategory().equals(categoryCheckList.getCheckModel().getItem(i))) {
+                        res.add(category);
                     }
                 }
             }

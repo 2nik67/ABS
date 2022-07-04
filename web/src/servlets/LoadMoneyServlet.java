@@ -18,8 +18,14 @@ public class LoadMoneyServlet extends HttpServlet {
         String name = req.getParameter("ClientName");
         String money = req.getParameter("Money");
         Client client = Clients.getClientByName(name);
-        client.loadMoney(Double.parseDouble(money), client.getMoney());
-        resp.getWriter().println("money was added");
+        if (Double.parseDouble(money) < 0 && client.getMoney() < Double.parseDouble(money)*-1){
+            resp.getWriter().println("Not enough money in the bank");
+        }
+        else{
+            client.loadMoney(Double.parseDouble(money), client.getMoney());
+            resp.getWriter().println("money was added");
+        }
+
     }
 
 }

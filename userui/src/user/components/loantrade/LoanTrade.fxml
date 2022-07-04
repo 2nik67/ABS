@@ -28,6 +28,11 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </ListView>
+                  <Label>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <Button fx:id="sellLoanBtn" mnemonicParsing="false" onAction="#sellBtnOnAction" text="Sell">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -50,6 +55,11 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </ListView>
+                  <Label fx:id="priceTagLabel" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <Button fx:id="buyLoanBtn" mnemonicParsing="false" onAction="#buyLoanOnAction" text="Buy">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

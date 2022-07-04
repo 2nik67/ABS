@@ -1,7 +1,6 @@
 package user.components.possibleloans;
 
 import client.Client;
-import Investment.Investment;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,13 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import loan.Loan;
-import loan.Loans;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.RequestBody;
@@ -74,14 +72,15 @@ public class PossibleLoansController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println(response.body().string());
-                advanceProgressBarAndClose();
+                advanceProgressBarAndClose(response.body().string());
+
+
             }
         });
 
     }
 
-    private void advanceProgressBarAndClose(){
+    private void advanceProgressBarAndClose(String resp){
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -99,8 +98,22 @@ public class PossibleLoansController {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        Stage stage = (Stage) cancelBtn.getScene().getWindow();
-                        stage.close();
+                        if (Double.parseDouble(resp) != 0){
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Attention!");
+                            alert.setContentText("Could only invest" + resp);
+                            alert.showAndWait();
+                            Stage stage = (Stage) cancelBtn.getScene().getWindow();
+                            stage.close();
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Money was invested");
+                            alert.setContentText("Money was invested");
+                            alert.showAndWait();
+                            Stage stage = (Stage) cancelBtn.getScene().getWindow();
+                            stage.close();
+                        }
+
                     }
                 });
                 return null;

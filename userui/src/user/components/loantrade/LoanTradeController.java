@@ -1,8 +1,12 @@
 package user.components.loantrade;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import loan.Loan;
@@ -42,6 +46,9 @@ public class LoanTradeController {
     private LoanTableRefresher loanOfClientRefresher;
     private Timer timer;
 
+    @FXML
+    private Label priceTagLabel;
+
     public static void setUserAppController(UserAppController userAppController1) {
         userAppController = userAppController1;
     }
@@ -50,7 +57,17 @@ public class LoanTradeController {
     @FXML
     private void initialize() {
         startLoanClientListRefresher();
-
+        buyLoansListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Loan>() {
+            @Override
+            public void changed(ObservableValue<? extends Loan> observable, Loan oldValue, Loan newValue) {
+                if (newValue == null){
+                    priceTagLabel.setVisible(false);
+                }else{
+                    priceTagLabel.setVisible(true);
+                    priceTagLabel.setText(newValue.getId() + " costs " + (newValue.getLoan()-newValue.getLoanPaid()));
+                }
+            }
+        });
     }
     public void startLoanClientListRefresher() {
         loanOfClientRefresher = new LoanTableRefresher(
@@ -70,8 +87,13 @@ public class LoanTradeController {
             }
         }
         if (sellLoans.size() != sellLoansListView.getItems().size()){
-            sellLoansListView.getItems().clear();
-            sellLoansListView.getItems().addAll(sellLoans);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    sellLoansListView.getItems().clear();
+                    sellLoansListView.getItems().addAll(sellLoans);
+                }
+            });
         }
 
         for (Loan loan : loans) {
@@ -83,8 +105,13 @@ public class LoanTradeController {
         }
 
         if (buyLoan.size() != buyLoansListView.getItems().size()){
-            buyLoansListView.getItems().clear();
-            buyLoansListView.getItems().addAll(buyLoan);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    buyLoansListView.getItems().clear();
+                    buyLoansListView.getItems().addAll(buyLoan);
+                }
+            });
         }
 
 
@@ -92,7 +119,7 @@ public class LoanTradeController {
 
     @FXML
     void buyLoanOnAction(ActionEvent event) {
-        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(sellLoansListView.getSelectionModel().getSelectedItem().getId(), false), new Callback() {
+        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(buyLoansListView.getSelectionModel().getSelectedItem().getId(), false, userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println(e);
@@ -100,14 +127,14 @@ public class LoanTradeController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println("Sold!");
+                System.out.println(response.body().string());
             }
         });
     }
 
     @FXML
     void sellBtnOnAction(ActionEvent event) {
-        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(sellLoansListView.getSelectionModel().getSelectedItem().getId(), true), new Callback() {
+        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(sellLoansListView.getSelectionModel().getSelectedItem().getId(), true, userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println(e);
@@ -115,7 +142,7 @@ public class LoanTradeController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println("Sold!");
+                System.out.println(response.body().string());
             }
         });
     }

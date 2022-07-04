@@ -65,7 +65,7 @@ public class LoanListServlet extends HttpServlet {
         for (String s : loansId) {
             loans.add(Loans.getLoanByID(s));
         }
-        Investment.investmentAssigning(loans, sumToInvest);
+        resp.getWriter().println(Investment.investmentAssigning(loans, sumToInvest));
 /*        try (PrintWriter out = resp.getWriter()) {
             Gson gson = new Gson();
             String json = gson.toJson(possibleLoans);

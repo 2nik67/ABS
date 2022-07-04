@@ -21,7 +21,7 @@ public class Investment {
 
 
 
-    public static void investmentAssigning(List<Loan> loans,double investment){
+    public static double investmentAssigning(List<Loan> loans,double investment){
         Investment.investment=investment;
         List<Loan> tempLoans= new ArrayList<>(loans);
         double payEachLoan;
@@ -32,14 +32,14 @@ public class Investment {
             if (tempLoans.isEmpty()){
                 System.out.println("Could only invest " + String.format("%.2f",(investment-temp)));
                 Investment.investment=investment-temp;
-                break;
+                return investment-temp;
             }
             for (Loan loan : tempLoans) {
                 loan.investmentPay(payEachLoan, investor);
                 temp -= payEachLoan;
                 if (temp<0.002) {
                     investor.loadMoney((-1*investment), investor.getMoney());
-                    return;
+                    return 0;
                 }
             }
             tempLoans=fillList(tempLoans, categories, minimumYaz, minimumInterest, investor,0);
@@ -48,7 +48,7 @@ public class Investment {
         }
 
         investor.loadMoney((-1*Investment.investment), investor.getMoney());
-
+        return 0;
     }
 
     private static double getMinLoan(List<Loan> possibleLoans) {

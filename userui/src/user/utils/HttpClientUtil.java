@@ -30,11 +30,12 @@ public class HttpClientUtil {
                     .build();
 
 
-    public static String createTradeLoanUrl(String loanID, boolean isSale){
+    public static String createTradeLoanUrl(String loanID, boolean isSale, String name){
         return HttpUrl.parse(tradeLoanUrl)
                 .newBuilder()
                 .addQueryParameter("LoanId", loanID)
                 .addQueryParameter("IsSell", String.valueOf(isSale))
+                .addQueryParameter("ClientName", name)
                 .build().toString();
     }
 

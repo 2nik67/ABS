@@ -3,15 +3,13 @@ package user.components.depositwithdraw;
 import client.Client;
 import client.Clients;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -31,7 +29,7 @@ public class DepositWithdrawController {
 
     private static UserAppController userAppController;
     private Client currentClient;
-//
+
     @FXML
     private Button cancelBtn;
 
@@ -62,6 +60,7 @@ public class DepositWithdrawController {
         }else{
             url = HttpClientUtil.createLoadMoneyUrl(false, moneyTextField.getText(), userAppController.getChosenClient());
         }
+
         HttpClientUtil.runAsync(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -70,9 +69,26 @@ public class DepositWithdrawController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println(response.body().string());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText("Attention");
+                            alert.setContentText(response.body().string());
+                            alert.showAndWait();
+                            Stage stage = (Stage) cancelBtn.getScene().getWindow();
+                            stage.close();
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
+
+                    }
+                });
             }
         });
+
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
 

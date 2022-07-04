@@ -1,10 +1,13 @@
 package servlets;
 
+import client.Client;
+import client.Clients;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import loan.Loan;
 import loan.Loans;
 
 import java.io.IOException;
@@ -21,7 +24,11 @@ public class TradeLoanServlet extends HttpServlet {
 
         }
         else{
-
+            Loan loan = Loans.getLoanByID(loanId);
+            Client client = Clients.getClientByName(req.getParameter("ClientName"));
+            loan.getOwner().loadMoney(loan.getLoan() - loan.getLoanPaid(), loan.getOwner().getMoney());
+            loan.setOwner(client);
+            client.loadMoney((loan.getLoan() - loan.getLoanPaid())*-1, client.getMoney());
         }
     }
 }
