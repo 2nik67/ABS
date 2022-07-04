@@ -16,9 +16,17 @@ public abstract class Yaz {
     }
 
     public static void advanceYaz(int yaz) {
-        archive.yazWasAdvanced();
+        archive.yazWasAdvanced(Yaz.yaz);
         Yaz.yaz += yaz;
         Loans.checkForRiskLoans();
+    }
+
+    public static void saveCurrentYazStateToArchive(){
+        archive.yazWasAdvanced(Yaz.yaz);
+    }
+
+    public static SaveInfoPerYaz getPreviousYazData(int yaz) {
+        return archive.archive.get(yaz);
     }
 
     public static boolean isIsRewindActive() {
@@ -27,5 +35,9 @@ public abstract class Yaz {
 
     public static void setIsRewindActive(boolean isRewindActive) {
         Yaz.isRewindActive = isRewindActive;
+    }
+
+    public static void setYaz(int yaz) {
+        Yaz.yaz = yaz;
     }
 }

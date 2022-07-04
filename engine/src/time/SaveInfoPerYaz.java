@@ -16,4 +16,12 @@ public class SaveInfoPerYaz {
         this.clients = clients;
         this.yazSaved = yazSaved;
     }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
 }

@@ -85,11 +85,10 @@ public class ScrambleTabController {
     @FXML
     private CheckListView<String> categoryCheckList;
 
-    private String currentClient;
+    private Client currentClient;
 
     @FXML
     public void initialize(){
-
         initializeTextFields();
         startCategoryCheckListRefresh();
     }
@@ -150,7 +149,9 @@ public class ScrambleTabController {
 
     @FXML
     public void scrambleOperation() throws  Exception{
-        Client currClient = getClientByName(currentClient);
+        if(currentClient == null)
+            this.currentClient = userAppController.getClient();
+        //Client currClient = getClientByName(currentClient);
 
         if(amountTextField.getText().equals(""))
             amountTextField.setText("0");
@@ -163,9 +164,9 @@ public class ScrambleTabController {
         if(maxLoanOwnTextField.getText().equals(""))
             maxLoanOwnTextField.setText("0");
 
-        assert currClient != null;
-        if(currClient.getMoney() < Double.parseDouble(amountTextField.getText())){
-            MenuItem string = new MenuItem("Not enough money in your account. Current Balance: " + currClient.getMoney());
+        assert currentClient != null;
+        if(currentClient.getMoney() < Double.parseDouble(amountTextField.getText())){
+            MenuItem string = new MenuItem("Not enough money in your account. Current Balance: " + currentClient.getMoney());
             amountContext.getItems().clear();
             amountContext.getItems().add(string);
 
@@ -257,9 +258,9 @@ public class ScrambleTabController {
 
     }
 
-    public void setCurrentClient(String currentClient) {
+    /*public void setCurrentClient(String currentClient) {
         this.currentClient = currentClient;
-    }
+    }*/
 
     public void resetUI() {
         categoryCheckList.getItems().clear();

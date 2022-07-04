@@ -204,6 +204,7 @@ public class UserAppController {
                 String jsonArrayOfUsersNames = response.body().string();
                 if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
+
                     chosenClient = client;
                 }
             }
@@ -320,6 +321,10 @@ public class UserAppController {
 
     public String getChosenClient(){
         return userAppMainController.getClientsName();
+    }
+
+    public Client getClient() {
+        return this.chosenClient;
     }
 
     public void createTransactionInfo(String name){

@@ -14,6 +14,11 @@ import java.io.IOException;
 
 public class AdminAppController {
 
+    private boolean isRewind = false;
+
+    private int currentYaz = 1;
+    private int rewindYaz = 1;
+
     private AdminAppMainController adminAppMainController;
 
     @FXML
@@ -40,7 +45,30 @@ public class AdminAppController {
 
     @FXML
     void IncreaseYaz(ActionEvent event) {
-        adminAppMainController.increaseYaz();
+        //disable increase yaz btn
+        if (isRewind && this.rewindYaz < this.currentYaz) {
+            adminAppMainController.increaseYaz();
+            this.rewindYaz++;
+            if(decreaseYazBtn.isDisabled())
+                decreaseYazBtn.setDisable(false);
+
+            HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(this.rewindYaz), new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    response.close();
+                }
+            });
+            return;
+        } else {
+            adminAppMainController.increaseYaz();
+            this.currentYaz++;
+            this.rewindYaz++;
+        }
 
         RequestBody body = new RequestBody() {
             @Nullable
@@ -68,12 +96,52 @@ public class AdminAppController {
     }
 
     @FXML
+    void decreaseYazOnAction(ActionEvent event) {
+        if(rewindYaz == 1)
+            return;
+
+        rewindYaz--;
+        adminAppMainController.decreaseYaz();
+        if(rewindYaz == 1)
+            decreaseYazBtn.setDisable(true);
+
+        HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(rewindYaz), new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                response.close();
+            }
+        });
+    }
+
+    @FXML
     void rewindCheckBoxOnAction(ActionEvent event) {
         String isRewind;
-        if(rewindCheckBox.isSelected())
+        if(rewindCheckBox.isSelected()) {
             isRewind = "true";
-        else
+            this.isRewind = true;
+            //disable increase yaz Btn
+        } else {
             isRewind = "false";
+            this.isRewind = false;
+            this.rewindYaz = this.currentYaz;
+            adminAppMainController.setCurrentYaz(this.currentYaz);
+            HttpClientUtil.runAsync(HttpClientUtil.createRewindUrl(this.currentYaz), new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    response.close();
+                }
+            });
+        }
 
         HttpClientUtil.runAsync(HttpClientUtil.createYazRewindUrl(isRewind), new Callback() {
             @Override

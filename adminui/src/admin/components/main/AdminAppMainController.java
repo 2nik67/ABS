@@ -87,8 +87,6 @@ public class AdminAppMainController {
 
     public void switchToLogin() {
         Platform.runLater(() -> {
-            //currentUserName.set(JHON_DOE);
-            //userAppComponentController.setInActive();
             setMainPanelTo(adminLoginComponent);
         });
     }
@@ -96,6 +94,19 @@ public class AdminAppMainController {
     public void increaseYaz(){
         currentYaz++;
         currentYazLabel.setText("Current Yaz: " + currentYaz);
+    }
+
+    public void decreaseYaz(){
+        currentYaz--;
+        currentYazLabel.setText("Current Yaz: " + currentYaz);
+    }
+
+    public int getCurrentYaz() {
+        return currentYaz;
+    }
+
+    public void setCurrentYaz(int currentYaz) {
+        this.currentYaz = currentYaz;
     }
 
     @FXML

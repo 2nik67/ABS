@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 public class HttpClientUtil {
 
     private final static String yazUrl = "http://localhost:8080/web_Web/servlets/Yaz";
+    private final static String rewindUrl = "http://localhost:8080/web_Web/servlets/Rewind";
 
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
@@ -28,6 +29,13 @@ public class HttpClientUtil {
         return HttpUrl.parse(yazUrl)
                 .newBuilder()
                 .addQueryParameter("REWIND", isRewind)
+                .build().toString();
+    }
+
+    public static String createRewindUrl(Integer yaz){
+        return HttpUrl.parse(rewindUrl)
+                .newBuilder()
+                .addQueryParameter("Yaz", yaz.toString())
                 .build().toString();
     }
 

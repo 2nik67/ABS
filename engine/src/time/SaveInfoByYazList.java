@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaveInfoByYazList {
-    List <SaveInfoPerYaz> archive = new ArrayList<>();
+    List <SaveInfoPerYaz> archive = new ArrayList<>(2);
 
 
-    public void yazWasAdvanced(){
+    public void yazWasAdvanced(int lastYaz){
         SaveInfoPerYaz saveInfoPerYaz = new SaveInfoPerYaz(Loans.getLoans(), Clients.getClientsList(), Yaz.getYaz());
-        archive.add(saveInfoPerYaz);
+        if(lastYaz > archive.size())
+            archive.add(null);
+        archive.add(lastYaz, saveInfoPerYaz);
     }
 }
