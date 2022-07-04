@@ -75,8 +75,10 @@ public abstract class LoadFile{
     private static void importDataForLoan(Client client) {
         AbsLoans absLoans = absDescriptor.getAbsLoans();
         for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
+            //TODO: check if category exists
             Category category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
             Categories.addCategory(category);
+
             Loan newLoan = new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
                     category, absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
                     absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment());
@@ -86,7 +88,11 @@ public abstract class LoadFile{
                 return;
             }
         }
-        Loans.setLoans(loans);
+        for (Loan loan : loans) {
+            Loans.getLoans().add(loan);
+        }
+
+        loans = new ArrayList<>();
         //TODO: check if file is valid.
     }
 /*

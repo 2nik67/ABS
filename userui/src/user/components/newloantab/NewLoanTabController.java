@@ -2,6 +2,7 @@ package user.components.newloantab;
 
 import client.Client;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -186,10 +187,16 @@ public class NewLoanTabController {
         if(categories.size() == categoryComboBox.getItems().size()){
             return;
         }
-        categoryComboBox.getItems().clear(); //TODO: is the combobox here null?
-        for (Category category : categories) {
-            categoryComboBox.getItems().add(category.getCategory());
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                categoryComboBox.getItems().clear();
+                for (Category category : categories) {
+                    categoryComboBox.getItems().add(category.getCategory());
+                }
+            }
+        });
+
 
     }
 
