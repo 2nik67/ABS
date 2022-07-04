@@ -19,7 +19,7 @@ public class HttpClientUtil {
     private final static String categoryList = "http://localhost:8080/web_Web/servlets/CategoryList";
     private final static String investmentUrl = "http://localhost:8080/web_Web/servlets/Invest";
     private final static String payLoanUrl ="http://localhost:8080/web_Web/servlets/PayLoan";
-
+    private final static String tradeLoanUrl = "http://localhost:8080/web_Web/servlets/TradeLoan";
 
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
@@ -29,6 +29,14 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
+
+    public static String createTradeLoanUrl(String loanID, boolean isSale){
+        return HttpUrl.parse(tradeLoanUrl)
+                .newBuilder()
+                .addQueryParameter("LoanId", loanID)
+                .addQueryParameter("IsSell", String.valueOf(isSale))
+                .build().toString();
+    }
 
     public static String createManualPayLoanUrl(Loan loan, String toPay){
         return HttpUrl.parse(payLoanUrl)

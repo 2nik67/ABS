@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Loan {
+    private boolean isForSale;
     private final String id; //ID of the loan.
     private final double loan; //Amount of the loan.
     private double loanPaid;//Amount of the loan paid.
@@ -31,10 +32,18 @@ public class Loan {
     private int finishYaz;//Yaz when the loan finished.
     private final List<Pair<Integer, Double>> latePayments;
 
+    public boolean isForSale() {
+        return isForSale;
+    }
+
+    public void setForSale(boolean forSale) {
+        isForSale = forSale;
+    }
+
     public Loan(String id, double loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {
         this.id = id;
         this.loan = loan;
-
+        this.isForSale = false;
         this.owner = borrower;
         this.loanCategory = loanCategory;
         this.totalYaz = totalYaz;

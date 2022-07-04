@@ -67,6 +67,9 @@ public class PaymentTabController{
     @FXML
     private ListView<Loan> loanDetailedListView;
 
+
+
+
     @FXML
     void autoPayOnAction(ActionEvent event) {
         Loan loan = loansListView.getSelectionModel().getSelectedItem();
@@ -243,6 +246,7 @@ public class PaymentTabController{
                     moneyTextFiled.setDisable(true);
                     closeLoanBtn.setDisable(true);
                     payBtn.setDisable(true);
+
                     return;
                 }
                 if (newValue.getStatus().equals(Status.RISK)){
@@ -254,6 +258,7 @@ public class PaymentTabController{
                 moneyTextFiled.setDisable(false);
                 closeLoanBtn.setDisable(false);
                 payBtn.setDisable(false);
+
 
 
             }

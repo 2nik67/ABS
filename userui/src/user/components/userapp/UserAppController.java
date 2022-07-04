@@ -141,7 +141,8 @@ public class UserAppController {
             scrambleTabComponentController.setUserAppController(this);
             paymentTabComponentController.setUserAppController(this);
             newLoanTabComponentController.setUserAppController(this);
-            //loanTradeComponentController.setUserAppController(this);
+            LoanTradeController.setUserAppController(this);
+            //loanTradeComponentController.setClient(clientName);
         }
 
         startLoanClientListRefresher();
