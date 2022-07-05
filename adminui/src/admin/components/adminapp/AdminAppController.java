@@ -1,18 +1,32 @@
 package admin.components.adminapp;
 
 import admin.components.main.AdminAppMainController;
+import admin.userlist.UserListRefresher;
 import admin.utils.HttpClientUtil;
+import client.Clients;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import loan.Loan;
+import loan.Status;
 import okhttp3.*;
 import okio.BufferedSink;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import user.components.userapp.LoanTableRefresher;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AdminAppController {
+
+    private TimerTask loanRefresher;
+    private TimerTask clientRefresher;
+    private Timer timer;
 
     private boolean isRewind = false;
 
@@ -25,10 +39,10 @@ public class AdminAppController {
     private ScrollPane scrollPaneAdmin;
 
     @FXML
-    private TreeView<?> loansTreeView;
+    private ListView<Loan> loansListView;
 
     @FXML
-    private ListView<?> clientsListView;
+    private ListView<String> clientsListView;
 
     @FXML
     private Button increaseYazBtn;
@@ -164,4 +178,71 @@ public class AdminAppController {
             }
         });
     }
+
+    @FXML
+    void initialize() {
+        startLoanListRefresher();
+        startClientListRefresher();
+        loansListView.setCellFactory(lv -> new ListCell<Loan>(){
+            @Override
+            protected void updateItem(Loan item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null) {
+                    return;
+                } else {
+                    setText(item.getId());
+                    if (item.getStatus().equals(Status.ACTIVE)){
+                        setTextFill(Color.GREEN);
+                    }
+                    else if(item.getStatus().equals(Status.PENDING)){
+                        setTextFill(Color.BLUE);
+                    }
+                    else if(item.getStatus().equals(Status.RISK)){
+                        setTextFill(Color.RED);
+                    }
+                    else if (item.getStatus().equals(Status.NEW)){
+                        setTextFill(Color.BLACK);
+                    }
+                }
+            }
+        });
+    }
+
+    private void startClientListRefresher() {
+        clientRefresher = new UserListRefresher(this::updateClientList);
+        timer = new Timer();
+        timer.schedule(clientRefresher, 2000, 2000);
+    }
+
+    private void updateClientList(List<String> clientList) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                clientsListView.getItems().clear();
+                for (String s : clientList) {
+                    clientsListView.getItems().add(s);
+                }
+            }
+        });
+    }
+
+
+    public void startLoanListRefresher() {
+        loanRefresher = new LoanTableRefresher(this::updateLoanList);
+        timer = new Timer();
+        timer.schedule(loanRefresher, 2000, 2000);
+    }
+
+    private void updateLoanList(List<Loan> loans) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loansListView.getItems().clear();
+                for (Loan loan : loans) {
+                    loansListView.getItems().add(loan);
+                }
+            }
+        });
+    }
+
 }

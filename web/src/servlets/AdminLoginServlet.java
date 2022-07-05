@@ -10,20 +10,29 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name="AdminLogin", urlPatterns = "/servlets/AdminLoginServlet")
+@WebServlet(name="AdminLogin", urlPatterns = "/servlets/AdminLogin")
 public class AdminLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         synchronized (this){
             resp.setContentType("text/html");
             String userName = req.getParameter("username");
-            if (!Clients.getIsAdminOn()){
+            Client admin = Clients.getClientByName(userName);
+            if (admin == null && !Clients.getIsAdminOn()){
                 Clients.setIsAdminOn(true);
+                admin = new Client(userName, 0);
+                Clients.getClientsList().add(admin);
                 resp.getWriter().println("WELCOME");
+            }else if(admin!=null){
+                resp.getWriter().println(userName + " already signed in!");
             }
-            else{
-                resp.getWriter().println("ERROR: only one admin can login at the same time.");
+            else if (Clients.getIsAdminOn()){
+                resp.getWriter().println("Admin already signed in!");
+
             }
+
+
+
 
         }
     }

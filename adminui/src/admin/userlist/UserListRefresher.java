@@ -19,11 +19,11 @@ public class UserListRefresher  extends TimerTask {
    // private final Consumer<String> httpRequestLoggerConsumer;
     private final Consumer<List<String>> usersListConsumer;
     private int requestNumber;
-    private final BooleanProperty shouldUpdate;
 
 
-    public UserListRefresher(BooleanProperty shouldUpdate, Consumer<List<String>> usersListConsumer) {
-        this.shouldUpdate = shouldUpdate;
+
+    public UserListRefresher(Consumer<List<String>> usersListConsumer) {
+
         //this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
         this.usersListConsumer = usersListConsumer;
         requestNumber = 0;
@@ -34,7 +34,6 @@ public class UserListRefresher  extends TimerTask {
 
 
 
-        final int finalRequestNumber = ++requestNumber;
        // httpRequestLoggerConsumer.accept("About to invoke: " +"http://localhost:8080/web_Web/servlets/UsersList"+ " | Users Request # " + finalRequestNumber);
         HttpClientUtil.runAsync("http://localhost:8080/web_Web/servlets/UserList", new Callback() {
 

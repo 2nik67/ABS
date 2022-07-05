@@ -5,7 +5,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,11 +17,11 @@
                <content>
                   <VBox id="admin-vbox" minHeight="-Infinity" minWidth="-Infinity" styleClass="admin-containers">
                      <children>
-                        <TreeView id="admin-loans-treeview" fx:id="loansTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="597.0" showRoot="false" styleClass="admin-trees" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="loansListView" prefHeight="113.0" prefWidth="597.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="40.0" />
+                              <Insets bottom="40.0" left="5.0" right="5.0" top="40.0" />
                            </VBox.margin>
-                        </TreeView>
+                        </ListView>
                         <ListView fx:id="clientsListView" prefHeight="113.0" prefWidth="597.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="40.0" left="5.0" right="5.0" top="40.0" />

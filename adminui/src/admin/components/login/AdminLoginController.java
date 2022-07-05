@@ -30,7 +30,7 @@ public class AdminLoginController {
     @FXML
     private Label label;
 
-    private static final String LOGIN_URL = "http://localhost:8080/web_Web/servlets/AdminLoginServlet";
+    private static final String LOGIN_URL = "http://localhost:8080/web_Web/servlets/AdminLogin";
 
     @FXML
     void loginBtnOnAction(ActionEvent event) {
@@ -57,7 +57,7 @@ public class AdminLoginController {
                 if (response.code() != 200){
                     String responseBody = response.body().string();
                     Platform.runLater(() -> {
-                        label.setText("Something went wrong" + responseBody);
+                        label.setText("Something went wrong" + response.code());
                         System.out.println(responseBody);
                     });
                 }

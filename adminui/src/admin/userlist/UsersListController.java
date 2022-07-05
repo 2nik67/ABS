@@ -70,7 +70,6 @@ public class UsersListController extends Application {
 
     public void startListRefresher() {
         listRefresher = new UserListRefresher(
-                autoUpdate,
                 //httpStatusUpdate::updateHttpLine,
                 this::updateUsersList);
         timer = new Timer();
