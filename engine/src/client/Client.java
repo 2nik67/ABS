@@ -6,8 +6,7 @@ import loan.Loan;
 import loan.Loans;
 import time.Yaz;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Client {
 
@@ -21,11 +20,20 @@ public class Client {
     private final ArrayList<Transaction> transactions = new ArrayList<>();
 
     //List of investments the client is in.
+    private final Map<String, InvestmentForSale> investments = new HashMap<>();
 
 
+    public Map<String, InvestmentForSale> getInvestments() {
+        return investments;
+    }
 
+    public void addToLoan(Loan loan, double investment){
+        investments.get(loan.getId()).add(investment);
+    }
 
-
+    public void addLoanToMap(Loan loan, double investment){
+        investments.put(loan.getId(), new InvestmentForSale(investment, false));
+    }
     public Client(String name, double money) {
         this.name = name;
         this.money = money;
@@ -78,6 +86,19 @@ public class Client {
         }
         return res;
     }
+
+    public void fixInvestments(Client buyingForm, Loan loan){
+        if (this.investments.containsKey(loan.getId())){
+            investments.get(loan.getId()).add(buyingForm.getInvestments().get(loan.getId()).getInvestment());
+
+        }else{
+            investments.put(loan.getId(),new InvestmentForSale(buyingForm.getInvestments().get(loan.getId()).getInvestment(), false));
+
+        }
+        buyingForm.getInvestments().remove(loan.getId());
+        loan.updateLoaners(buyingForm, this);
+    }
+
 }
 
 

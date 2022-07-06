@@ -246,10 +246,9 @@ public class PaymentTabController{
                     moneyTextFiled.setDisable(true);
                     closeLoanBtn.setDisable(true);
                     payBtn.setDisable(true);
-
                     return;
                 }
-                if (newValue.getStatus().equals(Status.RISK)){
+                if (newValue.getStatus().equals(Status.RISK) || !newValue.shouldAutoPay()){
                     autoPayBtn.setDisable(true);
 
                 }else{
@@ -272,7 +271,7 @@ public class PaymentTabController{
                     return;
                 } else {
                     setText(item.getId());
-                    if (item.timeToPay() && item.getStatus().equals(Status.ACTIVE)){
+                    if (item.shouldAutoPay() && item.getStatus().equals(Status.ACTIVE)){
                         setTextFill(Color.GREEN);
                     }
                     else if(item.getStatus().equals(Status.ACTIVE)){
@@ -335,15 +334,14 @@ public class PaymentTabController{
 
 
 
-        if (loans2.size() > loanDetailedListView.getItems().size()){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    loanDetailedListView.getItems().clear();
-                    loanDetailedListView.getItems().addAll(loans2);
-                }
-            });
-        }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loanDetailedListView.getItems().clear();
+                loanDetailedListView.getItems().addAll(loans2);
+            }
+        });
     }
 
     @FXML
@@ -364,7 +362,9 @@ public class PaymentTabController{
         for (Loan loan : loans1) {
             for (Loan item : items) {
                 if (loan.getId().equals(item.getId())) {
-                    return !loan.getStatus().equals(item.getStatus());
+                    if (loan.getStatus().equals(item.getStatus()) && loan.shouldAutoPay() == item.shouldAutoPay()){
+                        return false;
+                    }
                 }
             }
         }

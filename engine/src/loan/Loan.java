@@ -20,6 +20,7 @@ public class Loan {
     private final double loanEveryYaz;//How much to pay from the loan
     private Client owner;//The borrower of the loan.
     private final List<Pair<Client,Double>> loaners;//List of the loaners
+    private List<Pair<Client,Double>> updatedLoaners;
     private final Category loanCategory;//Category of the loan.
     private Status status;//Status of the loan. Using ENUM.
     private final int totalYaz; //Total Yaz of Payment.
@@ -64,19 +65,51 @@ public class Loan {
         this.loanEveryYaz=loan/(double)(totalYaz/periodOfYazToPay);
         this.interestEveryYaz= (int) (interest/(totalYaz/periodOfYazToPay));
         this.latePayments=new ArrayList<>();
+        this.updatedLoaners=null;
 
     }
+
+    public void updateLoaners(Client oldClient, Client newClient){
+        if (updatedLoaners == null){
+            updatedLoaners = new ArrayList<>(this.loaners);
+        }
+        for (int i = 0; i < updatedLoaners.size(); i++) {
+            if (updatedLoaners.get(i).getKey().getName().equals(oldClient.getName())){
+                updatedLoaners.add(new Pair<>(newClient, updatedLoaners.get(i).getValue()));
+                updatedLoaners.remove(i);
+            }
+        }
+    }
+
     public void investmentPay(double toPay, Client investor){
+        boolean shouldDo =true;
         this.missingToActive-=toPay;
         if(missingToActive==0){
             status=Status.ACTIVE;
             activeYaz=Yaz.getYaz();
             owner.loadMoney(loan, owner.getMoney());
+
         }
         else{
             status=Status.PENDING;
         }
-        loaners.add(new Pair<>(investor, toPay));
+
+        for (int i = 0; i < loaners.size(); i++) {
+            if (loaners.get(i).getKey().getName().equals(investor.getName())){
+                loaners.add(new Pair<>(investor, loaners.get(i).getValue() + toPay));
+                investor.addToLoan(this, toPay);
+                loaners.remove(i);
+                shouldDo = false;
+            }
+        }
+        if (shouldDo){
+            loaners.add(new Pair<>(investor, toPay));
+            investor.addLoanToMap(this, toPay);
+        }
+        if (status.equals(Status.ACTIVE)){
+            updatedLoaners = new ArrayList<>(loaners);
+        }
+
 
     }
 
@@ -182,15 +215,17 @@ public class Loan {
         if(loan+interest - (loanPaid+interestPaid) < toPay){
             payFullLoan();
         }
-        for (Pair<Client, Double> loaner : loaners) {
+        for (Pair<Client, Double> loaner : updatedLoaners) {
             double payBack = loaner.getValue() /loan;
             loaner.getKey().loadMoney(payBack * partOfLoan + interest * payBack, loaner.getKey().getMoney());
-
         }
-
         loanPaid += partOfLoan;
         interestPaid +=interest;
         owner.loadMoney(-1*(toPay), owner.getMoney());
+    }
+
+    public List<Pair<Client, Double>> getUpdatedLoaners() {
+        return updatedLoaners;
     }
 
     public void payLoan() {
@@ -202,11 +237,10 @@ public class Loan {
                 return;
 
             }
-            for (Pair<Client, Double> loaner : loaners) {
+            for (Pair<Client, Double> loaner : updatedLoaners) {
                 double payBack = loaner.getValue() /loan;
                 loaner.getKey().loadMoney(payBack * loanEveryYaz + interestEveryYaz * payBack, loaner.getKey().getMoney());
-
-
+                loaner.getKey().addToLoan(this, -1 * payBack * loanEveryYaz);
             }
             loanPaid += loanEveryYaz;
             interestPaid +=interestEveryYaz;
@@ -257,9 +291,10 @@ public class Loan {
         }
         status = Status.FINISHED;
         finishYaz = Yaz.getYaz();
-        for (Pair<Client, Double> loaner : loaners) {
+        for (Pair<Client, Double> loaner : updatedLoaners) {
             double payBack = loaner.getValue() / loan;
             loaner.getKey().loadMoney(payBack * (loan-loanPaid) + (interest-interestPaid) * payBack, loaner.getKey().getMoney());
+            loaner.getKey().addToLoan(this, -1 * payBack * (loan-loanPaid));
         }
         owner.loadMoney(-1*((loan-loanPaid) + (double)interestPercentage/100 *(loan-loanPaid)), owner.getMoney());
         return true;
@@ -277,6 +312,12 @@ public class Loan {
         int yazSinceActive= Yaz.getYaz() - activeYaz;
         int amountOfPayments = yazSinceActive/periodOfYazToPay;
         return !(loanPaid < amountOfPayments * (interestPaid + loanPaid));
+    }
+
+    public boolean shouldAutoPay(){
+        int yazSinceActive= Yaz.getYaz() - activeYaz;
+        int amountOfPayments = yazSinceActive/periodOfYazToPay;
+        return timeToPay() && loanPaid == amountOfPayments * (interestPaid + loanPaid);
     }
 
     public double getInterestEveryYaz() {

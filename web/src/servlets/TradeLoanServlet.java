@@ -18,17 +18,18 @@ public class TradeLoanServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String loanId = req.getParameter("LoanId");
+        Loan loan = Loans.getLoanByID(loanId);
+        Client client = Clients.getClientByName(req.getParameter("ClientName"));
+        if (loan == null || client == null){
+            return;
+        }
         boolean sell = Boolean.parseBoolean(req.getParameter("IsSell"));
         if (sell){
-            Loans.getLoanByID(loanId).setForSale(true);
-
+            client.getInvestments().get(loanId).setForSale(true);
         }
         else{
-            Loan loan = Loans.getLoanByID(loanId);
-            Client client = Clients.getClientByName(req.getParameter("ClientName"));
-            loan.getOwner().loadMoney(loan.getLoan() - loan.getLoanPaid(), loan.getOwner().getMoney());
-            loan.setOwner(client);
-            client.loadMoney((loan.getLoan() - loan.getLoanPaid())*-1, client.getMoney());
+            Client buyFrom = Clients.getClientByName(req.getParameter("BuyFrom"));
+            client.fixInvestments(buyFrom, loan);
         }
     }
 }

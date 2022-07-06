@@ -1,14 +1,16 @@
 package user.components.loantrade;
 
+import client.Client;
+import client.InvestmentForSale;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import loan.Loan;
 import loan.Status;
 import okhttp3.Call;
@@ -20,9 +22,7 @@ import user.components.userapp.UserAppController;
 import user.utils.HttpClientUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
+import java.util.*;
 
 public class LoanTradeController {
 
@@ -38,7 +38,7 @@ public class LoanTradeController {
     private Button sellLoanBtn;
 
     @FXML
-    private ListView<Loan> buyLoansListView;
+    private ListView<String> buyLoansListView;
 
     @FXML
     private Button buyLoanBtn;
@@ -49,6 +49,10 @@ public class LoanTradeController {
     @FXML
     private Label priceTagLabel;
 
+    private Client client;
+    private Client sellerOfLoan;
+
+
     public static void setUserAppController(UserAppController userAppController1) {
         userAppController = userAppController1;
     }
@@ -57,17 +61,40 @@ public class LoanTradeController {
     @FXML
     private void initialize() {
         startLoanClientListRefresher();
-        buyLoansListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Loan>() {
+        buyLoansListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<? extends Loan> observable, Loan oldValue, Loan newValue) {
-                if (newValue == null){
-                    priceTagLabel.setVisible(false);
-                }else{
-                    priceTagLabel.setVisible(true);
-                    priceTagLabel.setText(newValue.getId() + " costs " + (newValue.getLoan()-newValue.getLoanPaid()));
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+                if (newValue!=null){
+                    String[] arr =newValue.split(" ", 2);
+                    String seller = arr[0];
+                    String loanId = arr[1];
+                    HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(seller), new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            System.out.println(e);
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            String jsonArrayOfUsersNames = response.body().string();
+                            if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
+                                sellerOfLoan = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
+                            }
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    priceTagLabel.setText("Price: " + sellerOfLoan.getInvestments().get(loanId).getInvestment());
+                                    System.out.println("FFS WORK " + "Price: " + sellerOfLoan.getInvestments().get(loanId).getInvestment());
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
+
+
     }
     public void startLoanClientListRefresher() {
         loanOfClientRefresher = new LoanTableRefresher(
@@ -77,49 +104,104 @@ public class LoanTradeController {
     }
 
     private void updateDataLoanTable(List<Loan> loans) {
-        List<Loan> sellLoans = new ArrayList<>();
-        List<Loan> buyLoan = new ArrayList<>();
-        for (Loan loan : loans) {
-            if (loan.getOwner().getName().equals(userAppController.getChosenClient()) && !loan.isForSale()) {
-                if (loan.getStatus().equals(Status.ACTIVE)) {
-                    sellLoans.add(loan);
+        HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppController.getChosenClient()), new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String jsonArrayOfUsersNames = response.body().string();
+                if (!jsonArrayOfUsersNames.equals("[]" + System.lineSeparator())){
+                    client = new Gson().fromJson(jsonArrayOfUsersNames, Client.class);
                 }
             }
+        });
+
+        if (client == null){
+            return;
         }
-        if (sellLoans.size() != sellLoansListView.getItems().size()){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    sellLoansListView.getItems().clear();
-                    sellLoansListView.getItems().addAll(sellLoans);
-                }
+        Map<String, InvestmentForSale> investments = client.getInvestments();
+        List<Loan> sellLoans = getSellLoan(investments, loans);
+        Set<String> buyLoan = getBuyLoanSet(investments, loans);
+
+
+        if (sellLoans.isEmpty()){
+            Platform.runLater(() -> {
+                sellLoansListView.getItems().clear();
+            });
+        }else if(sellLoans.size() != sellLoansListView.getItems().size()){
+            Platform.runLater(() -> {
+                sellLoansListView.getItems().clear();
+                sellLoansListView.getItems().addAll(sellLoans);
             });
         }
 
-        for (Loan loan : loans) {
-            if (!loan.getOwner().getName().equals(userAppController.getChosenClient())) {
-                if (loan.getStatus().equals(Status.ACTIVE) && loan.isForSale()) {
-                    buyLoan.add(loan);
-                }
-            }
-        }
 
-        if (buyLoan.size() != buyLoansListView.getItems().size()){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    buyLoansListView.getItems().clear();
-                    buyLoansListView.getItems().addAll(buyLoan);
-                }
+        if (buyLoan.isEmpty()){
+            Platform.runLater(() -> {
+                buyLoansListView.getItems().clear();
             });
         }
+        else if (buyLoan.size() != buyLoansListView.getItems().size()){
+            Platform.runLater(() -> {
+                buyLoansListView.getItems().clear();
+                buyLoansListView.getItems().addAll(buyLoan);
+            });
+        }
+
+
+
+
+
+
+
 
 
     }
 
+    private Set<String> getBuyLoanSet(Map<String, InvestmentForSale> investments, List<Loan> loans) {
+        Set<String> buyLoan = new HashSet<>();
+        for (Loan loan : loans) {
+            if (!loan.getOwner().getName().equals(client.getName()) && loan.getStatus().equals(Status.ACTIVE)) {
+                for (int i = 0; i < loan.getUpdatedLoaners().size(); i++) {
+                    if (!loan.getUpdatedLoaners().get(i).getKey().getName().equals(client.getName()) &&
+                            loan.getUpdatedLoaners().get(i).getKey().getInvestments().get(loan.getId()).isForSale()) {
+                        buyLoan.add(loan.getUpdatedLoaners().get(i).getKey().getName() + " " + loan.getId());
+                    }
+                }
+            }
+        }
+        return buyLoan;
+    }
+
+    private List<Loan> getSellLoan(Map<String, InvestmentForSale> investments, List<Loan> loans) {
+        List<Loan> sellLoans = new ArrayList<>();
+        for (Loan loan : loans) {
+            if (investments.containsKey(loan.getId())) {
+                if (loan.getStatus().equals(Status.ACTIVE) && !investments.get(loan.getId()).isForSale()) {
+                    sellLoans.add(loan);
+                }
+            }
+        }
+        return sellLoans;
+    }
+
+
     @FXML
     void buyLoanOnAction(ActionEvent event) {
-        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(buyLoansListView.getSelectionModel().getSelectedItem().getId(), false, userAppController.getChosenClient()), new Callback() {
+        String[] arr = buyLoansListView.getSelectionModel().getSelectedItem().split(" ", 2);
+        String buyFrom = arr[0];
+        String loanId= arr[1];
+        if (client.getMoney() < sellerOfLoan.getInvestments().get(loanId).getInvestment()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error");
+            alert.setContentText("Not enough money in the bank");
+            alert.showAndWait();
+            return;
+        }
+        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(buyFrom, loanId, false, userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println(e);
@@ -134,7 +216,7 @@ public class LoanTradeController {
 
     @FXML
     void sellBtnOnAction(ActionEvent event) {
-        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl(sellLoansListView.getSelectionModel().getSelectedItem().getId(), true, userAppController.getChosenClient()), new Callback() {
+        HttpClientUtil.runAsync(HttpClientUtil.createTradeLoanUrl("", sellLoansListView.getSelectionModel().getSelectedItem().getId(), true, userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println(e);

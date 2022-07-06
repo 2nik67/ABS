@@ -20,7 +20,7 @@ public class HttpClientUtil {
     private final static String investmentUrl = "http://localhost:8080/web_Web/servlets/Invest";
     private final static String payLoanUrl ="http://localhost:8080/web_Web/servlets/PayLoan";
     private final static String tradeLoanUrl = "http://localhost:8080/web_Web/servlets/TradeLoan";
-
+    private final static String getLoanByIdURL = "http://localhost:8080/web_Web/servlets/GetLoanById";
 
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
@@ -30,12 +30,20 @@ public class HttpClientUtil {
                     .build();
 
 
-    public static String createTradeLoanUrl(String loanID, boolean isSale, String name){
+    public static String createGetLoanByIdURL(String loanId){
+        return HttpUrl.parse(getLoanByIdURL)
+                .newBuilder()
+                .addQueryParameter("LoanId", loanId)
+                .build().toString();
+    }
+
+    public static String createTradeLoanUrl(String buyFrom, String loanID, boolean isSale, String name){
         return HttpUrl.parse(tradeLoanUrl)
                 .newBuilder()
                 .addQueryParameter("LoanId", loanID)
                 .addQueryParameter("IsSell", String.valueOf(isSale))
                 .addQueryParameter("ClientName", name)
+                .addQueryParameter("BuyFrom", buyFrom)
                 .build().toString();
     }
 
