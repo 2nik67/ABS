@@ -18,7 +18,7 @@ import loan.category.Category;
 import java.io.File;
 import java.io.IOException;
 
-//TODO: localhost:8080/servlets/NewLoan?Path=blabla&ClientName=tal
+
 @WebServlet(name="NewLoan", urlPatterns = "/servlets/NewLoan")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class NewLoan extends HttpServlet {
