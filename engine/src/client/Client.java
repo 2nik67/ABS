@@ -87,16 +87,19 @@ public class Client {
         return res;
     }
 
-    public void fixInvestments(Client buyingForm, Loan loan){
+    public void fixInvestments(Client buyingFromm, Loan loan){
         if (this.investments.containsKey(loan.getId())){
-            investments.get(loan.getId()).add(buyingForm.getInvestments().get(loan.getId()).getInvestment());
+            investments.get(loan.getId()).add(buyingFromm.getInvestments().get(loan.getId()).getInvestment());
 
         }else{
-            investments.put(loan.getId(),new InvestmentForSale(buyingForm.getInvestments().get(loan.getId()).getInvestment(), false));
+            investments.put(loan.getId(),new InvestmentForSale(buyingFromm.getInvestments().get(loan.getId()).getInvestment(), false));
 
         }
-        buyingForm.getInvestments().remove(loan.getId());
-        loan.updateLoaners(buyingForm, this);
+        buyingFromm.loadMoney(buyingFromm.getInvestments().get(loan.getId()).getInvestment(), buyingFromm.getMoney());
+        this.loadMoney(buyingFromm.getInvestments().get(loan.getId()).getInvestment() * -1 , this.money);
+        buyingFromm.getInvestments().remove(loan.getId());
+        loan.updateLoaners(buyingFromm, this);
+
     }
 
 }

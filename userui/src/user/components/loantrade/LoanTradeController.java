@@ -104,6 +104,9 @@ public class LoanTradeController {
     }
 
     private void updateDataLoanTable(List<Loan> loans) {
+        if (userAppController.getChosenClient() == null){
+            return;
+        }
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

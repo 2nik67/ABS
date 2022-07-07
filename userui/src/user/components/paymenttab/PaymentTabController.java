@@ -293,6 +293,9 @@ public class PaymentTabController{
     }
 
     private void updateDataLoanTable(List<Loan> loansOfClient) {
+        if (userAppController.getChosenClient() == null){
+            return;
+        }
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(userAppController.getChosenClient()), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

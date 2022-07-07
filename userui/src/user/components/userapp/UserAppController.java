@@ -198,6 +198,9 @@ public class UserAppController {
     }
 
     public void updateInvestmentsTable(List<Loan> loansOfClient) {
+        if (clientName==null){
+            return;
+        }
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -217,12 +220,13 @@ public class UserAppController {
         List <Loan> loans = new ArrayList<>();
         for (Loan loan : loansOfClient) {
             for (int i = 0; i <loan.getLoaners().size(); i++) {
-                if(loan.getLoaners().get(i).getKey().getName().equals(clientName)){
+                if(loan.getUpdatedLoaners().get(i).getKey().getName().equals(clientName)){
                     loans.add(loan);
                 }
             }
         }
         if (loans.isEmpty()){
+            investmentsTableView.getItems().clear();
             return;
         }
 
@@ -240,6 +244,9 @@ public class UserAppController {
 
 
     private void updateDataLoanTable(List<Loan> loansOfClient) {
+        if (clientName == null){
+            return;
+        }
         HttpClientUtil.runAsync(HttpClientUtil.createGetClientUrl(clientName), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
