@@ -149,8 +149,7 @@ public class ScrambleTabController {
 
     @FXML
     public void scrambleOperation() throws  Exception{
-        if(currentClient == null)
-            this.currentClient = userAppController.getClient();
+        this.currentClient = userAppController.getClient();
         //Client currClient = getClientByName(currentClient);
 
         if(amountTextField.getText().equals(""))

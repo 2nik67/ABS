@@ -181,6 +181,7 @@ public class UserAppController {
     }
 
     private void transactionRefresh(Client client) {
+        this.chosenClient = client;
         transactionTableView.getItems().clear();
         yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
         beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
