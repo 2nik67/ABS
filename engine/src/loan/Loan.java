@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Loan {
+
+    private boolean shouldAutoPay;
     private boolean isForSale;
     private final String id; //ID of the loan.
     private final double loan; //Amount of the loan.
@@ -46,6 +48,7 @@ public class Loan {
     }
 
     public Loan(String id, double loan, Client borrower, Category loanCategory, int totalYaz, int periodOfYazToPay, int interestEveryYaz) {
+        this.shouldAutoPay = true;
         this.id = id;
         this.loan = loan;
         this.isForSale = false;
@@ -311,13 +314,17 @@ public class Loan {
     private boolean checkHowMuchShouldBePaid(){
         int yazSinceActive= Yaz.getYaz() - activeYaz;
         int amountOfPayments = yazSinceActive/periodOfYazToPay;
-        return !(loanPaid < amountOfPayments * (interestPaid + loanPaid));
+        return (loanPaid + interestPaid < amountOfPayments * (interestEveryYaz + loanEveryYaz));
     }
 
-    public boolean shouldAutoPay(){
+    public void shouldAutoPay(){
         int yazSinceActive= Yaz.getYaz() - activeYaz;
         int amountOfPayments = yazSinceActive/periodOfYazToPay;
-        return timeToPay() && loanPaid == amountOfPayments * (interestPaid + loanPaid);
+        shouldAutoPay =  timeToPay() && loanPaid + interestPaid == amountOfPayments * (interestEveryYaz + loanEveryYaz);
+    }
+
+    public boolean isShouldAutoPay() {
+        return shouldAutoPay;
     }
 
     public double getInterestEveryYaz() {

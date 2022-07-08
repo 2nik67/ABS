@@ -78,5 +78,11 @@ public abstract class Loans {
             loan.checkIfLoanIsInRisk();
         }
     }
+
+    public static void checkForAutoPay() {
+        for (Loan loan : loans) {
+            loan.shouldAutoPay();
+        }
+    }
 }
 

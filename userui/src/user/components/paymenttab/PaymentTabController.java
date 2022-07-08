@@ -110,15 +110,7 @@ public class PaymentTabController{
                 }
             }
         });
-/*
-        Loan loanToPay = loansListView.getSelectionModel().getSelectedItem();
-        loanToPay.payLoan();
-        payBtn.setDisable(true);
-        moneyTextFiled.setDisable(true);
-        autoPayBtn.setDisable(true);
-        closeLoanBtn.setDisable(true);
-        ObservableList<Loan> observableList = loansListView.getItems();
-        observableList.remove(loansListView.getSelectionModel().getSelectedItem());*/
+
     }
 
     @FXML
@@ -248,7 +240,7 @@ public class PaymentTabController{
                     payBtn.setDisable(true);
                     return;
                 }
-                if (newValue.getStatus().equals(Status.RISK) || !newValue.shouldAutoPay()){
+                if (newValue.getStatus().equals(Status.RISK) || !newValue.isShouldAutoPay()){
                     autoPayBtn.setDisable(true);
 
                 }else{
@@ -271,7 +263,7 @@ public class PaymentTabController{
                     return;
                 } else {
                     setText(item.getId());
-                    if (item.shouldAutoPay() && item.getStatus().equals(Status.ACTIVE)){
+                    if (item.isShouldAutoPay() && item.getStatus().equals(Status.ACTIVE)){
                         setTextFill(Color.GREEN);
                     }
                     else if(item.getStatus().equals(Status.ACTIVE)){
@@ -325,7 +317,7 @@ public class PaymentTabController{
         if (loans1.isEmpty()){
             loansListView.getItems().clear();
         }
-        else if (loans1.size() > loansListView.getItems().size() || statusWasChanged(loans1, loansListView.getItems())){
+        else if (loans1.size() != loansListView.getItems().size() || statusWasChanged(loans1, loansListView.getItems())){
             loansListView.getItems().clear();
             loansListView.getItems().addAll(loans1);
         }
@@ -365,7 +357,7 @@ public class PaymentTabController{
         for (Loan loan : loans1) {
             for (Loan item : items) {
                 if (loan.getId().equals(item.getId())) {
-                    if (loan.getStatus().equals(item.getStatus()) && loan.shouldAutoPay() == item.shouldAutoPay()){
+                    if (loan.getStatus().equals(item.getStatus()) && loan.isShouldAutoPay() == item.isShouldAutoPay()){
                         return false;
                     }
                 }

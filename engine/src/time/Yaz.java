@@ -19,6 +19,7 @@ public abstract class Yaz {
         archive.yazWasAdvanced(Yaz.yaz);
         Yaz.yaz += yaz;
         Loans.checkForRiskLoans();
+        Loans.checkForAutoPay();
     }
 
     public static void saveCurrentYazStateToArchive(){

@@ -44,6 +44,7 @@ public class PayLoanServlet extends HttpServlet {
         else{
             resp.getWriter().println("paid");
             loan.payPartOfLoan(toPay);
+            loan.shouldAutoPay();
         }
     }
 
@@ -59,6 +60,7 @@ public class PayLoanServlet extends HttpServlet {
         }else{
             resp.getWriter().println("paid");
             loan.payLoan();
+            loan.shouldAutoPay();
         }
 
     }
