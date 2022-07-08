@@ -33,7 +33,7 @@ public class NewLoan extends HttpServlet {
 
         double capital = Double.parseDouble(req.getParameter("Capital"));
         if (capital <= 0){
-            resp.getWriter().println("Capital must be positive number! (As we should be 😀)");
+            resp.getWriter().println("Capital must be positive number! (As we should be :-) )");
             return;
         }
 
