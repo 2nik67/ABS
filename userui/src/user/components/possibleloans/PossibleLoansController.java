@@ -64,7 +64,7 @@ public class PossibleLoansController {
         List<String> checkedLoans = getCheckedLoans();
         String bodyRequest = HttpClientUtil.createLoansForBody(checkedLoans);
         RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
-        HttpClientUtil.runAsyncPost(HttpClientUtil.createInvestmentUrl(sumToInvest), requestBody, new Callback() {
+        HttpClientUtil.runAsyncPost(HttpClientUtil.createInvestmentUrl(sumToInvest, scrambleTabController.getChosenClient()), requestBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println(e);

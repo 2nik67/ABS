@@ -1,6 +1,8 @@
 package servlets;
 
 import Investment.Investment;
+import client.Client;
+import client.Clients;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -55,9 +57,17 @@ public class LoanListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //String client = req.getParameter("ClientName");
+        String client = req.getParameter("ClientName");
         double sumToInvest = Double.parseDouble(req.getParameter("SumToInvest"));
-        //Client chosenClient = Clients.getClientByName(client);
+        Client chosenClient = Clients.getClientByName(client);
+        if (chosenClient == null){
+            resp.getWriter().println("Client does not exist");
+            return;
+        }
+        if (chosenClient.getMoney() < sumToInvest){
+            resp.getWriter().println("Not enough money to invest!");
+            return;
+        }
         String jsonArrayLoans = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         String[] loansIdArray = new Gson().fromJson(jsonArrayLoans, String[].class);
         List<String> loansId = Arrays.asList(loansIdArray);

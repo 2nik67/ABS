@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import load.LoadFile;
 import loan.Loan;
@@ -134,8 +135,22 @@ public class NewLoanTabController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println("Loan added!");
-                Loans.printLoans();
+                if (response.code() != 200){
+                    return;
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setHeaderText("Attention");
+                        try {
+                            alert.setContentText(response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.show();
+                    }
+                });
             }
         });
     }

@@ -147,6 +147,10 @@ public class ScrambleTabController {
                 new TextFormatter<Integer>(new IntegerStringConverter(), null, integerFilter));
     }
 
+    public String getChosenClient(){
+        return userAppController.getChosenClient();
+    }
+
     @FXML
     public void scrambleOperation() throws  Exception{
         this.currentClient = userAppController.getClient();
@@ -185,8 +189,6 @@ public class ScrambleTabController {
         }
 
         //TODO: other text field ifs
-
-
 
         List<Category> categoryList = createCategoryList();
         String bodyRequest = HttpClientUtil.createCategoriesForBody(categoryList);

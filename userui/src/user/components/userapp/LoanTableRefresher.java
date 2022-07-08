@@ -46,7 +46,7 @@ public class LoanTableRefresher extends TimerTask {
                     try{
                         loanOfClients.accept(Arrays.asList(loans));
                     }catch (Exception e){
-                        System.out.println(e.fillInStackTrace().toString());
+                        System.out.println(e);
                     }
 
                 }

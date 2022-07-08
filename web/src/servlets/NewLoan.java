@@ -14,9 +14,9 @@ import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
 import loan.category.Category;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 
 @WebServlet(name="NewLoan", urlPatterns = "/servlets/NewLoan")
@@ -26,18 +26,60 @@ public class NewLoan extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String clientName = req.getParameter("ClientName");
         Client client = Clients.getClientByName(clientName);
+        if (client == null){
+            resp.getWriter().println("Client does not exist!");
+            return;
+        }
 
-        Double capital = Double.parseDouble(req.getParameter("Capital"));
+        double capital = Double.parseDouble(req.getParameter("Capital"));
+        if (capital <= 0){
+            resp.getWriter().println("Capital must be positive number! (As we should be 😀)");
+            return;
+        }
 
         String loanID = req.getParameter("LoanID");
+        if (loanID.isEmpty()){
+            resp.getWriter().println("Loan ID is empty!");
+            return;
+        }
 
         Category cat = Categories.getCategoryByName(req.getParameter("Category"));
+        if (cat == null){
+            resp.getWriter().println("Category does not exist!");
+            return;
+        }
 
         int totalYaz = Integer.parseInt(req.getParameter("TotalYaz"));
+        if (totalYaz < 0){
+            resp.getWriter().println("Total yaz can not be negative!");
+            return;
+        }
         int yazInterval = Integer.parseInt(req.getParameter("YazInterval"));
+        if (yazInterval < 0){
+            resp.getWriter().println("Yaz interval can not be negative!");
+            return;
+        }
+        if (totalYaz % yazInterval != 0){
+            resp.getWriter().println("Yaz is not divisible");
+            return;
+        }
+
         int interest = Integer.parseInt(req.getParameter("InterestPerPayment"));
+        if (interest < 0 || interest >100){
+            resp.getWriter().println("Interest is not between 0-100");
+            return;
+        }
+
+        List<Loan> loans = Loans.getLoans();
+        for (Loan loan : loans) {
+            if (loan.getId().equals(loanID)) {
+                resp.getWriter().println("Loan already exists!");
+                return;
+            }
+        }
 
         Loans.getLoans().add(new Loan(loanID, capital, client, cat, totalYaz, yazInterval, interest));
+        resp.getWriter().println("Loan " + "\""+loanID +  "\"" +  " was added");
     }
 
     @Override

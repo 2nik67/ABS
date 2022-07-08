@@ -62,9 +62,10 @@ public class HttpClientUtil {
                 .build().toString();
     }
 
-    public static String createInvestmentUrl(Double amountToInvest){
+    public static String createInvestmentUrl(Double amountToInvest, String clientName){
         return HttpUrl.parse(loanList)
                 .newBuilder()
+                .addQueryParameter("ClientName", clientName)
                 .addQueryParameter("SumToInvest", String.valueOf(amountToInvest))
                 .build().toString();
     }

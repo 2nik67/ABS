@@ -35,8 +35,16 @@ public class ScrambleServlet extends HttpServlet {
         String maxOpenLoans = req.getParameter("MaxOpenLoans");
         String maxLoanOwnerShip = req.getParameter("MaxLoanOwnerShip");
         Client chosenClient = Clients.getClientByName(client);
+        if(chosenClient == null){
+            resp.getWriter().println("Client does not exist");
+            return;
+        }
         String jsonArrayCategories = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Category[] categoriesArray = new Gson().fromJson(jsonArrayCategories, Category[].class);
+        if (categoriesArray.length == 0){
+            resp.getWriter().println("No categories was chosen");
+            return;
+        }
         List<Loan> possibleLoans = Investment.fillList(Loans.getLoans(), Arrays.asList(categoriesArray), Integer.parseInt(minimumYaz), Integer.parseInt(minimumInterestYaz),
                 Clients.getClientByName(client), Integer.parseInt(maxLoanOwnerShip));
         resp.setContentType("application/json");
@@ -47,4 +55,7 @@ public class ScrambleServlet extends HttpServlet {
             out.flush();
         };
     }
+
+
+
 }
