@@ -30,13 +30,20 @@ public class ScrambleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String client = req.getParameter("ClientName");
         String AmountToInvest = req.getParameter("AmountToInvest");
+        double amountToInvest = Double.parseDouble(AmountToInvest);
+
         String minimumInterestYaz = req.getParameter("MinimumInterestYaz");
         String minimumYaz = req.getParameter("MinimumYaz");
-        String maxOpenLoans = req.getParameter("MaxOpenLoans");
+        //String maxOpenLoans = req.getParameter("MaxOpenLoans");
         String maxLoanOwnerShip = req.getParameter("MaxLoanOwnerShip");
         Client chosenClient = Clients.getClientByName(client);
+
         if(chosenClient == null){
             resp.getWriter().println("Client does not exist");
+            return;
+        }
+        if (amountToInvest > chosenClient.getMoney()){
+            resp.getWriter().println("Not enough money to invest!");
             return;
         }
         String jsonArrayCategories = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
