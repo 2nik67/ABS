@@ -113,11 +113,6 @@ public class NewLoanTabController {
             return;
         }
 
-        /*Double capital = Double.parseDouble(capitalTextField.getText()),
-                totalYaz = Double.parseDouble(totalYAZTextField.getText()),
-                yazInterval = Double.parseDouble(yazIntervalTextField.getText()),
-                interest = Double.parseDouble(interestTextField.getText());*/
-
         String capital = capitalTextField.getText(),
                 totalYaz = totalYAZTextField.getText(),
                 yazInterval = yazIntervalTextField.getText(),
@@ -188,7 +183,6 @@ public class NewLoanTabController {
     @FXML
     public void initialize() { initializeTextFields();
         startComboBoxRefresh();
-        initializeComboBox();
 
     }
 
@@ -241,13 +235,6 @@ public class NewLoanTabController {
         this.userAppController = userAppController;
     }
 
-    private void initializeComboBox(){
-        categoryComboBox.getItems().clear();
-        Categories.addCategory(new Category("Default"));
 
-        for(Category cat : Categories.getCategoryList()){
-            categoryComboBox.getItems().add(cat.getCategory());
-        }
-    }
 
 }
