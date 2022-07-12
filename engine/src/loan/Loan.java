@@ -91,6 +91,7 @@ public class Loan {
             status=Status.ACTIVE;
             activeYaz=Yaz.getYaz();
             owner.loadMoney(loan, owner.getMoney());
+            shouldAutoPay = true;
 
         }
         else{
