@@ -67,140 +67,32 @@ public abstract class LoadFile{
     private static String importDataForLoan(Client client) {
         AbsLoans absLoans = absDescriptor.getAbsLoans();
         for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
-            //TODO: check if category exists
+
+            Loan loan = Loans.getLoanByID(absLoans.getAbsLoan().get(i).getId());
+            if (loan !=null){
+                return "Loan ID already exists!";
+            }
 
             Category category = Categories.getCategoryByName(absLoans.getAbsLoan().get(i).getAbsCategory());
             if (category == null){
                 category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
             }
             Categories.addCategory(category);
-            Loan loan = Loans.getLoanByID(absLoans.getAbsLoan().get(i).getId());
-            if (loan !=null){
-                return "Loan ID already exists!";
-            }
+
             Loan newLoan = new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
                     category, absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
                     absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment());
             loans.add(newLoan);
         }
+
         for (Loan loan : loans) {
             Loans.getLoans().add(loan);
         }
 
         loans = new ArrayList<>();
-        //TODO: check if file is valid.
         return "Loan was added!";
     }
-/*
-    private static void importData(){
-        importCategory();
-        importCustomers();
-        importLoans();
-        if(loansRead){
-            Categories.setCategoryList(categories);
-            Clients.setClientsList(clients);
-            Loans.setLoans(loans);
-            Yaz.advanceYaz(Yaz.getYaz()*-1);
-        }
-        resetData();
 
-    }
-
-    private static void importLoans() {
-        if(clientRead){
-            List <AbsLoan> absLoans=absDescriptor.getAbsLoans().getAbsLoan();
-            for (AbsLoan absLoan : absLoans) {
-                if (!ValidityCheck.checkIfClientExist(clients, absLoan.getAbsOwner())) {
-                    System.out.println("Client " + absLoan.getAbsOwner() + " does not exist");
-                    resetData();
-                    LoadFile.loansRead=false;
-                    return;
-                } else if (!ValidityCheck.checkIfCategoryExistsByString(categories, absLoan.getAbsCategory())) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Invalid File");
-                    alert.setHeaderText("Invalid File");
-                    alert.setContentText("Category " + absLoan.getAbsCategory() + " does not exist");
-                    alert.showAndWait().ifPresent(rs -> {
-                        if (rs == ButtonType.OK) {
-                            System.out.println("Pressed OK.");
-                        }
-                    });
-                    //System.out.println("Category " + absLoan.getAbsCategory() + " does not exist");
-                    LoadFile.loansRead=false;
-                    resetData();
-                    return;
-                } else if (!ValidityCheck.isTotalYazDivisible(absLoan.getAbsTotalYazTime(), absLoan.getAbsPaysEveryYaz())) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Invalid File");
-                    alert.setHeaderText("Invalid File");
-                    alert.setContentText("Loan " + "\"" + absLoan.getId() + "\"" + " is not divisible");
-                    alert.showAndWait().ifPresent(rs -> {
-                        if (rs == ButtonType.OK) {
-                            System.out.println("Pressed OK.");
-                        }
-                    });
-                    //System.out.println("Loan " + absLoan.getId() + " is not divisible");
-                    LoadFile.loansRead=false;
-                    resetData();
-                    return;
-                } else {
-                    loans.add(new Loan(absLoan.getId(), absLoan.getAbsCapital(), findClient(absLoan.getAbsOwner()),
-                            returnCategoryByString(absLoan.getAbsCategory()), absLoan.getAbsTotalYazTime(),
-                            absLoan.getAbsPaysEveryYaz(), absLoan.getAbsIntristPerPayment()));
-                }
-
-
-            }
-            LoadFile.fileLoaded = true;
-            LoadFile.loansRead=true;
-            System.out.println("File was loaded!");
-        }
-
-
-    }
-
-    private static void importCustomers() {
-        List<AbsCustomer> absCustomersList = absDescriptor.getAbsCustomers().getAbsCustomer();
-        for (AbsCustomer absCustomer : absCustomersList) {
-            if (!ValidityCheck.checkIfClientExist(clients, absCustomer.getName())) {
-                clients.add(new Client(absCustomer.getName(), absCustomer.getAbsBalance()));
-            } else {
-                System.out.println("Client " + absCustomer.getName() + " exists!");
-                LoadFile.clientRead=false;
-                resetData();
-                return;
-            }
-        }
-        LoadFile.clientRead=true;
-    }
-
-
-
-    private static void importCategory(){
-        List <String> absCategories;
-        absCategories=absDescriptor.getAbsCategories().getAbsCategory();
-        for (String absCategory : absCategories) {
-            Category category = new Category(absCategory);
-            categories.add(category);
-        }
-    }
-
-    private static void resetData(){
-        clients = new ArrayList<>();
-        loans = new ArrayList<>();
-        categories =new ArrayList<>();
-        clientRead=false;
-        loansRead=false;
-    }
-
-    public static Client findClient(String client){
-        for (Client value : clients) {
-            if (value.getName().equals(client)) {
-                return value;
-            }
-        }
-        return null;
-    }*/
     public static Category returnCategoryByString(String category){
         for (Category value : categories) {
             if (value.getCategory().equalsIgnoreCase(category)) {

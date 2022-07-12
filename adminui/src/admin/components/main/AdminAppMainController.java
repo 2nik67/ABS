@@ -29,7 +29,7 @@ public class AdminAppMainController {
     @FXML
     private Label rewindLabel;
 
-    private AnchorPane adminLoginComponent;
+    private ScrollPane adminLoginComponent;
     private AdminLoginController adminLoginComponentController;
 
     private ScrollPane adminAppComponent;

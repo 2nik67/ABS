@@ -6,15 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import time.Yaz;
 import user.components.login.UserLoginController;
 import user.components.userapp.UserAppController;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -42,7 +39,7 @@ public class UserAppMainController {
 
     private String clientsName;
 
-    private AnchorPane userLoginComponent;
+    private ScrollPane userLoginComponent;
     private UserLoginController userLoginComponentController;
 
     private TabPane userAppComponent;
