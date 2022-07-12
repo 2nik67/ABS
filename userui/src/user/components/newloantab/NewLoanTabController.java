@@ -167,7 +167,20 @@ public class NewLoanTabController {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    System.out.println(response.body().string());
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText("Attention");
+                            try {
+                                alert.setContentText(response.body().string());
+                            }catch (Exception e){
+                                return;
+                            }
+
+                            alert.showAndWait();
+                        }
+                    });
                 }
             });
         }

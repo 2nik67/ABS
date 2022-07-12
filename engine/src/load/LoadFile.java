@@ -1,20 +1,13 @@
 package load;
 
 import client.Client;
-import client.Clients;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import load.jaxbv2.schema.generated.AbsDescriptor;
-import load.jaxbv2.schema.generated.AbsLoan;
-import load.jaxbv2.schema.generated.AbsLoan;
 import load.jaxbv2.schema.generated.AbsLoans;
-import load.jaxbv2.schema.generated.ObjectFactory;
 import loan.Loan;
 import loan.Loans;
 import loan.category.Categories;
 import loan.category.Category;
-import time.Yaz;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public abstract class LoadFile{
@@ -50,7 +42,7 @@ public abstract class LoadFile{
         return path;
     }
 
-    public static void readFile(Client client){
+    public static String readFile(Client client){
 
         try {
             File file=new File(path);
@@ -59,7 +51,7 @@ public abstract class LoadFile{
             JAXBContext jc = JAXBContext.newInstance("load.jaxbv2.schema.generated");
             Unmarshaller u = jc.createUnmarshaller();
             absDescriptor = (AbsDescriptor) u.unmarshal(inputStream);
-            importDataForLoan(client);
+            return importDataForLoan(client);
 
         }catch (JAXBException e){
             e.printStackTrace();
@@ -69,24 +61,27 @@ public abstract class LoadFile{
         }catch (NullPointerException e){
             System.out.println("File is null");
         }
-
+        return null;
     }
 
-    private static void importDataForLoan(Client client) {
+    private static String importDataForLoan(Client client) {
         AbsLoans absLoans = absDescriptor.getAbsLoans();
         for (int i = 0; i < absLoans.getAbsLoan().size(); i++) {
             //TODO: check if category exists
-            Category category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
-            Categories.addCategory(category);
 
+            Category category = Categories.getCategoryByName(absLoans.getAbsLoan().get(i).getAbsCategory());
+            if (category == null){
+                category = new Category(absLoans.getAbsLoan().get(i).getAbsCategory());
+            }
+            Categories.addCategory(category);
+            Loan loan = Loans.getLoanByID(absLoans.getAbsLoan().get(i).getId());
+            if (loan !=null){
+                return "Loan ID already exists!";
+            }
             Loan newLoan = new Loan(absLoans.getAbsLoan().get(i).getId(), absLoans.getAbsLoan().get(i).getAbsCapital(), client,
                     category, absLoans.getAbsLoan().get(i).getAbsTotalYazTime(),
                     absLoans.getAbsLoan().get(i).getAbsPaysEveryYaz(), absLoans.getAbsLoan().get(i).getAbsIntristPerPayment());
             loans.add(newLoan);
-            if(Loans.getLoanByID(newLoan.getId()) != null){
-                System.out.println("files is not valid, at least one loan ID already in system");
-                return;
-            }
         }
         for (Loan loan : loans) {
             Loans.getLoans().add(loan);
@@ -94,6 +89,7 @@ public abstract class LoadFile{
 
         loans = new ArrayList<>();
         //TODO: check if file is valid.
+        return "Loan was added!";
     }
 /*
     private static void importData(){

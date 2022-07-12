@@ -101,8 +101,8 @@ public class NewLoan extends HttpServlet {
         }
 
         LoadFile.setPath(uploadPath + File.separator + fileName + ".xml");
-        LoadFile.readFile(client);
+        String res = LoadFile.readFile(client);
 
-        resp.getWriter().println(" Hey");
+        resp.getWriter().println(res);
     }
 }
