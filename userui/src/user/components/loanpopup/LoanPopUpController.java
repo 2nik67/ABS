@@ -48,13 +48,15 @@ public class LoanPopUpController {
     private Label totalPaidLabel;
 
     @FXML
+    private Label riskLabel;
+
+    @FXML
     private ListView<String> investorsListView;
 
 
     @FXML
     void initialize() {
         fillLoanInfo();
-        //loanIDLabel.setText("Loan ID: " + thisLoan.getId());
     }
 
     public void fillLoanInfo() {
@@ -68,9 +70,12 @@ public class LoanPopUpController {
             String str = thisLoan.getLoaners().get(i).getKey().getName() + " invested " + thisLoan.getLoaners().get(i).getValue();
             investorsListView.getItems().add(str);
         }
-        /*if(thisLoan.getStatus().equals(Status.RISK)){
-            thisLoan.getm
-        }*/
+        if(thisLoan.getStatus().equals(Status.RISK)){
+            riskLabel.setText("Total Loan paid (with no interest): " + thisLoan.getLoanPaid() + " | Total interest paid: " + thisLoan.getInterestPaid() + "\n"
+                    + "Loan left to pay(with no interest): " + (thisLoan.getLoan() - thisLoan.getLoanPaid()) + " | Interest left to pay: " + (thisLoan.getInterest()- thisLoan.getInterestPaid())
+            );
+        }
+        //" | Total amount missed: " + thisLoan.getTotalAmountMissed()
     }
 
     public void popUp(String type) throws Exception{
@@ -81,7 +86,7 @@ public class LoanPopUpController {
             URL url = getClass().getResource("/user/components/loanpopup/loanPopUp.fxml");
             fxmlLoader.setLocation(url);
             ScrollPane root = fxmlLoader.load(url.openStream());
-            Scene scene =new Scene(root, 1000 , 600);
+            Scene scene =new Scene(root, 1000 , 400);
             newStage.setResizable(true);
             newStage.setScene(scene);
 

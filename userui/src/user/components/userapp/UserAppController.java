@@ -58,13 +58,6 @@ public class UserAppController {
 
     private TimerTask investmentsTableRefresher;
 
-    //TODO: remove trees
-    @FXML
-    private TreeView<String> loansTreeView;
-
-    @FXML
-    private TreeView<String> investmentsTreeView;
-
     @FXML
     private TableView<Loan> loansTableView;
 
@@ -147,8 +140,6 @@ public class UserAppController {
 
         startLoanClientListRefresher();
         startInvestmentsClientListRefresher();
-
-
     }
 
     public void setRewind(boolean isRewindNow){
@@ -181,6 +172,15 @@ public class UserAppController {
     }
 
     private void transactionRefresh(Client client) {
+        if(client == null) {
+            transactionTableView.getItems().clear();
+            yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
+            beforeChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("original"));
+            moneyTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("moneyChange"));
+            afterChangeTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("afterChange"));
+            return;
+        }
+
         this.chosenClient = client;
         transactionTableView.getItems().clear();
         yazTableColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Integer>("yazOfTransaction"));
@@ -342,10 +342,6 @@ public class UserAppController {
 
     public void createTransactionInfo(String name){
         Clients.getClientByName(name);
-    }
-
-    public ObservableList<String> getCurrentStyle(){
-        return loansTreeView.getScene().getStylesheets();
     }
 
     public void setUserAppMainController(UserAppMainController userAppMainController) {

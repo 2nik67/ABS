@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import loan.Loan;
 import loan.Status;
@@ -15,6 +16,7 @@ import okhttp3.*;
 import okio.BufferedSink;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import user.components.loanpopup.LoanPopUpController;
 import user.components.userapp.LoanTableRefresher;
 
 import java.io.IOException;
@@ -52,6 +54,8 @@ public class AdminAppController {
 
     @FXML
     private CheckBox rewindCheckBox;
+
+    private LoanPopUpController loanPopUpController;
 
     public void setAdminAppMainController(AdminAppMainController adminAppMainController){
         this.adminAppMainController = adminAppMainController;
@@ -245,4 +249,17 @@ public class AdminAppController {
         });
     }
 
+    @FXML
+    public void onMouseClickedLoans(MouseEvent event) throws Exception{
+        if(event.getClickCount() == 2){
+            loanPopUpController = new LoanPopUpController();
+            Loan loan = loansListView.getSelectionModel().getSelectedItems().get(0);
+            if (loan == null){
+                return;
+            }
+            loanPopUpController.setLoan(loan);
+            loanPopUpController.popUp("LOAN");
+
+        }
+    }
 }

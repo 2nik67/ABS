@@ -39,9 +39,9 @@ public class TransactionListRefresher extends TimerTask {
                 String clientStr = response.body().string();
                 if (!clientStr.equals("[]" + System.lineSeparator())){
                     Client client = new Gson().fromJson(clientStr, Client.class);
-                    if (client == null){
+                    /*if (client == null){
                         return;
-                    }
+                    }*/
                     transactionRefresh.accept(client);
                 }
             }
