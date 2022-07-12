@@ -188,9 +188,11 @@ public class ScrambleTabController {
             return;
         }
 
-        //TODO: other text field ifs
-
         List<Category> categoryList = createCategoryList();
+        if(categoryList.isEmpty()){
+            System.out.println("please choose a category lol");
+            return;
+        }
         String bodyRequest = HttpClientUtil.createCategoriesForBody(categoryList);
         RequestBody requestBody = RequestBody.create(bodyRequest.getBytes());
         String url = HttpClientUtil.createPostPossibleLoansListUrl(userAppController.getChosenClient(), amountTextField.getText(),

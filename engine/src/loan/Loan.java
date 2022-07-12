@@ -72,6 +72,57 @@ public class Loan {
 
     }
 
+    public Loan(Loan otherLoan) {
+        this.shouldAutoPay = otherLoan.shouldAutoPay;
+        this.isForSale = otherLoan.isForSale;
+        this.id = otherLoan.id;
+        this.loan = otherLoan.loan;
+        this.loanPaid = otherLoan.loanPaid;
+        this.interest = otherLoan.interest;
+        this.interestPaid = otherLoan.interestPaid;
+        this.interestEveryYaz = otherLoan.interestEveryYaz;
+        this.loanEveryYaz= otherLoan.loanEveryYaz;
+        this.owner = new Client(otherLoan.owner);
+
+        this.loaners = new ArrayList<>();
+        if(otherLoan.loaners != null)
+            for (int i = 0; i < otherLoan.loaners.size(); i++) {
+                this.loaners.add(new Pair<>(new Client(otherLoan.loaners.get(i).getKey()), otherLoan.loaners.get(i).getValue()));
+            }
+
+        this.updatedLoaners = new ArrayList<>();
+        if(otherLoan.updatedLoaners != null)
+            for (int i = 0; i < otherLoan.updatedLoaners.size(); i++) {
+                this.updatedLoaners.add(new Pair<>(new Client(otherLoan.updatedLoaners.get(i).getKey()), otherLoan.updatedLoaners.get(i).getValue()));
+            }
+
+        this.loanCategory = otherLoan.loanCategory;
+        this.status = otherLoan.status;
+        this.totalYaz = otherLoan.totalYaz;
+        this.missingToActive = otherLoan.missingToActive;
+        this.periodOfYazToPay = otherLoan.periodOfYazToPay;
+        this.startedYaz = otherLoan.startedYaz;
+
+        this.paymentInfo = new ArrayList<>();
+        if (otherLoan.paymentInfo != null)
+            for (int i = 0; i < otherLoan.paymentInfo.size(); i++) {
+                this.paymentInfo.add(new Payment(otherLoan.paymentInfo.get(i).getPaidYaz(),
+                        otherLoan.paymentInfo.get(i).getPartOfLoanPaid(),
+                        otherLoan.paymentInfo.get(i).getPartOfInterestPaid()));
+            }
+
+        this.interestPercentage = otherLoan.interestPercentage;
+        this.activeYaz = otherLoan.activeYaz;
+        this.finishYaz = this.getFinishYaz();
+
+        this.latePayments = new ArrayList<>();
+            if(otherLoan.latePayments != null)
+                for (int i = 0; i < otherLoan.latePayments.size(); i++) {
+                    this.latePayments.add(new Pair<>(otherLoan.latePayments.get(i).getKey(),
+                            otherLoan.latePayments.get(i).getValue()));
+                }
+    }
+
     public void updateLoaners(Client oldClient, Client newClient){
         if (updatedLoaners == null){
             updatedLoaners = new ArrayList<>(this.loaners);

@@ -34,10 +34,26 @@ public class Client {
     public void addLoanToMap(Loan loan, double investment){
         investments.put(loan.getId(), new InvestmentForSale(investment, false));
     }
+
     public Client(String name, double money) {
         this.name = name;
         this.money = money;
         this.transactions.add(new Transaction(money, Yaz.getYaz(), 0));
+    }
+
+    public Client(Client otherClient) {
+        this.name = otherClient.name;
+        this.money = otherClient.money;
+
+        if (otherClient.transactions != null)
+            for (int i = 0; i < otherClient.transactions.size(); i++) {
+                this.transactions.add(new Transaction(otherClient.transactions.get(i).getMoneyChange(),
+                        otherClient.transactions.get(i).getYazOfTransaction(),
+                        otherClient.transactions.get(i).getOriginal()));
+            }
+
+        if (otherClient.investments != null)
+            this.investments.putAll(otherClient.investments);
     }
 
     public String getName() {

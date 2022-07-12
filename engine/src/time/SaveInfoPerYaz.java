@@ -4,6 +4,7 @@ import client.Client;
 import loan.Loan;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SaveInfoPerYaz {
@@ -12,8 +13,16 @@ public class SaveInfoPerYaz {
     int yazSaved;
 
     public SaveInfoPerYaz(List<Loan> loans, List<Client> clients, int yazSaved) {
-        this.loans = loans;
-        this.clients = clients;
+        //this.loans = new ArrayList<>(loans);
+        //this.clients = new ArrayList<>(clients);
+        for (int i = 0; i < loans.size(); i++) {
+            this.loans.add(new Loan(loans.get(i)));
+        }
+
+        for (int i = 0; i < clients.size(); i++) {
+            this.clients.add(new Client(clients.get(i)));
+        }
+
         this.yazSaved = yazSaved;
     }
 

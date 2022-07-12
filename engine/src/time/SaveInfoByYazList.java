@@ -11,11 +11,18 @@ import java.util.List;
 public class SaveInfoByYazList {
     List <SaveInfoPerYaz> archive = new ArrayList<>(2);
 
+    public SaveInfoByYazList() {
+        archive.add(null);
+    }
 
     public void yazWasAdvanced(int lastYaz){
         SaveInfoPerYaz saveInfoPerYaz = new SaveInfoPerYaz(Loans.getLoans(), Clients.getClientsList(), Yaz.getYaz());
         if(lastYaz > archive.size())
             archive.add(null);
-        archive.add(lastYaz, saveInfoPerYaz);
+
+        if(lastYaz < archive.size())
+            archive.remove(lastYaz);
+        archive.add(lastYaz , saveInfoPerYaz);
+        //archive.get(lastYaz) = saveInfoPerYaz;
     }
 }
